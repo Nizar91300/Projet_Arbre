@@ -16,11 +16,10 @@ import java.io.IOException;
  */
 public class MenuView  {
 
-    @FXML
-    public ImageView imageMenu;
+
 
     @FXML
-    public Button btnPlay;
+    public Button btnBienvenue;
 
     @FXML
     public StackPane paneMenu;
@@ -30,9 +29,7 @@ public class MenuView  {
 
 
 
-    public MenuView() {
-
-    }
+    public MenuView() {}
 
 
 
@@ -53,10 +50,11 @@ public class MenuView  {
 
     @FXML
     public void initialize() {
-        /*
-        btnPlay.setOnAction((actionEvent) -> {
-            controller.actionInitiated(GameAction.play);
+
+        btnBienvenue.setOnAction((actionEvent) -> {
+            actionInitiated(GameAction.play);
         });
+        /*
         btnRules.setOnAction((actionEvent) -> {
             controller.actionInitiated(GameAction.rules);
         });
@@ -64,31 +62,23 @@ public class MenuView  {
             controller.actionInitiated(GameAction.settings);
         });
         */
-        //image du titre
-        Image imProfile = new Image(getClass().getResourceAsStream("/com/example/demo/Vert/menuvert.png"));
-        imageMenu.setImage(imProfile);
+
         //image Background
-        imProfile = new Image(getClass().getResourceAsStream("/com/example/demo/Vert/menuvert.png"));
+        Image imProfile = new Image(getClass().getResourceAsStream("/com/example/demo/Vert/street-with-trees.jpg"));
         imageBackground.setImage(imProfile);
 
     }
 
 
-    /*
-    @Override
+
+
     public void actionInitiated(GameAction gameAction) {
         if(gameAction == GameAction.play){
-            controller.deleteObserver(this);
-            LevelsMenuView.load();
-        }else if(gameAction == GameAction.rules){
-            controller.deleteObserver(this);
-            RulesView.load();
-        }else if(gameAction == GameAction.settings){
-            controller.deleteObserver(this);
-            SettingsView.load();
+            //delete premiere fenetre peut etre
+            ConsultationView.load();
         }
     }
 
-    */
+
 
 }

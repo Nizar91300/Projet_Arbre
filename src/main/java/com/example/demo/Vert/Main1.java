@@ -16,7 +16,7 @@ public class Main1 extends Application {
     public void start(Stage stage) throws IOException {
         Main1.stage = stage;
         MenuView.load();
-        stage.setTitle("Service des espaces vert");
+        stage.setTitle("Service des espaces verts");
         stage.setResizable(false);
         stage.show();
     }

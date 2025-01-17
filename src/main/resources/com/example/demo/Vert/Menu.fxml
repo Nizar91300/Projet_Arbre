@@ -2,13 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="paneMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1080" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #7CFC00, #006400);;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="imageBackground" fitHeight="720" fitWidth="1080" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageBackground" fitHeight="720" fitWidth="1080" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/street-with-trees.jpg" />
+         </image></ImageView>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="605.0" spacing="20.0" style="-fx-background-image: url(&quot;imagemenu.jpeg&quot;);">
          <children>
             <ImageView fx:id="imageMenu" fitHeight="150.0" fitWidth="395.0" pickOnBounds="true" preserveRatio="true">
@@ -16,7 +20,7 @@
                   <Insets bottom="100.0" />
                </VBox.margin>
             </ImageView>
-            <Button fx:id="btnPlay" mnemonicParsing="false" stylesheets="@Style.css" text="PLAY" textAlignment="CENTER">
+            <Button fx:id="btnBienvenue" mnemonicParsing="false" stylesheets="@Style.css" text="Bienvenue" textAlignment="CENTER">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

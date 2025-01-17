@@ -70,7 +70,60 @@ public class Arbre implements Comparable<Arbre> {
         }
     }
 
+    // Getter pour l'id
+    public int getId() {
+        return id;
+    }
 
+    // Getter pour l'adresse d'accès
+    public String getAdresseAcces() {
+        return adresseAcces;
+    }
+
+    // Getter pour le nom commun
+    public String getNomCommun() {
+        return nomCommun;
+    }
+
+    // Getter pour le genre
+    public String getGenre() {
+        return genre;
+    }
+
+    // Getter pour l'espèce
+    public String getEspece() {
+        return espece;
+    }
+
+    // Getter pour la circonférence
+    public double getCirconference() {
+        return circonference;
+    }
+
+    // Getter pour la hauteur
+    public double getHauteur() {
+        return hauteur;
+    }
+
+    // Getter pour le stade de développement
+    public StadeDeveloppement getStadeDeDeveloppement() {
+        return stadeDeDeveloppement;
+    }
+
+    // Getter pour la classification remarquable
+    public boolean isClassificationRemarquable() {
+        return classificationRemarquable;
+    }
+
+    // Getter pour la date de classification remarquable
+    public Date getDateClassificationRemarquable() {
+        return dateClassificationRemarquable;
+    }
+
+    // Getter pour les coordonnées GPS
+    public Pair<Double, Double> getCoordonneesGPS() {
+        return coordonneesGPS;
+    }
     @Override
     public String toString() {
         return "Arbre{" +
