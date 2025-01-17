@@ -1,0 +1,6 @@
+[ {
+  "nom" : "Dupont",
+  "prenom" : "Jean",
+  "pseudo" : "jdupont",
+  "motDePasse" : "password123"
+} ]

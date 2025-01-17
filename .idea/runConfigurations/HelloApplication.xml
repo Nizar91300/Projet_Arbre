@@ -4,7 +4,7 @@
     <module name="demo" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.example.demo.*" />
+        <option name="PATTERN" value="com.example.demo.Membres.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
