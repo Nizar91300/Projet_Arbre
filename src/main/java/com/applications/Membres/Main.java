@@ -1,4 +1,4 @@
-package com.example.demo.Membres;
+package com.applications.Membres;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Charger le layout FXML
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/demo/Membres/Vue1.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/applications/Membres/Vue1.fxml"));
         // Configurer et afficher la scène
         primaryStage.setTitle("Test Application");
         primaryStage.setScene(new Scene(root, 1080, 720));

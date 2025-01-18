@@ -1,7 +1,4 @@
-package com.example.demo.Membres;
-
-import com.example.demo.Membres.Membre;
-import com.example.demo.Membres.GestionMembres;
+package com.applications.Membres;
 
 
 public class TestSimple {
