@@ -2,14 +2,14 @@ package common;
 
 import java.util.List;
 
-public class Association {
-    private String nom;
-    private Membre president;
-    private List<Membre> membres;
-    private List<Arbre> arbresProposes;
-    private Budget budget;
-    private List<Donateur> donateurs;
-    private List<Facture> factures;
+public class Association implements ServiceVertObserver,Donateur{
+    public final String nom;
 
-    // Constructors, getters, setters, and toString methods
+    public Association(String nom) {
+        this.nom = nom;
+    }
+
+
+    @Override
+    public void notify(Notification notification) {}
 }

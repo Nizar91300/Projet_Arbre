@@ -20,10 +20,8 @@ public record Notification(Evenement typeNotification, Arbre arbre, Date dateNot
 
     @Override
     public String toString() {
-        return "Notification{" +
-                "typeNotification=" + typeNotification.toString() +
-                ", arbre=" + arbre.toString() +
-                ", dateNotification=" + dateNotification.toString() +
-                '}';
+        return "Notification{" + typeNotification.toString() +
+                ", arbre: " + arbre.toString() +
+                ", " + dateNotification.toString() + '}';
     }
 }

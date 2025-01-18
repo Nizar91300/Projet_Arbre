@@ -11,9 +11,8 @@ import java.util.TreeSet;
  */
 public class Arbre implements Comparable<Arbre> {
 
-    public enum StadeDeveloppement {
-        UNKOWN, ADULTE, JEUNE, JEUNE_ADULTE, MATURE
-    }
+    public enum StadeDeveloppement {UNKOWN, ADULTE, JEUNE, JEUNE_ADULTE, MATURE}
+
     public static TreeSet<Arbre> arbres = new TreeSet<>();
     private final int id;
     private final String adresseAcces;
@@ -140,4 +139,20 @@ public class Arbre implements Comparable<Arbre> {
                 ", coordonneesGPS=" + coordonneesGPS +
                 '}';
     }
+
+
+    public boolean ajouterArbre(Arbre arbre) {
+        return arbres.add(arbre);
+    }
+
+    public boolean retirerArbre(Arbre arbre) {
+        return arbres.remove(arbre);
+    }
+
+
+    public void inverserClassificationRemarquable() {
+        classificationRemarquable = !classificationRemarquable;
+        if(classificationRemarquable)dateClassificationRemarquable = new Date();
+    }
+
 }
