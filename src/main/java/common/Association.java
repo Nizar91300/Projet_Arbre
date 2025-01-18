@@ -1,8 +1,6 @@
 package common;
 
-import java.util.List;
-
-public class Association implements ServiceVertObserver,Donateur{
+public class Association implements ServiceVertObserver, DonateurVert {
     public final String nom;
 
     public Association(String nom) {

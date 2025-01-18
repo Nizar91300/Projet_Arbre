@@ -1,9 +1,8 @@
 package common;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Personne implements ServiceVertObserver,Donateur {
+public class Personne implements ServiceVertObserver, DonateurVert {
 
     private final String nom;
     private final String prenom;

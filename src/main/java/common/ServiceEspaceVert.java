@@ -2,7 +2,7 @@ package common;
 
 import java.util.HashSet;
 
-public class ServiceEspaceVert implements Donateur{
+public class ServiceEspaceVert implements DonateurVert {
 
     private static ServiceEspaceVert instance;
     HashSet<ServiceVertObserver> observers;
