@@ -14,17 +14,15 @@ module com.example.demo {
     exports com.example.demo.Vert to javafx.graphics;
     opens com.example.demo.Vert to javafx.fxml; // Permet l'accès à FXMLLoader
 
-<<<<<<< Updated upstream
-    // Exportation du package principal pour une utilisation générale
-=======
+
     // Permet à FXMLLoader d'accéder aux membres annotés avec @FXML
-    opens com.example.demo.Vert to javafx.fxml;
+    //opens com.example.demo.Vert to javafx.fxml;
 
     // Autoriser l'accès au package 'common' à JavaFX
     opens common to javafx.base;
 
     // Autres packages si nécessaires
->>>>>>> Stashed changes
+
     exports com.example.demo;
     opens com.example.demo to com.fasterxml.jackson.databind;
 }

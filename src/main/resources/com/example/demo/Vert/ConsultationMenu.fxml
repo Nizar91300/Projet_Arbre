@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
@@ -26,15 +27,18 @@
                <children>
                   <Button fx:id="btnBackMenu" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" stylesheets="@Style.css" text="BACK">
                      <HBox.margin>
-                        <Insets left="20.0" top="20.0" />
+                        <Insets left="20.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Consultation de la liste des arbres" textAlignment="CENTER" wrappingWidth="585.2926940917969">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Consultation de la liste des arbres" textAlignment="CENTER" wrappingWidth="503.3070373535156">
                      <HBox.margin>
                         <Insets top="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Text>
-                  <TextField fx:id="TextSearch">
+                  <TextField fx:id="TextSearch" prefHeight="26.0" prefWidth="97.0">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -44,12 +48,23 @@
                         <Insets top="10.0" />
                      </HBox.margin>
                   </ComboBox>
+                  <Button fx:id="btnReset" mnemonicParsing="false" text="Reset">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
                   <Button fx:id="btnSearch" mnemonicParsing="false" text="Search">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
             </HBox>
             <TableView fx:id="tabCons" prefHeight="400.0" prefWidth="200.0">
               <columns>
@@ -66,6 +81,24 @@
                   <TableColumn fx:id="colGPS" prefWidth="75.0" text="GPS" />
               </columns>
             </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnPlante" mnemonicParsing="false" text="Plantation d'un nouvel arbre">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnAbattre" mnemonicParsing="false" text="Abattre l'arbre">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnClassifier" mnemonicParsing="false" text="Classifier Remarquable" />
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </HBox>
          </children>
       </VBox>
    </children>

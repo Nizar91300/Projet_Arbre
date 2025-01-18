@@ -1,5 +1,5 @@
 package com.example.demo.Vert;
 
 public enum GameAction {
-    back,play
+    back,play,reset
 }

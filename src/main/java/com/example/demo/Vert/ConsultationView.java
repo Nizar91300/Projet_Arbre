@@ -7,9 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -66,6 +64,27 @@ public class ConsultationView {
     @FXML
     public ImageView imgbackcons;
 
+    @FXML
+    public TextField TextSearch;
+
+    @FXML
+    public ComboBox<String> filtre;
+
+    @FXML
+    public Button btnSearch;
+
+    @FXML
+    public Button btnReset;
+
+    @FXML
+    public Button btnPlante;
+
+    @FXML
+    public Button btnAbattre;
+
+    @FXML
+    public Button btnClassifier;
+
 
     public ConsultationView() {
     }
@@ -118,6 +137,21 @@ public class ConsultationView {
             actionInitiated(GameAction.back);
         });
 
+        // Ajouter les colonnes filtrables à la ComboBox
+        filtre.getItems().addAll("ID", "Adresse", "Nom Commun", "Genre", "Espèce", "Circonférence", "Hauteur", "Stade", "Remarquable");
+
+        // Définir un élément par défaut
+        filtre.getSelectionModel().selectFirst();
+
+        // Configurer le bouton de recherche
+        btnSearch.setOnAction(event -> performSearch());
+
+        btnReset.setOnAction( event -> {
+            tabCons.setItems(FXCollections.observableArrayList(Arbre.arbres)); // Réinitialise les données
+            TextSearch.clear(); // Vide le champ de recherche
+            filtre.getSelectionModel().selectFirst(); // Réinitialise la ComboBox
+        });
+
 
     }
 
@@ -134,6 +168,72 @@ public class ConsultationView {
 
         }
     }
+
+    private void performSearch() {
+        String selectedFilter = String.valueOf(filtre.getValue()); // Récupère la colonne choisie
+        String searchText = TextSearch.getText().toLowerCase(); // Texte de recherche (minuscule pour comparaison)
+
+        // Filtrer les arbres selon la colonne choisie et le texte de recherche
+        ObservableList<Arbre> filteredList = FXCollections.observableArrayList();
+        for (Arbre arbre : Arbre.arbres) {
+            switch (selectedFilter) {
+                case "ID":
+                    if (String.valueOf(arbre.getId()).contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Adresse":
+                    if (arbre.getAdresseAcces().toLowerCase().contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Nom Commun":
+                    if (arbre.getNomCommun().toLowerCase().contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Genre":
+                    if (arbre.getGenre().toLowerCase().contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Espèce":
+                    if (arbre.getEspece().toLowerCase().contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Circonférence":
+                    if (String.valueOf(arbre.getCirconference()).contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Hauteur":
+                    if (String.valueOf(arbre.getHauteur()).contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Stade":
+                    if (arbre.getStadeDeDeveloppement().toString().toLowerCase().contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                case "Remarquable":
+                    if ((arbre.isClassificationRemarquable() ? "oui" : "non").contains(searchText)) {
+                        filteredList.add(arbre);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Mettre à jour les éléments affichés dans le tableau
+        tabCons.setItems(filteredList);
+    }
+
+
+
+
 
 }
 
