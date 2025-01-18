@@ -1,15 +1,13 @@
 package common;
 
-import java.util.List;
+public class Association implements ServiceVertObserver, DonateurVert {
+    public final String nom;
 
-public class Association {
-    private String nom;
-    private Membre president;
-    private List<Membre> membres;
-    private List<Arbre> arbresProposes;
-    private Budget budget;
-    private List<Donateur> donateurs;
-    private List<Facture> factures;
+    public Association(String nom) {
+        this.nom = nom;
+    }
 
-    // Constructors, getters, setters, and toString methods
+
+    @Override
+    public void notify(Notification notification) {}
 }

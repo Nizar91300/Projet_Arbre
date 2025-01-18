@@ -1,6 +1,6 @@
 package common;
 
-public interface Donateur {
+public interface DonateurVert {
 
 
 
