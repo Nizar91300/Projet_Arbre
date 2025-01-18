@@ -6,14 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class ConsultationView {
@@ -131,7 +135,7 @@ public class ConsultationView {
 
         // Charger les données dans le tableau
         loadTableData();
-        System.out.println(Arbre.arbres);
+
 
         btnBackMenu.setOnAction((actionEvent) -> {
             actionInitiated(GameAction.back);
@@ -151,6 +155,26 @@ public class ConsultationView {
             TextSearch.clear(); // Vide le champ de recherche
             filtre.getSelectionModel().selectFirst(); // Réinitialise la ComboBox
         });
+
+        // Griser les boutons par défaut
+        btnAbattre.setDisable(true);
+        btnClassifier.setDisable(true);
+
+        // Activer les boutons lorsque l'utilisateur sélectionne un arbre
+        tabCons.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isSelected = newValue != null;
+            btnAbattre.setDisable(!isSelected);
+            btnClassifier.setDisable(!isSelected);
+        });
+
+        // Configurer les actions des boutons
+        btnAbattre.setOnAction(event -> handleAbattage());
+        btnClassifier.setOnAction(event -> handleClassificationRemarquable());
+
+        btnPlante.setOnAction(event -> handlePlantation());
+
+
+
 
 
     }
@@ -230,6 +254,80 @@ public class ConsultationView {
         // Mettre à jour les éléments affichés dans le tableau
         tabCons.setItems(filteredList);
     }
+
+    private void handleAbattage() {
+        // Récupérer l'arbre sélectionné
+        Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
+        if (selectedArbre != null) {
+            // Supprimer l'arbre via la méthode retirerArbre
+            boolean removed = Arbre.arbres.remove(selectedArbre);
+            if (removed) {
+                // Supprimer également de l'affichage
+                tabCons.getItems().remove(selectedArbre);
+
+                // Message de confirmation
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Abattage");
+                alert.setHeaderText("Arbre abattu");
+                alert.setContentText("L'arbre ID " + selectedArbre.getId() + " a été abattu avec succès.");
+                alert.showAndWait();
+            } else {
+                // Message d'erreur si l'arbre n'a pas pu être supprimé
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Abattage échoué");
+                alert.setContentText("Impossible d'abattre l'arbre ID " + selectedArbre.getId() + ".");
+                alert.showAndWait();
+            }
+        }
+    }
+
+    private void handleClassificationRemarquable() {
+        // Récupérer l'arbre sélectionné
+        Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
+        if (selectedArbre != null) {
+            // Utiliser la méthode inverserClassificationRemarquable pour modifier l'état
+            selectedArbre.inverserClassificationRemarquable();
+
+            // Rafraîchir l'affichage du tableau
+            tabCons.refresh();
+
+            // Message de confirmation
+            String message = selectedArbre.isClassificationRemarquable()
+                    ? "L'arbre ID " + selectedArbre.getId() + " est maintenant remarquable."
+                    : "L'arbre ID " + selectedArbre.getId() + " n'est plus classifié comme remarquable.";
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Classification Remarquable");
+            alert.setHeaderText("Classification mise à jour");
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handlePlantation() {
+        try {
+            // Charger le fichier FXML de PlantationView
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PlantationView.fxml"));
+            Parent root = loader.load();
+
+            // Créer une nouvelle scène pour la plantation
+            Stage stage = new Stage();
+            stage.setTitle("Planter un arbre");
+            stage.initModality(Modality.APPLICATION_MODAL); // Rendre la fenêtre modale (bloque la fenêtre parent)
+            stage.setScene(new Scene(root));
+            stage.showAndWait(); // Attendre que l'utilisateur ferme la fenêtre
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
 
 
 

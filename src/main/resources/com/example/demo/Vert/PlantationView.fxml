@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Pos?>
+
+<GridPane fx:controller="com.example.demo.Vert.PlantationView" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+    <Label text="ID Arbre:" />
+    <TextField fx:id="txtId" GridPane.columnIndex="1" />
+
+    <Label text="Adresse Accès:" GridPane.rowIndex="1"/>
+    <TextField fx:id="txtAdresse" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="Nom Commun:" GridPane.rowIndex="2"/>
+    <TextField fx:id="txtNomCommun" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Genre:" GridPane.rowIndex="3"/>
+    <TextField fx:id="txtGenre" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Label text="Espèce:" GridPane.rowIndex="4"/>
+    <TextField fx:id="txtEspece" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <Label text="Circonférence:" GridPane.rowIndex="5"/>
+    <TextField fx:id="txtCirconference" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <Label text="Hauteur:" GridPane.rowIndex="6"/>
+    <TextField fx:id="txtHauteur" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+    <Label text="Stade de Développement:" GridPane.rowIndex="7"/>
+    <ComboBox fx:id="cmbStade" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+    <Label text="Classification Remarquable:" GridPane.rowIndex="8"/>
+    <CheckBox fx:id="chkRemarquable" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+    <Label text="Coordonnées GPS:" GridPane.rowIndex="9"/>
+    <TextField fx:id="txtCoordonnees" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+    <Button text="Ajouter" fx:id="btnAjouter" GridPane.rowIndex="10" GridPane.columnSpan="2"/>
+    <Button text="Annuler" fx:id="btnAnnuler" GridPane.rowIndex="11" GridPane.columnSpan="2"/>
+</GridPane>

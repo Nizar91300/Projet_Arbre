@@ -4,7 +4,8 @@ module com.example.demo {
     requires com.opencsv;
 
     // Ajoute les dépendances Jackson
-    requires com.fasterxml.jackson.databind; // Ce module englobe généralement les fonctionnalités nécessaires
+    requires com.fasterxml.jackson.databind;
+    requires java.desktop; // Ce module englobe généralement les fonctionnalités nécessaires
 
     // Exporte et ouvre le package com.example.demo.Membres pour Jackson
     opens com.example.demo.Membres to com.fasterxml.jackson.databind, javafx.fxml;  // Ajout de javafx.fxml
