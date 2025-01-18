@@ -1,4 +1,4 @@
-package com.example.demo.Vert;
+package com.applications.Vert;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

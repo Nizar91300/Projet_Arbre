@@ -1,4 +1,4 @@
-package com.example.demo.Vert;
+package com.applications.Vert;
 
 public enum GameAction {
     back,play,reset

@@ -1,4 +1,4 @@
-package com.example.demo.Vert;
+package com.applications.Vert;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +64,7 @@ public class MenuView  {
         */
 
         //image Background
-        Image imProfile = new Image(getClass().getResourceAsStream("/com/example/demo/Vert/street-with-trees.jpg"));
+        Image imProfile = new Image(getClass().getResourceAsStream("/com/applications/Vert/street-with-trees.jpg"));
         imageBackground.setImage(imProfile);
 
     }

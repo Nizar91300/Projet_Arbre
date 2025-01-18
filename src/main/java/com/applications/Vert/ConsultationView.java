@@ -1,4 +1,4 @@
-package com.example.demo.Vert;
+package com.applications.Vert;
 
 import common.Arbre;
 import common.EntityManager;
@@ -107,7 +107,7 @@ public class ConsultationView {
     public void initialize() {
 
         //image Background
-        Image imProfile = new Image(getClass().getResourceAsStream("/com/example/demo/Vert/street-with-trees.jpg"));
+        Image imProfile = new Image(getClass().getResourceAsStream("/com/applications/Vert/street-with-trees.jpg"));
         imgbackcons.setImage(imProfile);
 
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
