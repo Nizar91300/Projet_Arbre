@@ -1,5 +1,6 @@
-package com.example.demo.Vert;
+package com.applications.Vert;
 
+import com.applications.Vert.ConsultationView;
 import common.Arbre;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,7 +33,8 @@ public class PlantationView {
     private void ajouterArbre() {
         try {
             // Récupérer les valeurs des champs
-            int id = Integer.parseInt(txtId.getText());
+            //int id = Integer.parseInt(txtId.getText());
+            int id = Arbre.arbres.size() + 1;
             String adresse = txtAdresse.getText();
             String nomCommun = txtNomCommun.getText();
             String genre = txtGenre.getText();
