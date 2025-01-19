@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -26,6 +27,7 @@ public class MenuView  {
 
     @FXML
     public ImageView imageBackground;
+
 
 
 
@@ -52,16 +54,9 @@ public class MenuView  {
     public void initialize() {
 
         btnBienvenue.setOnAction((actionEvent) -> {
-            actionInitiated(GameAction.play);
+            ConsultationView.load();
         });
-        /*
-        btnRules.setOnAction((actionEvent) -> {
-            controller.actionInitiated(GameAction.rules);
-        });
-        btnSettings.setOnAction((actionEvent) -> {
-            controller.actionInitiated(GameAction.settings);
-        });
-        */
+
 
         //image Background
         Image imProfile = new Image(getClass().getResourceAsStream("/com/applications/Vert/street-with-trees.jpg"));
@@ -72,12 +67,7 @@ public class MenuView  {
 
 
 
-    public void actionInitiated(GameAction gameAction) {
-        if(gameAction == GameAction.play){
-            //delete premiere fenetre peut etre
-            ConsultationView.load();
-        }
-    }
+
 
 
 

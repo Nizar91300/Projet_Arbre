@@ -1,0 +1,129 @@
+/* Style pour le titre du menu */
+#titremenu {
+    -fx-font-family: 'Arial', sans-serif; /* Police de caractères */
+    -fx-font-weight: bold; /* Mettre le texte en gras */
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #ffffff, #ffcc00); /* Dégradé blanc vers jaune clair */
+    -fx-stroke: black; /* Bordure noire autour du texte */
+    -fx-stroke-width: 1; /* Épaisseur de la bordure */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.0, 2, 2); /* Ombre portée */
+    -fx-text-alignment: center; /* Alignement du texte au centre */
+}
+
+#titreconsul{
+    -fx-font-family: 'Arial', sans-serif; /* Police de caractères */
+    -fx-font-weight: bold; /* Mettre le texte en gras */
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #ffffff, #ffcc00); /* Dégradé blanc vers jaune clair */
+    -fx-stroke: black; /* Bordure noire autour du texte */
+    -fx-stroke-width: 1; /* Épaisseur de la bordure */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.0, 2, 2); /* Ombre portée */
+    -fx-text-alignment: center; /* Alignement du texte au centre */
+
+}
+
+/* Style pour les boutons */
+.button {
+    -fx-background-color: #4CAF50; /* Vert classique pour le fond */
+    -fx-text-fill: white; /* Couleur du texte en blanc */
+    -fx-font-family: 'Arial', sans-serif; /* Police simple et lisible */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-border-radius: 5; /* Coins arrondis */
+    -fx-border-color: #388E3C; /* Bordure verte plus foncée */
+    -fx-border-width: 2; /* Bordure fine */
+    -fx-padding: 10 20; /* Padding autour du texte pour plus d'espace */
+    -fx-background-insets: 0, 1, 2; /* Décalage des couches de fond */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.0, 2, 2); /* Ombre légère */
+}
+
+/* Changement de couleur au survol */
+.button:hover {
+    -fx-background-color: #45A049; /* Couleur légèrement plus foncée au survol */
+    -fx-border-color: #388E3C; /* Bordure verte plus foncée au survol */
+}
+
+/* Changement au clic */
+.button:pressed {
+    -fx-background-color: #388E3C; /* Fond plus foncé lors du clic */
+    -fx-border-color: #2C6B2F; /* Bordure plus foncée au clic */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.0, 3, 3); /* Ombre plus marquée */
+}
+
+
+/* Style pour ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte sombre pour un bon contraste */
+    -fx-font-family: 'Arial', sans-serif; /* Police simple */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-border-color: #4CAF50; /* Bordure verte */
+    -fx-border-radius: 5; /* Coins arrondis */
+    -fx-border-width: 2; /* Bordure fine */
+    -fx-padding: 5 10; /* Padding autour du texte */
+    -fx-background-insets: 0, 1, 2; /* Décalage des couches de fond */
+}
+
+/* Couleur au survol */
+.combo-box:hover {
+    -fx-border-color: #388E3C; /* Bordure légèrement plus foncée au survol */
+}
+
+/* Lorsque l'élément est sélectionné */
+.combo-box .list-cell:focused {
+    -fx-background-color: #4CAF50; /* Fond vert pour l'élément sélectionné */
+    -fx-text-fill: white; /* Texte blanc pour la sélection */
+}
+
+
+/* Style pour GridPane */
+.grid-pane {
+    -fx-background-color: #f9f9f9; /* Fond léger pour le GridPane */
+    -fx-padding: 20; /* Padding autour du contenu */
+    -fx-vgap: 10; /* Espace vertical entre les éléments */
+    -fx-hgap: 10; /* Espace horizontal entre les éléments */
+}
+
+/* Style pour les cellules du GridPane */
+.grid-pane .label {
+    -fx-font-family: 'Arial', sans-serif; /* Police simple */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-weight: normal; /* Texte normal */
+    -fx-text-fill: #333333; /* Texte sombre */
+}
+
+/* Style pour les boutons dans le GridPane */
+.grid-pane .button {
+    -fx-background-color: #4CAF50; /* Fond vert */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-family: 'Arial', sans-serif; /* Police simple */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-border-radius: 5; /* Coins arrondis */
+    -fx-border-color: #388E3C; /* Bordure verte plus foncée */
+    -fx-border-width: 2; /* Bordure fine */
+    -fx-padding: 10 20; /* Padding autour du texte */
+}
+
+/* Style pour TextField */
+.text-field {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte sombre */
+    -fx-font-family: 'Arial', sans-serif; /* Police simple */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-border-color: #4CAF50; /* Bordure verte */
+    -fx-border-radius: 5; /* Coins arrondis */
+    -fx-border-width: 2; /* Bordure fine */
+    -fx-padding: 5 10; /* Padding autour du texte */
+}
+
+/* Couleur de la bordure lorsque le TextField est sélectionné */
+.text-field:focused {
+    -fx-border-color: #388E3C; /* Bordure plus foncée au focus */
+}
+
+/* Couleur de fond lorsque l'utilisateur tape dans le TextField */
+.text-field:focused {
+    -fx-background-color: #f1f1f1; /* Fond plus clair lors du focus */
+}
+
+/* Lorsque l'utilisateur survole le TextField */
+.text-field:hover {
+    -fx-border-color: #66bb6a; /* Bordure légèrement plus claire au survol */
+}

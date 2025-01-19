@@ -89,6 +89,9 @@ public class ConsultationView {
     @FXML
     public Button btnClassifier;
 
+    @FXML
+    public Button btnNotif;
+
 
     public ConsultationView() {
     }
@@ -138,7 +141,7 @@ public class ConsultationView {
 
 
         btnBackMenu.setOnAction((actionEvent) -> {
-            actionInitiated(GameAction.back);
+            MenuView.load();
         });
 
         // Ajouter les colonnes filtrables à la ComboBox
@@ -173,6 +176,8 @@ public class ConsultationView {
 
         btnPlante.setOnAction(event -> handlePlantation());
 
+        btnNotif.setOnAction(event -> NotificationView.load());
+
 
 
 
@@ -185,13 +190,7 @@ public class ConsultationView {
         tabCons.setItems(arbresList);
     }
 
-    public void actionInitiated(GameAction gameAction) {
-        if (gameAction == GameAction.back) {
-            MenuView.load();
 
-
-        }
-    }
 
     private void performSearch() {
         String selectedFilter = String.valueOf(filtre.getValue()); // Récupère la colonne choisie
