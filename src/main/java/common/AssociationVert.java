@@ -1,5 +1,10 @@
 package common;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,14 +16,14 @@ public final class AssociationVert extends Association {
     private double cotisation;
     private Set<Membre> membres;
     private List<Notification> notifications;
-    Set<Vote> votes;
+    private Set<Vote> votes;
     private HashMap<Arbre,Integer> arbresProposes;
+    private List<Visite> visitesEffectuees;
+    private List<Visite> visitesPlanifiees;
 
     //private Budget budget;
     //private List<Donateur> donateurs;
     //private List<Facture> factures;
-
-
 
     private AssociationVert() {
         super("Association Vert");
@@ -27,14 +32,107 @@ public final class AssociationVert extends Association {
         membres = new HashSet<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
+        visitesEffectuees = new ArrayList<>();
+        visitesPlanifiees = new ArrayList<>();
+
+        loadMembers();
+        loadVotes();
+        loadVisites();
     }
 
     public static AssociationVert get() {
-        if (instance == null) {instance = new AssociationVert();}
+        if(instance == null) {instance = new AssociationVert();}
         return instance;
-
     }
 
+    // Charger les membres de test stockés dans le fichier
+    public void loadMembers() {
+        var res = AssociationVert.class.getResource("test_membres.json");
+
+        if (res == null) {
+            return;
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // Lire le fichier JSON et convertir en liste de membres
+            File jsonFile = new File(res.getFile());
+            Set<Membre> loadedMembers = objectMapper.readValue(jsonFile, new TypeReference<Set<Membre>>() {});
+
+            // Ajouter les membres au Set
+            membres.addAll(loadedMembers);
+
+            System.out.println("Membres chargés avec succès : " + membres.size());
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
+        }
+    }
+
+    // ajouter des votes de test
+    public void loadVotes() {
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            Membre membre = membres.stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
+            Arbre arbre = Arbre.arbres.stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
+            ajouterVote(new Vote(membre, arbre, new Date()));
+        }
+
+        // print votes
+        for (Vote vote : votes) {
+            System.out.println("Vote : " + vote.membre().getNom() + " " + vote.membre().getPrenom() + " " + vote.arbre().getNomCommun());
+        }
+    }
+
+    // charger des visites planifiées de test
+    public void loadVisites() {
+        Random random = new Random();
+
+        List<Arbre> arbresRemarquables = Arbre.arbres.stream()
+                .filter(Arbre::isClassificationRemarquable)  // Filtrer uniquement les arbres remarquables
+                .toList();
+
+        if (arbresRemarquables.isEmpty())  return;
+
+        // Liste de comptes rendus possibles
+        List<String> comptesRendus = List.of(
+                "Visite effectuée, l'arbre est en très bon état.",
+                "Visite effectuée, l'arbre présente quelques signes de vieillissement.",
+                "Visite effectuée, l'arbre semble avoir des problèmes de croissance.",
+                "Visite effectuée, arbre visité et bien entretenu.",
+                "Visite effectuée, l'arbre est malade et nécessite des soins urgents."
+        );
+
+        // Calcul des dates pour planification et compte rendu
+        long sixMonthsAgoMillis = System.currentTimeMillis() - (long) 6 * 30 * 24 * 60 * 60 * 1000;  // 6 mois en millisecondes
+        long oneMonthAgoMillis = System.currentTimeMillis() - (long) 30 * 24 * 60 * 60 * 1000;  // 1 mois en millisecondes
+
+        for (int i = 0; i < 40; i++) {
+            Membre membre = membres.stream()
+                    .skip(random.nextInt(membres.size()))  // Choisir un membre aléatoire
+                    .findFirst()
+                    .orElse(null);
+
+            Arbre arbre = arbresRemarquables.stream()
+                    .skip(random.nextInt(arbresRemarquables.size()))  // Choisir un arbre remarquable aléatoire
+                    .findFirst()
+                    .orElse(null);
+
+            if (membre != null && arbre != null) {
+                // Créer une date de visite planifiée entre 6 mois et 1 mois
+                long randomTimeMillis = sixMonthsAgoMillis + (long)(random.nextDouble() * (oneMonthAgoMillis - sixMonthsAgoMillis));
+                Date datePlanification = new Date(randomTimeMillis);
+
+                // Planifier la visite
+                planifierVisite(membre, arbre, datePlanification);
+
+                // Sélectionner un compte rendu aléatoire
+                String compteRendu = comptesRendus.get(random.nextInt(comptesRendus.size()));
+
+                // Ajouter le compte rendu à la visite effectuée
+                rendreCompteVisite(membre, arbre, compteRendu);
+            }
+        }
+    }
 
     @Override
     public void notify(Notification notification) {
@@ -42,12 +140,12 @@ public final class AssociationVert extends Association {
         //todo cadepend de l implementation de  l interface graphgique
     }
 
-
-
+    // Ajouter un membre
     public boolean ajouterMembre(Membre membre) {
         return membres.add(membre);
     }
 
+    // Supprimer un membre
     public boolean supprimerMembre(Membre membre) {
         return membres.remove(membre);
     }
@@ -69,6 +167,32 @@ public final class AssociationVert extends Association {
         arbresProposes.put(vote.arbre(),  Integer.min(arbresProposes.getOrDefault(vote.arbre(),0) - 1,0));
     }
 
+    // plannifier une visite
+    public void planifierVisite(Membre m, Arbre a, Date date) {
+        if(!a.isClassificationRemarquable())    return;
+
+        // verifier si quelqu'un d'autre n'a pas deja planifié une visite
+        for(Visite v : visitesPlanifiees) {
+            if(v.arbre().equals(a))  return;
+        }
+
+        visitesPlanifiees.add(new Visite(m,a,date,""));
+    }
+
+    // rendre compte d'une visite
+    public void rendreCompteVisite(Membre m, Arbre a, String compteRendu) {
+        visitesPlanifiees.stream()
+                .filter(v -> v.arbre().equals(a) && v.membre().equals(m))  // Vérifie que la visite correspond à l'arbre et au membre
+                .findFirst()  // Récupérer la première correspondance
+                .ifPresent(v -> {
+                    visitesPlanifiees.remove(v);  // Retirer la visite de la liste des visites planifiées
+                    visitesEffectuees.add(v.withCompteRendu(compteRendu));  // Ajouter la visite effectuée avec le compte rendu
+                });
+    }
+
+
+
+
 
 
     public List<Arbre> getTop5Arbres() {
@@ -89,6 +213,34 @@ public final class AssociationVert extends Association {
                 .limit(5)
                 .collect(Collectors.toList());
     }
+
+    // envoyer le classement des arbres a l'espace vert
+    public void envoyerClassement() {
+        List<Arbre> top5 = getTop5Arbres();
+
+        // Création du message de nomination
+        MessageNomination message = new MessageNomination(top5);
+
+        // Écriture du fichier
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            File file = new File("inbox/espaces_verts/nomination_arbres.json");
+            objectMapper.writeValue(file, message);
+            System.out.println("Message envoyé avec succès : " + file.getName());
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
+    // effectuer les actions liés à la fin d'un exercice budgétaire
+    public void finExercice() {
+        envoyerClassement();
+
+    }
+
+
+
 
 }
 

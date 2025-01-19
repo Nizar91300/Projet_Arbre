@@ -1,29 +1,24 @@
-module com.example.demo {
+module com.applications {
+    // Dépendances nécessaires
     requires javafx.controls;
     requires javafx.fxml;
     requires com.opencsv;
+    requires com.fasterxml.jackson.databind;
+    requires commons.collections;
 
-    // Ajoute les dépendances Jackson
-    requires com.fasterxml.jackson.databind; // Ce module englobe généralement les fonctionnalités nécessaires
+    // Exporte et ouvre les packages pour JavaFX et Jackson
+    exports com.applications.Membres to javafx.graphics, javafx.fxml;
+    opens com.applications.Membres to com.fasterxml.jackson.databind, javafx.fxml;
 
-    // Exporte et ouvre le package com.example.demo.Membres pour Jackson
-    opens com.applications.Membres to com.fasterxml.jackson.databind, javafx.fxml;  // Ajout de javafx.fxml
-    exports com.applications.Membres to javafx.graphics, javafx.fxml;  // Ajout de javafx.fxml pour l'exportation
-
-    // Exportation et ouverture pour les modules JavaFX et configuration pour Vert
     exports com.applications.Vert to javafx.graphics;
-    opens com.applications.Vert to javafx.fxml; // Permet l'accès à FXMLLoader
+    opens com.applications.Vert to javafx.fxml;
 
+    exports com.applications.Association.vue to javafx.graphics;
 
-    // Permet à FXMLLoader d'accéder aux membres annotés avec @FXML
-    //opens com.example.demo.Vert to javafx.fxml;
+    // Autoriser Jackson à accéder aux classes du package 'common'
+    opens common to com.fasterxml.jackson.databind;
 
-    // Autoriser l'accès au package 'common' à JavaFX
-    opens common to javafx.base;
-
-    // Autres packages si nécessaires
-
+    // Exporte le package principal
     exports com.applications;
     opens com.applications to com.fasterxml.jackson.databind;
 }
-

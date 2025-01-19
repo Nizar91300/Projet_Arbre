@@ -1,9 +1,8 @@
 package common;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.commons.collections.MultiMap;
+
+import java.util.*;
 
 public class Membre extends Personne {
 
@@ -21,6 +20,10 @@ public class Membre extends Personne {
         super(nom, prenom, dateNaissance);
         notifications = new ArrayList<>();
         votes = new LinkedList<>();
+    }
+
+    public Membre(){
+        super("Inconnu", "Inconnu", new Date());
     }
 
 

@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -22,12 +23,36 @@ public class EntityManager {
     private static EntityManager entityManager;
 
     public static EntityManager get() {
-        if (entityManager == null) entityManager = new EntityManager();
+        if(entityManager == null){
+            entityManager = new EntityManager();
+            entityManager.readArbre();
+            entityManager.setRandomRemarquable();
+        }
         return entityManager;
     }
 
-    private EntityManager(){
-        readArbre();
+    private void setRandomRemarquable() {
+        Random random = new Random();
+        List<Integer> indices = new ArrayList<>();
+        int totalArbres = Arbre.arbres.size();
+
+        // Créer un ensemble d'indices aléatoires uniques
+        while (indices.size() < 50 && indices.size() < totalArbres) {
+            int index = random.nextInt(totalArbres);
+            if (!indices.contains(index)) {  // Éviter les doublons
+                indices.add(index);
+            }
+        }
+
+        int i = 0;
+        // Inverser la classification remarquable pour les arbres sélectionnés
+        for (Arbre arbre : Arbre.arbres) {
+            if (indices.contains(i)) {
+                arbre.inverserClassificationRemarquable();
+            }
+            i++;
+        }
+
     }
 
     /**
