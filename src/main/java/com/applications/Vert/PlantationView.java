@@ -13,15 +13,24 @@ public class PlantationView {
     private TextField txtId, txtAdresse, txtNomCommun, txtGenre, txtEspece, txtCirconference, txtHauteur, txtCoordonnees;
     @FXML
     private ComboBox<String> cmbStade;
-    @FXML
-    private CheckBox chkRemarquable;
+    //@FXML
+    //private CheckBox chkRemarquable;
     @FXML
     private Button btnAjouter, btnAnnuler;
 
     @FXML
     public void initialize() {
+        // Ajout des valeurs EXACTES interprétées par la méthode fromString de la classe Arbre
+        cmbStade.getItems().addAll(
+                "Adulte",
+                "Jeune (arbre)",
+                "Jeune (arbre)Adulte",
+                "Mature",
+                "UNKOWN"
+        );
+
         // Initialiser la ComboBox avec les stades de développement possibles
-        cmbStade.getItems().addAll("UNKOWN", "ADULTE", "JEUNE", "JEUNE_ADULTE", "MATURE");
+        //cmbStade.getItems().addAll("UNKOWN", "ADULTE", "JEUNE", "JEUNE_ADULTE", "MATURE");
 
         // Action du bouton Ajouter
         btnAjouter.setOnAction(event -> ajouterArbre());
@@ -41,8 +50,16 @@ public class PlantationView {
             String espece = txtEspece.getText();
             double circonference = Double.parseDouble(txtCirconference.getText());
             double hauteur = Double.parseDouble(txtHauteur.getText());
+
+            // Récupérer la chaîne de la ComboBox directement
             String stade = cmbStade.getValue();
-            boolean remarquable = chkRemarquable.isSelected();
+            if (stade == null || stade.isEmpty()) {
+                throw new IllegalArgumentException("Stade de développement invalide.");
+            }
+
+
+            boolean remarquable = false;
+            //boolean remarquable = chkRemarquable.isSelected();
             Pair<Double, Double> coordonnees = parseCoordonnees(txtCoordonnees.getText());
 
             // Créer un nouvel arbre avec les valeurs saisies
@@ -83,4 +100,14 @@ public class PlantationView {
         Stage stage = (Stage) btnAnnuler.getScene().getWindow();
         stage.close();
     }
+
+    private boolean isValidStadeDeDeveloppement(String stade) {
+        for (Arbre.StadeDeveloppement value : Arbre.StadeDeveloppement.values()) {
+            if (value.name().equalsIgnoreCase(stade)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
