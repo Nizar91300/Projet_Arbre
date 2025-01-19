@@ -6,9 +6,9 @@ module com.applications {
     requires com.fasterxml.jackson.databind;
     requires commons.collections;
 
-    // Exporte et ouvre les packages pour JavaFX et Jackson
-    exports com.applications.Membres to javafx.graphics, javafx.fxml;
-    opens com.applications.Membres to com.fasterxml.jackson.databind, javafx.fxml;
+    // Ajoute les dépendances Jackson
+    requires com.fasterxml.jackson.databind;
+    requires java.desktop; // Ce module englobe généralement les fonctionnalités nécessaires
 
     exports com.applications.Vert to javafx.graphics;
     opens com.applications.Vert to javafx.fxml;

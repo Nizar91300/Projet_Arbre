@@ -65,7 +65,7 @@ public class Arbre implements Comparable<Arbre> {
             case "jeune (arbre)": return StadeDeveloppement.JEUNE;
             case "jeune (arbre)adulte": return StadeDeveloppement.JEUNE_ADULTE;
             case "mature": return StadeDeveloppement.MATURE;
-            default: throw new IllegalArgumentException("Stade de développement inconnu: " + stade);
+            default: return StadeDeveloppement.UNKOWN;
         }
     }
 
@@ -153,6 +153,7 @@ public class Arbre implements Comparable<Arbre> {
     public void inverserClassificationRemarquable() {
         classificationRemarquable = !classificationRemarquable;
         if(classificationRemarquable)dateClassificationRemarquable = new Date();
+        else dateClassificationRemarquable = null;
     }
 
 }
