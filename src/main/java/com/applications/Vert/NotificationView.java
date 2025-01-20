@@ -1,6 +1,8 @@
 package com.applications.Vert;
 
 import common.Arbre;
+import common.Association;
+import common.AssociationVert;
 import common.Notification;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -46,7 +48,7 @@ public class NotificationView {
 
     private final ObservableList<Notification> notifications = FXCollections.observableArrayList();
     private final List<String> membres = new ArrayList<>();
-    private final List<String> associations = new ArrayList<>();
+    private final List<Association> associations = new ArrayList<>();
 
     private final File inboxDirectory = new File("inbox"); // Répertoire des messages
 
@@ -54,6 +56,9 @@ public class NotificationView {
     public static void load() {
         try {
             NotificationView view = new NotificationView();
+
+            view.associations.add(AssociationVert.get());
+
             FXMLLoader fxmlLoader = new FXMLLoader(ConsultationView.class.getResource("NotificationView.fxml"));
             fxmlLoader.setController(view);
             Scene scene = new Scene(fxmlLoader.load(), Main1.WIDTH, Main1.HEIGHT);

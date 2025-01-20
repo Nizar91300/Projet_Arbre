@@ -1,5 +1,6 @@
 package com.applications.Vert;
 
+
 import common.Arbre;
 import common.EntityManager;
 import javafx.collections.FXCollections;
@@ -185,7 +186,7 @@ public class ConsultationView {
     }
 
     private void loadTableData() {
-        EntityManager.get().readArbre();
+        EntityManager.get();
         ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres);
         tabCons.setItems(arbresList);
     }

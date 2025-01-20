@@ -1,8 +1,10 @@
 package common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
-public record Notification(Evenement typeNotification, Arbre arbre, Date dateNotification) {
+public record Notification(@JsonProperty Evenement typeNotification,@JsonProperty Arbre arbre,@JsonProperty Date dateNotification) {
 
     public enum Evenement {
         PLANTATION,

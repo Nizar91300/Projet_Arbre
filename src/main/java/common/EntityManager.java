@@ -26,7 +26,7 @@ public class EntityManager {
         if(entityManager == null){
             entityManager = new EntityManager();
             entityManager.readArbre();
-            entityManager.setRandomRemarquable();
+            //entityManager.setRandomRemarquable();
         }
         return entityManager;
     }
