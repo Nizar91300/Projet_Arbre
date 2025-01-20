@@ -1,30 +1,27 @@
 package com.applications.Vert;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Arbre;
-import common.Association;
-import common.AssociationVert;
 import common.Notification;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class NotificationView {
 
@@ -38,27 +35,23 @@ public class NotificationView {
     @FXML
     private TableColumn<Notification, Arbre> colArb;
     @FXML
-    private TableColumn<Notification, Date> colDate;
+    private TableColumn<Notification, String> colDate;
 
     @FXML
     private ComboBox<String> filtre;
 
     @FXML
-    private Button btnBackCons, btnSearch, btnReset, btnSup, btnPlanteNotifi;
+    private TextField TextSearch;
+
+    @FXML
+    private Button btnBackCons, btnSearch, btnReset, btnSup, btnAccepter;
 
     private final ObservableList<Notification> notifications = FXCollections.observableArrayList();
-    private final List<String> membres = new ArrayList<>();
-    private final List<Association> associations = new ArrayList<>();
-
-    private final File inboxDirectory = new File("inbox"); // Répertoire des messages
-
+    private final File inboxDirectory = new File("inbox");
 
     public static void load() {
         try {
             NotificationView view = new NotificationView();
-
-            view.associations.add(AssociationVert.get());
-
             FXMLLoader fxmlLoader = new FXMLLoader(ConsultationView.class.getResource("NotificationView.fxml"));
             fxmlLoader.setController(view);
             Scene scene = new Scene(fxmlLoader.load(), Main1.WIDTH, Main1.HEIGHT);
@@ -68,192 +61,151 @@ public class NotificationView {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void initialize() {
         // Configuration des colonnes de la TableView
-        colEm.setCellValueFactory(new PropertyValueFactory<>("typeNotification"));
+        colEm.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
         colTy.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().typeNotification().toString()));
-        colArb.setCellValueFactory(new PropertyValueFactory<>("arbre"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("dateNotification"));
+        colArb.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().arbre()));  // Utilisation de SimpleObjectProperty<Arbre>
+        colDate.setCellValueFactory(cellData ->
+                new SimpleStringProperty(new SimpleDateFormat("dd/MM/yyyy").format(cellData.getValue().dateNotification())));
 
         tabNoti.setItems(notifications);
 
         // Ajouter des filtres
-        filtre.getItems().addAll("Tous", "Plantation", "Abattage", "Classification");
+        filtre.getItems().addAll("Tous", "Emetteur", "Type", "Arbre concerné", "Date");
         filtre.getSelectionModel().select("Tous");
 
-        // Ajouter des actions aux boutons
-        btnReset.setOnAction(event -> resetFiltre());
-        btnSearch.setOnAction(event -> filtrerNotifications());
-        btnSup.setOnAction(event -> supprimerNotificationSelectionnee());
-        btnPlanteNotifi.setOnAction(event -> afficherDetailsPlantation());
+        // Charger les notifications à partir du fichier JSON
+        loadNotificationsFromFile("inbox/espaces_verts/nomination_arbres.json");
+
+        // Action du bouton "Retour"
         btnBackCons.setOnAction(event -> ConsultationView.load());
+
+        // Action du bouton "Search"
+        btnSearch.setOnAction(event -> filterNotifications());
+
+        // Initialiser l'écouteur de la comboBox sans appliquer immédiatement le filtre
+        filtre.setOnAction(event -> {
+            // Ne rien faire ici pour ne pas filtrer immédiatement
+        });
+
+        // Action du bouton "Reset"
+        btnReset.setOnAction(event -> resetFilters());
     }
 
+    private void loadNotificationsFromFile(String filePath) {
+        try {
+            // Lire le fichier JSON et désérialiser les notifications
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(new FileReader(filePath));
 
-    /**
-     * Charge les notifications à partir des fichiers JSON dans le répertoire inbox.
-     */
-    @FXML
-    public void releverNotifications() {
-        if (!inboxDirectory.exists() || !inboxDirectory.isDirectory()) {
-            afficherMessageErreur("Le répertoire 'inbox' n'existe pas ou n'est pas accessible.");
-            return;
-        }
+            // Affichage du contenu du JSON pour le débogage
+            System.out.println("Contenu du fichier JSON : " + rootNode.toString());
 
-        File[] files = inboxDirectory.listFiles((dir, name) -> name.endsWith(".json"));
-        if (files == null || files.length == 0) {
-            afficherMessageInfo("Aucune nouvelle notification trouvée.");
-            return;
-        }
+            if (rootNode.isObject()) {
+                // Récupérer l'émetteur
+                String emetteur = rootNode.get("Emetteur").asText();
+                System.out.println("Émetteur: " + emetteur);
 
-        for (File file : files) {
-            try (FileReader reader = new FileReader(file); Scanner scanner = new Scanner(reader)) {
-                StringBuilder jsonContent = new StringBuilder();
-                while (scanner.hasNextLine()) {
-                    jsonContent.append(scanner.nextLine());
-                }
+                // Récupérer le type de message
+                String typeMessage = rootNode.get("typeMessage").asText();
+                System.out.println("Type de message: " + typeMessage);
 
-                Notification notification = parseNotificationFromJson(jsonContent.toString());
-                if (notification != null) {
+                // Récupérer la liste des arbres
+                JsonNode arbresNode = rootNode.get("arbres");
+                System.out.println("Nombre d'arbres: " + arbresNode.size());
+
+                // Mapper chaque arbre et créer une notification
+                for (JsonNode arbreNode : arbresNode) {
+                    // Mapper l'arbre
+                    Arbre arbre = mapJsonToArbre(arbreNode);
+
+                    // Créer l'événement à partir du typeMessage
+                    Notification.Evenement evenement = typeMessage.equals("nomination") ? Notification.Evenement.CLASSIFICATION : Notification.Evenement.PLANTATION;
+
+                    // Créer une notification pour chaque arbre
+                    Notification notification = new Notification(evenement, arbre, new java.sql.Date(System.currentTimeMillis()), emetteur);
+
+                    // Ajouter la notification à la liste
                     notifications.add(notification);
                 }
-                // Archiver ou supprimer le fichier après traitement
-                file.delete();
-            } catch (IOException e) {
-                afficherMessageErreur("Erreur lors de la lecture du fichier : " + file.getName());
+
+                // Vérifier le nombre de notifications chargées
+                System.out.println("Notifications chargées : " + notifications.size());
+            } else {
+                System.out.println("Le fichier JSON n'est pas dans le bon format.");
             }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur de lecture du fichier JSON.");
         }
     }
 
-    /**
-     * Parse une notification à partir d'une chaîne JSON.
-     */
-    private Notification parseNotificationFromJson(String jsonContent) {
-        try {
-            // Simple parsing, assuming JSON format: {"type":"PLANTATION","arbre":{"id":1,"nom":"Chêne"},"date":"2023-01-01"}
-            String type = extractJsonValue(jsonContent, "type");
-            String arbre = extractJsonValue(jsonContent, "arbre");
-            String date = extractJsonValue(jsonContent, "date");
+    // Mapper un noeud JSON à un Arbre
+    private Arbre mapJsonToArbre(JsonNode arbreNode) {
+        // Mapper les informations de l'arbre ici, selon votre structure JSON
+        int id = arbreNode.get("id").asInt();
+        String adresseAcces = arbreNode.get("adresseAcces").asText();
+        String nomCommun = arbreNode.get("nomCommun").asText();
+        String genre = arbreNode.get("genre").asText();
+        String espece = arbreNode.get("espece").asText();
+        double circonference = arbreNode.get("circonference").asDouble();
+        double hauteur = arbreNode.get("hauteur").asDouble();
+        String stade = arbreNode.get("stadeDeDeveloppement").asText();
+        boolean classificationRemarquable = arbreNode.get("classificationRemarquable").asBoolean();
+        JsonNode coordonneesNode = arbreNode.get("coordonneesGPS");
+        Pair<Double, Double> coordonneesGPS = new Pair<>(coordonneesNode.get("key").asDouble(), coordonneesNode.get("value").asDouble());
 
-            Notification.Evenement evenement = Notification.Evenement.valueOf(type);
-            Arbre arbreObj = parseArbreFromJson(arbre);
-            Date dateObj = new Date(date); // Attention: Format simplifié ici
-
-            return new Notification(evenement, arbreObj, dateObj);
-        } catch (Exception e) {
-            afficherMessageErreur("Erreur de parsing JSON : " + e.getMessage());
-            return null;
-        }
+        // Créer un nouvel objet Arbre avec les informations extraites
+        return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur, stade, classificationRemarquable, coordonneesGPS);
     }
 
-    /**
-     * Extrait une valeur d'une chaîne JSON en fonction de la clé donnée.
-     */
-    private String extractJsonValue(String json, String key) {
-        int startIndex = json.indexOf("\"" + key + "\":") + key.length() + 3;
-        if (startIndex == -1) return null;
-
-        int endIndex = json.indexOf(",", startIndex);
-        if (endIndex == -1) endIndex = json.indexOf("}", startIndex);
-
-        return json.substring(startIndex, endIndex).replace("\"", "").trim();
-    }
-
-    /**
-     * Parse un objet Arbre à partir d'une chaîne JSON simplifiée.
-     */
-    private Arbre parseArbreFromJson(String json) {
-        // Parse les propriétés spécifiques de l'Arbre depuis une chaîne JSON.
-        try {
-            // Exemple de JSON attendu pour un arbre :
-            // {"id":1,"adresseAcces":"123 Rue des Chênes","nomCommun":"Chêne","genre":"Quercus",
-            // "espece":"robur","circonference":3.5,"hauteur":12.5,"stadeDeDeveloppement":"ADULTE",
-            // "classificationRemarquable":true,"coordonneesGPS":[48.8566,2.3522]}
-
-            int id = Integer.parseInt(extractJsonValue(json, "id"));
-            String adresseAcces = extractJsonValue(json, "adresseAcces");
-            String nomCommun = extractJsonValue(json, "nomCommun");
-            String genre = extractJsonValue(json, "genre");
-            String espece = extractJsonValue(json, "espece");
-            double circonference = Double.parseDouble(extractJsonValue(json, "circonference"));
-            double hauteur = Double.parseDouble(extractJsonValue(json, "hauteur"));
-            String stadeDeDeveloppement = extractJsonValue(json, "stadeDeDeveloppement");
-            boolean classificationRemarquable = Boolean.parseBoolean(extractJsonValue(json, "classificationRemarquable"));
-
-            // Extraction des coordonnées GPS
-            String coords = extractJsonValue(json, "coordonneesGPS");
-            coords = coords.replace("[", "").replace("]", ""); // Supprimer les crochets
-            String[] coordonnees = coords.split(",");
-            double latitude = Double.parseDouble(coordonnees[0].trim());
-            double longitude = Double.parseDouble(coordonnees[1].trim());
-
-            return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur,
-                    stadeDeDeveloppement, classificationRemarquable, new Pair<>(latitude, longitude));
-        } catch (Exception e) {
-            afficherMessageErreur("Erreur de parsing d'un arbre dans le JSON : " + e.getMessage());
-            return null;
-        }
-    }
-
-
-    /**
-     * Filtre les notifications en fonction du filtre sélectionné.
-     */
-    private void filtrerNotifications() {
-        String filtreSelectionne = filtre.getValue();
+    // Filtrer les notifications en fonction du type et des critères de recherche
+    private void filterNotifications() {
+        String selectedFilter = filtre.getSelectionModel().getSelectedItem();
         ObservableList<Notification> filteredList = FXCollections.observableArrayList();
 
         for (Notification notification : notifications) {
-            if (filtreSelectionne.equals("Tous") || notification.typeNotification().toString().contains(filtreSelectionne)) {
+            boolean matchesFilter = false;
+
+            switch (selectedFilter) {
+                case "Tous":
+                    matchesFilter = true;
+                    break;
+                case "Emetteur":
+                    matchesFilter = notification.getEmetteur().contains(TextSearch.getText());
+                    break;
+                case "Type":
+                    matchesFilter = notification.typeNotification().toString().contains(TextSearch.getText());
+                    break;
+                case "Arbre concerné":
+                    // Comparer l'ID de l'arbre en tant que chaîne avec l'entrée utilisateur
+                    String arbreIdString = String.valueOf(notification.arbre().getId()).trim();
+                    matchesFilter = arbreIdString.contains(TextSearch.getText().trim());
+                    break;
+                case "Date":
+                    // Filtrage basé sur la date
+                    matchesFilter = new SimpleDateFormat("dd/MM/yyyy").format(notification.dateNotification()).contains(TextSearch.getText());
+                    break;
+            }
+
+            if (matchesFilter) {
                 filteredList.add(notification);
             }
         }
 
+        // Mettre à jour la TableView avec la liste filtrée
         tabNoti.setItems(filteredList);
     }
 
-    /**
-     * Réinitialise le filtre et affiche toutes les notifications.
-     */
-    private void resetFiltre() {
-        tabNoti.setItems(notifications);
-        filtre.getSelectionModel().select("Tous");
-    }
 
-    /**
-     * Supprime la notification sélectionnée de la liste.
-     */
-    private void supprimerNotificationSelectionnee() {
-        Notification selectedNotification = tabNoti.getSelectionModel().getSelectedItem();
-        if (selectedNotification != null) {
-            notifications.remove(selectedNotification);
-        } else {
-            afficherMessageErreur("Veuillez sélectionner une notification à supprimer.");
-        }
-    }
-
-    /**
-     * Affiche des détails spécifiques pour les notifications de type plantation.
-     */
-    private void afficherDetailsPlantation() {
-        Notification selectedNotification = tabNoti.getSelectionModel().getSelectedItem();
-        if (selectedNotification != null && selectedNotification.typeNotification() == Notification.Evenement.PLANTATION) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Détails de la Plantation");
-            alert.setHeaderText("Détails de la notification de plantation");
-            alert.setContentText("Arbre : " + selectedNotification.arbre().toString());
-            alert.showAndWait();
-        } else {
-            afficherMessageErreur("Veuillez sélectionner une notification de type plantation.");
-        }
-    }
-
-    /**
-     * Affiche un message d'erreur.
-     */
-    private void afficherMessageErreur(String message) {
+    // Afficher une alerte d'erreur
+    private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
@@ -261,14 +213,16 @@ public class NotificationView {
         alert.showAndWait();
     }
 
-    /**
-     * Affiche un message d'information.
-     */
-    private void afficherMessageInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    // Méthode pour réinitialiser les filtres et réafficher toutes les notifications
+    private void resetFilters() {
+        // Vider le champ de texte de recherche
+        TextSearch.clear();
+
+        // Réinitialiser la ComboBox pour afficher "Tous"
+        filtre.getSelectionModel().select("Tous");
+
+        // Réafficher toutes les notifications
+        tabNoti.setItems(notifications);
+
     }
 }

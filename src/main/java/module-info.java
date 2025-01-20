@@ -16,7 +16,8 @@ module com.applications {
     exports com.applications;
 
     opens com.applications to javafx.base;
-    requires java.desktop; // Ce module englobe généralement les fonctionnalités nécessaires
+    requires java.desktop;
+    requires java.sql; // Ce module englobe généralement les fonctionnalités nécessaires
     exports com.applications.Vert to javafx.graphics;
     opens com.applications.Vert to javafx.fxml;
 

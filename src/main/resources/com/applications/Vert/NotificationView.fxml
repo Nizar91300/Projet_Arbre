@@ -76,12 +76,12 @@
                 </TableView>
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button fx:id="btnPlanteNotifi" mnemonicParsing="false" text="Plantation d'un nouvel arbre">
+                        <Button fx:id="btnAccepter" mnemonicParsing="false" text="Accepter demande">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnSup" mnemonicParsing="false" text="Supprimer">
+                        <Button fx:id="btnSup" mnemonicParsing="false" text="Refuser">
                             <font>
                                 <Font size="14.0" />
                             </font>

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 // classe qui represente un message de nomination par une association
-class MessageNomination {
+public class MessageNomination {
     @JsonProperty
     private String Emetteur;
     @JsonProperty
@@ -17,5 +17,17 @@ class MessageNomination {
         this.Emetteur = "AssociationVert";
         this.typeMessage = "nomination";
         this.arbres = arbres;
+    }
+    // Getters
+    public String getEmetteur() {
+        return Emetteur;
+    }
+
+    public String getTypeMessage() {
+        return typeMessage;
+    }
+
+    public List<Arbre> getArbres() {
+        return arbres;
     }
 }
