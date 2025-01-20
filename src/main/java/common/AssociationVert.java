@@ -2,18 +2,18 @@ package common;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.virement.Recepteur;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class AssociationVert extends Association {
+public final class AssociationVert extends Association  {
 
     private static AssociationVert instance = null;
 
     private Membre president;
-    private double cotisation;
     private Set<Membre> membres;
     private List<Notification> notifications;
     private Set<Vote> votes;
@@ -21,19 +21,25 @@ public final class AssociationVert extends Association {
     private List<Visite> visitesEffectuees;
     private List<Visite> visitesPlanifiees;
 
-    //private Budget budget;
+    static final int NB_MAX_VISITES = 10;      // nombre maximum de visites qui peuvent etre remunerees
+
+    static final double DEFRAIEMENT_VISITE = 5;
+
+    public static final double COTISATION = 50;
+
+    private static BudgetAssociation budgetAssociation;
     //private List<Donateur> donateurs;
     //private List<Facture> factures;
 
     private AssociationVert() {
         super("Association Vert");
-        cotisation = 20.;
         notifications = new ArrayList<Notification>();
         membres = new HashSet<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
         visitesEffectuees = new ArrayList<>();
         visitesPlanifiees = new ArrayList<>();
+        budgetAssociation = new BudgetAssociation(1000);      // budget initial de 1000 euros
 
         loadMembers();
         loadVotes();
@@ -43,6 +49,10 @@ public final class AssociationVert extends Association {
     public static AssociationVert get() {
         if(instance == null) {instance = new AssociationVert();}
         return instance;
+    }
+
+    public static Recepteur getRecepteur() {
+        return budgetAssociation;
     }
 
     // Charger les membres de test stockés dans le fichier
@@ -65,6 +75,15 @@ public final class AssociationVert extends Association {
             System.out.println("Membres chargés avec succès : " + membres.size());
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
+        }
+
+        // cotiser pour un certain nombre de membres
+        int i = 0;
+        for(Membre m : membres) {
+            if(i < 6) {
+                m.cotiser();
+                i++;
+            }
         }
     }
 
@@ -173,10 +192,12 @@ public final class AssociationVert extends Association {
 
         // verifier si quelqu'un d'autre n'a pas deja planifié une visite
         for(Visite v : visitesPlanifiees) {
-            if(v.arbre().equals(a))  return;
+            if(v.arbre().equals(a))  return ;
         }
+        Visite v = new Visite(m,a,date,null);
+        visitesPlanifiees.add(v);
 
-        visitesPlanifiees.add(new Visite(m,a,date,""));
+        m.addVisite(v);
     }
 
     // rendre compte d'une visite
@@ -186,12 +207,14 @@ public final class AssociationVert extends Association {
                 .findFirst()  // Récupérer la première correspondance
                 .ifPresent(v -> {
                     visitesPlanifiees.remove(v);  // Retirer la visite de la liste des visites planifiées
-                    visitesEffectuees.add(v.withCompteRendu(compteRendu));  // Ajouter la visite effectuée avec le compte rendu
+                    Visite newVisite = v.withCompteRendu(compteRendu);  // Créer une nouvelle visite avec le compte rendu
+                    visitesEffectuees.add(newVisite);  // Ajouter la visite effectuée avec le compte rendu
+                    m.changeVisite(v, newVisite);
                 });
+
+        // defrayer le membre si le nombre de visites effectuees
+        budgetAssociation.defrayerVisite(m);
     }
-
-
-
 
 
 
@@ -233,10 +256,25 @@ public final class AssociationVert extends Association {
         }
     }
 
+    private void revocationMembresNonCotises() {
+        List<Cotisation> cotisations = budgetAssociation.getCotisationsRecues();
+
+        for(Membre m : membres) {
+            if(cotisations.stream().noneMatch(c -> c.membre().equals(m))) {
+                supprimerMembre(m);
+            }
+        }
+    }
+
     // effectuer les actions liés à la fin d'un exercice budgétaire
     public void finExercice() {
-        envoyerClassement();
+        // revoquer les membres qui n'ont pas cotisé
+        revocationMembresNonCotises();
 
+        // envoyer le classement des arbres
+        envoyerClassement();
+        // genere le rapport d'activite
+        budgetAssociation.generateRapport();
     }
 
 

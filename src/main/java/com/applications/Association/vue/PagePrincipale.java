@@ -31,8 +31,7 @@ public class PagePrincipale extends Application {
     public static void main(String[] args) {
 
         EntityManager.get();
-        AssociationVert.get().ajouterMembre(new Membre("Jean", "Dupont", new Date()));
-        AssociationVert.get().envoyerClassement();
+        AssociationVert.get();
         // Lancer l'application JavaFX
         launch(args);
     }
