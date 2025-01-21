@@ -2,7 +2,7 @@ package common;
 
 import java.util.Date;
 
-public class Personne implements ServiceVertObserver, DonateurVert {
+public class Personne implements ServiceVertObserver {
 
     private final String nom;
     private final String prenom;

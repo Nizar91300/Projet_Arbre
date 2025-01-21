@@ -8,6 +8,7 @@ import common.virement.Virement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class BudgetAssociation implements Emetteur, Recepteur {
     private double solde;
@@ -15,9 +16,15 @@ public class BudgetAssociation implements Emetteur, Recepteur {
     private List<Virement> depenses;
     private List<Cotisation> cotisationsRecues;
     private List<Donateur> donsRecus;
+    private List<Facture> factures;
     private List<Facture> facturesPaye;
     private List<Virement> demandesRecus;
     private String dernierRapport;
+    // liste des virements refusés à effectuer (solde insuffisant par exemple)
+    private List<Virement> virementsRefusesAEffectuer;
+
+    // liste des recepteur auquel on peut demander une subvention/don
+    private List<Emetteur> emetteursSubventionDon;
 
     public BudgetAssociation(double budgetInitial) {
         this.solde = budgetInitial;
@@ -25,10 +32,25 @@ public class BudgetAssociation implements Emetteur, Recepteur {
         this.depenses = new ArrayList<>();
         this.cotisationsRecues = new ArrayList<>();
         this.demandesRecus = new ArrayList<>();
+        this.virementsRefusesAEffectuer = new ArrayList<>();
+        this.emetteursSubventionDon = new ArrayList<>();
+        this.facturesPaye = new ArrayList<>();
+        this.donsRecus = new ArrayList<>();
+        this.factures = new ArrayList<>();
     }
 
     public List<Cotisation> getCotisationsRecues() {
         return cotisationsRecues;
+    }
+    public List<Emetteur> getEmetteursSubventionDon() {
+        return emetteursSubventionDon;
+    }
+
+    public void ajouterEmetteurSubventionDon(Emetteur e){
+        emetteursSubventionDon.add(e);
+    }
+    public void retirerEmetteurSubventionDon(Emetteur e){
+        emetteursSubventionDon.remove(e);
     }
 
     public void crediter(double montant) {
@@ -103,25 +125,43 @@ public class BudgetAssociation implements Emetteur, Recepteur {
     @Override
     public ResultatVirement recevoirVirement(Virement v) {
         String description = "";
+        boolean accepte = true;
 
-        if( v.type() == Virement.TypeVirement.DEMANDE_SUBVENTION || v.type() == Virement.TypeVirement.DEMANDE_DONS){
-            demandesRecus.add(v);
-            description = "Demande reçue";
-        }
-
-        if( v.type() == Virement.TypeVirement.COTISATION){
-            if(v.montant() != AssociationVert.COTISATION) {
-                return new ResultatVirement(false, "Montant de la cotisation incorrect", v);
+        switch (v.type()){
+            case DON ->{
+                description = "Don reçu";
+                // traiter pour le recepteur la validation du virement
+                solde += v.montant();
             }
-            ajouterCotisation((Membre) v.emetteur(), v);        // ajouter la cotisation
-            description = "Cotisation reçue";
-        }
+            case DEFRAIEMENT ->{
+                description = "Impossible de recevoir un defraiement";
+                accepte = false;
+            }
+            case SUBVENTION -> {
+                description = "Subvention reçue";
+                solde += v.montant();
+            }
 
-        // traiter pour le recepteur la validation du virement
-        solde += v.montant();
+            case PAIEMENT_FACTURE -> {
+                description = "Impossible de recevoir un paiement de facture";
+                accepte = false;
+            }
+            case DEMANDE_SUBVENTION, DEMANDE_DONS -> {
+                demandesRecus.add(v);
+                description = "Demande reçue";
+            }
+            case COTISATION -> {
+                if(v.montant() != AssociationVert.COTISATION) {
+                    return new ResultatVirement(false, "Montant de la cotisation incorrect", v);
+                }
+                ajouterCotisation((Membre) v.emetteur(), v);        // ajouter la cotisation
+                description = "Cotisation reçue";
+                solde += v.montant();
+            }
+        }
 
         // prevenir l'emetteur du resultat
-        return new ResultatVirement(true, description, v);
+        return new ResultatVirement(accepte, description, v);
     }
 
 
@@ -162,9 +202,46 @@ public class BudgetAssociation implements Emetteur, Recepteur {
         if (m.getNbVisites() > AssociationVert.NB_MAX_VISITES)      return;
 
         // defrayement
-        Virement v = preparerVirement(Virement.TypeVirement.DEFRAIEMENT, m, AssociationVert.DEFRAIEMENT_VISITE, "Défraiement de la visite");
-        transfererSomme(AssociationVert.DEFRAIEMENT_VISITE);
-        var res = m.recevoirVirement(v);
+        try {
+            Virement v = preparerVirement(Virement.TypeVirement.DEFRAIEMENT, m, AssociationVert.DEFRAIEMENT_VISITE, "Défraiement de la visite");
+            transfererSomme(AssociationVert.DEFRAIEMENT_VISITE);
+            var res = m.recevoirVirement(v);
+            traiterResultat(res);       // traiter le resultat du virement
+        }catch (IllegalArgumentException e) {
+            // ajouter le virement refusé à la liste des virements refusés à effectuer suite a une erreur de solde par exemple
+            virementsRefusesAEffectuer.add(new Virement(Virement.TypeVirement.DEFRAIEMENT, this, m, AssociationVert.DEFRAIEMENT_VISITE, "Défraiement de la visite", null));
+        }
+    }
+
+    public void ajouterFacture(Facture f) {
+        factures.add(f);
+    }
+
+    // payer une facture
+    public void payerFacture(Facture f) {
+        if (!factures.contains(f))      return;
+
+        // payer la facture
+        Recepteur r = f.recepteur();
+        Virement v = preparerVirement(Virement.TypeVirement.PAIEMENT_FACTURE, r, f.montant() , "Paiement de la facture");
+        transfererSomme(AssociationVert.COTISATION);
+        var res = r.recevoirVirement(v);
         traiterResultat(res);       // traiter le resultat du virement
+        if( res.accepte() ){
+            facturesPaye.add(f);
+            factures.remove(f);
+        }
+    }
+
+    // demander des subventions/dons
+    public void demanderSubventionsDons() {
+        Random rand = new Random();
+        for (Emetteur e : emetteursSubventionDon) {
+            if( e instanceof Recepteur r){
+                Virement v = preparerVirement(Virement.TypeVirement.DEMANDE_DONS, r, 0 , "Demande de subvention");
+                var res = r.recevoirVirement(v);
+                traiterResultat(res);       // traiter le resultat du virement
+            }
+        }
     }
 }

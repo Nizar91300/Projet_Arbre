@@ -144,21 +144,36 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     @Override
     public ResultatVirement recevoirVirement(Virement v) {
         String description = "";
+        boolean accepte = true;
 
-        if( v.type() == Virement.TypeVirement.DEMANDE_SUBVENTION || v.type() == Virement.TypeVirement.DEMANDE_DONS){
-            demandesRecus.add(v);
-            description = "Demande reçue";
+        switch (v.type()){
+            case DON ->{
+                description = "Don reçu";
+                // traiter pour le recepteur la validation du virement
+                solde += v.montant();
+            }
+            case DEFRAIEMENT ->{
+                description = "Defraiement reçu";
+                // traiter pour le recepteur la validation du virement
+                solde += v.montant();
+            }
+
+            case PAIEMENT_FACTURE, SUBVENTION -> {
+                description = "Impossible de recevoir un paiement ou une subvention";
+                accepte = false;
+            }
+            case DEMANDE_SUBVENTION, DEMANDE_DONS -> {
+                demandesRecus.add(v);
+                description = "Demande reçue";
+            }
+            case COTISATION -> {
+                // un membre ne peut pas recevoir de cotisation
+                description = "Un membre ne peut pas recevoir de cotisation";
+                accepte = false;
+            }
         }
-
-        if( v.type() == Virement.TypeVirement.COTISATION){
-            // un membre ne peut pas recevoir de cotisation
-            return new ResultatVirement(false, "Un membre ne peut pas recevoir de cotisation", v);
-        }
-
-        // traiter pour le recepteur la validation du virement
-        solde += v.montant();
 
         // prevenir l'emetteur du resultat
-        return new ResultatVirement(true, description, v);
+        return new ResultatVirement(accepte, description, v);
     }
 }
