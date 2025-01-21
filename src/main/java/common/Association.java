@@ -1,6 +1,7 @@
 package common;
 
-public class Association implements ServiceVertObserver, DonateurVert {
+
+public class Association implements ServiceVertObserver{
     public final String nom;
 
     public Association(String nom) {
