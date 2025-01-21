@@ -2,6 +2,7 @@ package common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
 import java.util.List;
 
 // classe qui represente un message de nomination par une association
@@ -29,5 +30,9 @@ public class MessageNomination {
 
     public List<Arbre> getArbres() {
         return arbres;
+    }
+
+    public Date getdate(){
+        return new Date();
     }
 }

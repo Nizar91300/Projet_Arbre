@@ -2,10 +2,13 @@ package com.applications.Vert;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
+import common.MessageNomination;
 import common.Notification;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,16 +29,16 @@ import java.util.List;
 public class NotificationView {
 
     @FXML
-    private TableView<Notification> tabNoti;
+    private TableView<MessageNomination> tabNoti;
 
     @FXML
-    private TableColumn<Notification, String> colEm;
+    private TableColumn<MessageNomination, String> colEm;
     @FXML
-    private TableColumn<Notification, String> colTy;
+    private TableColumn<MessageNomination, String> colTy;
     @FXML
-    private TableColumn<Notification, Arbre> colArb;
+    private TableColumn<MessageNomination, List<Arbre>> colArb;
     @FXML
-    private TableColumn<Notification, String> colDate;
+    private TableColumn<MessageNomination, Date> colDate;
 
     @FXML
     private ComboBox<String> filtre;
@@ -46,7 +49,7 @@ public class NotificationView {
     @FXML
     private Button btnBackCons, btnSearch, btnReset, btnSup, btnAccepter;
 
-    private final ObservableList<Notification> notifications = FXCollections.observableArrayList();
+    private final ObservableList<MessageNomination> messages = FXCollections.observableArrayList();
     private final File inboxDirectory = new File("inbox");
 
     public static void load() {
@@ -64,23 +67,26 @@ public class NotificationView {
 
     @FXML
     public void initialize() {
+
         // Configuration des colonnes de la TableView
         colEm.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
         colTy.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().typeNotification().toString()));
+                new SimpleStringProperty(cellData.getValue().getTypeMessage()));
         colArb.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().arbre()));  // Utilisation de SimpleObjectProperty<Arbre>
+                new SimpleObjectProperty<>(cellData.getValue().getArbres()));  // Utilisation de SimpleObjectProperty<Arbre>
         colDate.setCellValueFactory(cellData ->
-                new SimpleStringProperty(new SimpleDateFormat("dd/MM/yyyy").format(cellData.getValue().dateNotification())));
-
-        tabNoti.setItems(notifications);
+                new SimpleObjectProperty<>(cellData.getValue().getdate())
+        );
+        tabNoti.setItems(messages);
 
         // Ajouter des filtres
         filtre.getItems().addAll("Tous", "Emetteur", "Type", "Arbre concerné", "Date");
         filtre.getSelectionModel().select("Tous");
 
-        // Charger les notifications à partir du fichier JSON
-        loadNotificationsFromFile("inbox/espaces_verts/nomination_arbres.json");
+        //Methode pour load tous nos fichiers
+        loadtouslesfichiers();
+
+
 
         // Action du bouton "Retour"
         btnBackCons.setOnAction(event -> ConsultationView.load());
@@ -95,9 +101,11 @@ public class NotificationView {
 
         // Action du bouton "Reset"
         btnReset.setOnAction(event -> resetFilters());
+
+        btnSup.setOnAction(event -> supprimerNotification());
     }
 
-    private void loadNotificationsFromFile(String filePath) {
+    private void loadMessagesFromFile(String filePath) {
         try {
             // Lire le fichier JSON et désérialiser les notifications
             ObjectMapper objectMapper = new ObjectMapper();
@@ -119,23 +127,24 @@ public class NotificationView {
                 JsonNode arbresNode = rootNode.get("arbres");
                 System.out.println("Nombre d'arbres: " + arbresNode.size());
 
+
                 // Mapper chaque arbre et créer une notification
                 for (JsonNode arbreNode : arbresNode) {
                     // Mapper l'arbre
                     Arbre arbre = mapJsonToArbre(arbreNode);
-
-                    // Créer l'événement à partir du typeMessage
-                    Notification.Evenement evenement = typeMessage.equals("nomination") ? Notification.Evenement.CLASSIFICATION : Notification.Evenement.PLANTATION;
+                    List<Arbre> arbres = new ArrayList<>();
+                    arbres.add(arbre);
 
                     // Créer une notification pour chaque arbre
-                    Notification notification = new Notification(evenement, arbre, new java.sql.Date(System.currentTimeMillis()), emetteur);
+                    MessageNomination notification = new MessageNomination( arbres);
+
 
                     // Ajouter la notification à la liste
-                    notifications.add(notification);
+                    messages.add(notification);
                 }
 
                 // Vérifier le nombre de notifications chargées
-                System.out.println("Notifications chargées : " + notifications.size());
+                System.out.println("messages chargées : " + messages.size());
             } else {
                 System.out.println("Le fichier JSON n'est pas dans le bon format.");
             }
@@ -165,43 +174,7 @@ public class NotificationView {
         return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur, stade, classificationRemarquable, coordonneesGPS);
     }
 
-    // Filtrer les notifications en fonction du type et des critères de recherche
-    private void filterNotifications() {
-        String selectedFilter = filtre.getSelectionModel().getSelectedItem();
-        ObservableList<Notification> filteredList = FXCollections.observableArrayList();
 
-        for (Notification notification : notifications) {
-            boolean matchesFilter = false;
-
-            switch (selectedFilter) {
-                case "Tous":
-                    matchesFilter = true;
-                    break;
-                case "Emetteur":
-                    matchesFilter = notification.getEmetteur().contains(TextSearch.getText());
-                    break;
-                case "Type":
-                    matchesFilter = notification.typeNotification().toString().contains(TextSearch.getText());
-                    break;
-                case "Arbre concerné":
-                    // Comparer l'ID de l'arbre en tant que chaîne avec l'entrée utilisateur
-                    String arbreIdString = String.valueOf(notification.arbre().getId()).trim();
-                    matchesFilter = arbreIdString.contains(TextSearch.getText().trim());
-                    break;
-                case "Date":
-                    // Filtrage basé sur la date
-                    matchesFilter = new SimpleDateFormat("dd/MM/yyyy").format(notification.dateNotification()).contains(TextSearch.getText());
-                    break;
-            }
-
-            if (matchesFilter) {
-                filteredList.add(notification);
-            }
-        }
-
-        // Mettre à jour la TableView avec la liste filtrée
-        tabNoti.setItems(filteredList);
-    }
 
 
     // Afficher une alerte d'erreur
@@ -222,7 +195,132 @@ public class NotificationView {
         filtre.getSelectionModel().select("Tous");
 
         // Réafficher toutes les notifications
-        tabNoti.setItems(notifications);
+        tabNoti.setItems(messages);
 
     }
+
+    private void loadtouslesfichiers() {
+        // Chemin du dossier à parcourir
+        String folderPath = "inbox/espaces_verts";
+
+        // Liste pour stocker les noms de fichiers
+        List<String> fileNames = new ArrayList<>();
+
+        // Charger les fichiers dans la liste
+        File folder = new File(folderPath);
+        if (folder.exists() && folder.isDirectory()) {
+            for (File file : folder.listFiles()) {
+                if (file.isFile()) {
+                    fileNames.add(file.getName());
+                }
+            }
+        } else {
+            System.out.println("Le chemin spécifié n'est pas un dossier ou n'existe pas.");
+            return;
+        }
+
+        // Boucle pour charger chaque fichier
+        for (String fileName : fileNames) {
+            System.out.println("Chargement du fichier : " + fileName);
+            // Ici, ajoutez votre logique pour "charger" le fichier
+            loadMessagesFromFile(folderPath + File.separator + fileName);
+        }
+    }
+
+    private void filterNotifications() {
+        String selectedFilter = filtre.getSelectionModel().getSelectedItem();
+        ObservableList<MessageNomination> filteredList = FXCollections.observableArrayList();
+
+        for (MessageNomination message : messages) {
+            boolean matchesFilter = false;
+
+            switch (selectedFilter) {
+                case "Tous":
+                    matchesFilter = true;
+                    break;
+                case "Emetteur":
+                    matchesFilter = message.getEmetteur().contains(TextSearch.getText());
+                    break;
+                case "Type":
+                    matchesFilter = message.getTypeMessage().contains(TextSearch.getText());
+                    break;
+                case "Arbre concerné":
+                    // Comparer l'ID de l'arbre en tant que chaîne avec l'entrée utilisateur
+                    String arbreIdString = String.valueOf(message.getArbres().get(0).getId()).trim();
+                    matchesFilter = arbreIdString.contains(TextSearch.getText().trim());
+                    break;
+                case "Date":
+                    // Filtrage basé sur la date
+                    String dateString = String.valueOf(message.getdate()).trim();
+                    matchesFilter = dateString.contains(TextSearch.getText());
+                    break;
+            }
+
+            if (matchesFilter) {
+                filteredList.add(message);
+            }
+        }
+
+        // Mettre à jour la TableView avec la liste filtrée
+        tabNoti.setItems(filteredList);
+    }
+
+
+    public void supprimerNotification() {
+        MessageNomination selectedMsg = tabNoti.getSelectionModel().getSelectedItem();
+        // Supprimer la notification de la liste
+        messages.remove(selectedMsg);
+
+        // Reconstruire les fichiers JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        File folder = new File("inbox/espaces_verts");
+
+        try {
+            for (File file : folder.listFiles()) {
+                if (file.isFile()) {
+                    // Lire le fichier existant
+                    JsonNode rootNode = objectMapper.readTree(file);
+
+                    // Supprimer l'arbre correspondant
+                    if (rootNode.isObject()) {
+                        ObjectNode objectNode = (ObjectNode) rootNode;
+                        JsonNode arbresNode = objectNode.get("arbres");
+
+                        // Créer une nouvelle liste d'arbres sans l'arbre à supprimer
+                        List<JsonNode> arbresMisAJour = new ArrayList<>();
+                        for (JsonNode arbreNode : arbresNode) {
+                            int id = arbreNode.get("id").asInt();
+                            if (!contientArbre(selectedMsg, id)) {
+                                arbresMisAJour.add(arbreNode);
+                            }
+                        }
+
+                        // Remplacer ou supprimer le fichier selon le résultat
+                        if (arbresMisAJour.isEmpty()) {
+                            // Supprimer le fichier si la liste d'arbres est vide
+                            if (file.delete()) {
+                                System.out.println("Fichier supprimé : " + file.getName());
+                            } else {
+                                System.out.println("Échec de la suppression du fichier : " + file.getName());
+                            }
+                        } else {
+                            // Sinon, sauvegarder le fichier JSON mis à jour
+                            objectNode.set("arbres", objectMapper.valueToTree(arbresMisAJour));
+                            objectMapper.writeValue(file, objectNode);
+                        }
+                    }
+                }
+            }
+            System.out.println("Notification supprimée et fichiers JSON mis à jour.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur lors de la mise à jour des fichiers JSON.");
+        }
+    }
+
+
+    private boolean contientArbre(MessageNomination notification, int id) {
+        return notification.getArbres().stream().anyMatch(arbre -> arbre.getId() == id);
+    }
+
 }
