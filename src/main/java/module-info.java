@@ -12,6 +12,9 @@ module com.applications {
     // Exporte 'common' pour un accès public à Jackson
     exports common to com.fasterxml.jackson.databind;
 
+     exports com.applications.Membres to javafx.graphics, javafx.fxml;
+    opens com.applications.Membres to  javafx.fxml;
+
     // Exporte le package principal
     exports com.applications;
 

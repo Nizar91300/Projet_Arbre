@@ -9,7 +9,7 @@
    <children>
       <ImageView fitHeight="747.0" fitWidth="1133.0" layoutY="-27.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@vue1.png" />
+            <Image url="@../Membres/vue1.png" />
          </image>
       </ImageView>
    </children>

@@ -1,6 +1,19 @@
 [ {
-  "nom" : "Dupont",
-  "prenom" : "Jean",
-  "pseudo" : "jdupont",
-  "motDePasse" : "password123"
+  "nom" : "Hadjaz",
+  "prenom" : "Rayane",
+  "pseudo" : "leR93",
+  "motDePasse" : "Password123",
+  "dateNaissance" : 1020463200000,
+  "adresse" : "2 Rue Sophie Germain",
+  "dateDerniereInscription" : 1737455424629,
+  "cotisationsAnnuelles" : [ ]
+}, {
+  "nom" : "Aissaoua",
+  "prenom" : "Yones",
+  "pseudo" : "LeA77",
+  "motDePasse" : "password1",
+  "dateNaissance" : 1070233200000,
+  "adresse" : "213 rue bekeh",
+  "dateDerniereInscription" : 1737466785163,
+  "cotisationsAnnuelles" : [ ]
 } ]
