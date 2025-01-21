@@ -68,7 +68,7 @@ public class NotificationView {
         // Configuration des colonnes de la TableView
         colEm.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
         colTy.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getTypeMessage()));
+                new SimpleStringProperty(cellData.getValue().getTypeNotification()));
         colArb.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getArbres()));  // Utilisation de SimpleObjectProperty<Arbre>
         colDate.setCellValueFactory(cellData ->
@@ -239,7 +239,7 @@ public class NotificationView {
                     matchesFilter = message.getEmetteur().contains(TextSearch.getText());
                     break;
                 case "Type":
-                    matchesFilter = message.getTypeMessage().contains(TextSearch.getText());
+                    matchesFilter = message.getTypeNotification().contains(TextSearch.getText());
                     break;
                 case "Arbre concerné":
                     // Comparer l'ID de l'arbre en tant que chaîne avec l'entrée utilisateur
