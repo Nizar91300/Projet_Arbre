@@ -24,9 +24,9 @@ public class Arbre implements Comparable<Arbre> {
     private StadeDeveloppement stadeDeDeveloppement;
     private boolean classificationRemarquable;
     private Date dateClassificationRemarquable;
-    private final Pair<Double, Double> coordonneesGPS;
+    private final Paire<Double, Double> coordonneesGPS;
 
-    public Arbre(int id, String adresseAcces, String nomCommun, String genre, String espece, double circonference, double hauteur, String stadeDeDeveloppement, boolean classificationRemarquable, Pair<Double, Double> coordonneesGPS) {
+    public Arbre(int id, String adresseAcces, String nomCommun, String genre, String espece, double circonference, double hauteur, String stadeDeDeveloppement, boolean classificationRemarquable, Paire<Double, Double> coordonneesGPS) {
         this.id = id;
         this.adresseAcces = adresseAcces;
         this.nomCommun = nomCommun;
@@ -39,6 +39,20 @@ public class Arbre implements Comparable<Arbre> {
         this.dateClassificationRemarquable = null;
         this.coordonneesGPS = coordonneesGPS;
         arbres.add(this);
+    }
+
+    public Arbre(){
+        this.id = 0;
+        this.adresseAcces = "";
+        this.nomCommun = "";
+        this.genre = "";
+        this.espece = "";
+        this.circonference = 0;
+        this.hauteur = 0;
+        this.stadeDeDeveloppement = StadeDeveloppement.UNKOWN;
+        this.classificationRemarquable = false;
+        this.dateClassificationRemarquable = null;
+        this.coordonneesGPS = new Paire<>(0.0,0.0);
     }
 
     @Override
@@ -120,7 +134,7 @@ public class Arbre implements Comparable<Arbre> {
     }
 
     // Getter pour les coordonnées GPS
-    public Pair<Double, Double> getCoordonneesGPS() {
+    public Paire<Double, Double> getCoordonneesGPS() {
         return coordonneesGPS;
     }
     @Override

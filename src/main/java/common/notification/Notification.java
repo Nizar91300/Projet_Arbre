@@ -21,4 +21,8 @@ public class Notification{
         this.dateNotification = dateNotification;
     }
 
+    public Date getDateNotification() {
+        return dateNotification;
+    }
+
 }

@@ -48,6 +48,7 @@ public final class AssociationVert extends Association  {
         loadVisites();
         loadDonateurs();
         loadFactures();
+        envoyerClassement();
     }
 
     public static AssociationVert get() {

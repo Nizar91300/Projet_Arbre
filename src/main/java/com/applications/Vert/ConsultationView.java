@@ -3,6 +3,7 @@ package com.applications.Vert;
 
 import common.Arbre;
 import common.EntityManager;
+import common.Paire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -132,7 +133,7 @@ public class ConsultationView {
 
         // Colonne coordonneesGPS : utiliser un CellFactory pour afficher la paire sous forme de String
         colGPS.setCellValueFactory(cellData -> {
-            Pair<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
+            Paire<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
             return new javafx.beans.property.SimpleStringProperty(gpsCoord.getKey() + ", " + gpsCoord.getValue());
         });
 

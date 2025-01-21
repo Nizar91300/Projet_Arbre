@@ -3,6 +3,7 @@ package common.notification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import common.Arbre;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,12 @@ public class NotifNominationArbre extends Notification{
         super("AssociationVert", "nomination", new Date());
         this.arbres = arbres;
     }
+
+    public NotifNominationArbre() {
+        super("AssociationVert", "nomination", new Date());
+        this.arbres = new ArrayList<>();
+    }
+
     // Getters
     public String getEmetteur() {
         return emetteur;
@@ -26,9 +33,5 @@ public class NotifNominationArbre extends Notification{
 
     public List<Arbre> getArbres() {
         return arbres;
-    }
-
-    public Date getdate(){
-        return new Date();
     }
 }

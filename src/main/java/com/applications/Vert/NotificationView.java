@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
+import common.Paire;
 import common.notification.NotifNominationArbre;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -72,7 +73,7 @@ public class NotificationView {
         colArb.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getArbres()));  // Utilisation de SimpleObjectProperty<Arbre>
         colDate.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getdate())
+                new SimpleObjectProperty<>(cellData.getValue().getDateNotification())
         );
         tabNoti.setItems(messages);
 
@@ -113,11 +114,11 @@ public class NotificationView {
 
             if (rootNode.isObject()) {
                 // Récupérer l'émetteur
-                String emetteur = rootNode.get("Emetteur").asText();
+                String emetteur = rootNode.get("emetteur").asText();
                 System.out.println("Émetteur: " + emetteur);
 
                 // Récupérer le type de message
-                String typeMessage = rootNode.get("typeMessage").asText();
+                String typeMessage = rootNode.get("typeNotification").asText();
                 System.out.println("Type de message: " + typeMessage);
 
                 // Récupérer la liste des arbres
@@ -165,7 +166,7 @@ public class NotificationView {
         String stade = arbreNode.get("stadeDeDeveloppement").asText();
         boolean classificationRemarquable = arbreNode.get("classificationRemarquable").asBoolean();
         JsonNode coordonneesNode = arbreNode.get("coordonneesGPS");
-        Pair<Double, Double> coordonneesGPS = new Pair<>(coordonneesNode.get("key").asDouble(), coordonneesNode.get("value").asDouble());
+        Paire<Double, Double> coordonneesGPS = new Paire<>(coordonneesNode.get("key").asDouble(), coordonneesNode.get("value").asDouble());
 
         // Créer un nouvel objet Arbre avec les informations extraites
         return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur, stade, classificationRemarquable, coordonneesGPS);
@@ -248,7 +249,7 @@ public class NotificationView {
                     break;
                 case "Date":
                     // Filtrage basé sur la date
-                    String dateString = String.valueOf(message.getdate()).trim();
+                    String dateString = String.valueOf(message.getDateNotification()).trim();
                     matchesFilter = dateString.contains(TextSearch.getText());
                     break;
             }
