@@ -1,5 +1,7 @@
 package common;
 
+import common.notification.NotifEvenement;
+
 import java.util.HashSet;
 
 public class ServiceEspaceVert implements DonateurVert {
@@ -23,7 +25,7 @@ public class ServiceEspaceVert implements DonateurVert {
         observers.remove(observer);
     }
 
-    public void notifyObservers(Notification notification) {
+    public void notifyObservers(NotifEvenement notification) {
         for (ServiceVertObserver observer : observers) {
             observer.notify(notification);
         }

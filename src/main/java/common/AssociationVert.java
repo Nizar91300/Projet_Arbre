@@ -2,6 +2,8 @@ package common;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.notification.NotifNominationArbre;
+import common.notification.NotifEvenement;
 import common.virement.Recepteur;
 
 import java.io.File;
@@ -15,7 +17,7 @@ public final class AssociationVert extends Association  {
 
     private Membre president;
     private Set<Membre> membres;
-    private List<Notification> notifications;
+    private List<NotifEvenement> notifications;
     private Set<Vote> votes;
     private HashMap<Arbre,Integer> arbresProposes;
     private List<Visite> visitesEffectuees;
@@ -33,7 +35,7 @@ public final class AssociationVert extends Association  {
 
     private AssociationVert() {
         super("Association Vert");
-        notifications = new ArrayList<Notification>();
+        notifications = new ArrayList<NotifEvenement>();
         membres = new HashSet<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
@@ -185,7 +187,7 @@ public final class AssociationVert extends Association  {
     }
 
     @Override
-    public void notify(Notification notification) {
+    public void notify(NotifEvenement notification) {
         notifications.add(notification);
         //todo cadepend de l implementation de  l interface graphgique
     }
@@ -273,7 +275,7 @@ public final class AssociationVert extends Association  {
         List<Arbre> top5 = getTop5Arbres();
 
         // Création du message de nomination
-        MessageNomination message = new MessageNomination(top5);
+        NotifNominationArbre message = new NotifNominationArbre(top5);
 
         // Écriture du fichier
         ObjectMapper objectMapper = new ObjectMapper();

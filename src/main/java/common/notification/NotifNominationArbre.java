@@ -1,31 +1,27 @@
-package common;
+package common.notification;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import common.Arbre;
 
 import java.util.Date;
 import java.util.List;
 
 // classe qui represente un message de nomination par une association
-public class MessageNomination {
-    @JsonProperty
-    private String Emetteur;
-    @JsonProperty
-    private String typeMessage;
+public class NotifNominationArbre extends Notification{
     @JsonProperty
     private List<Arbre> arbres;
 
-    public MessageNomination(List<Arbre> arbres) {
-        this.Emetteur = "AssociationVert";
-        this.typeMessage = "nomination";
+    public NotifNominationArbre(List<Arbre> arbres) {
+        super("AssociationVert", "nomination", new Date());
         this.arbres = arbres;
     }
     // Getters
     public String getEmetteur() {
-        return Emetteur;
+        return emetteur;
     }
 
-    public String getTypeMessage() {
-        return typeMessage;
+    public String getTypeNotification() {
+        return typeNotification;
     }
 
     public List<Arbre> getArbres() {

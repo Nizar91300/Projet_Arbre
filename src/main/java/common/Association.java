@@ -1,6 +1,8 @@
 package common;
 
 
+import common.notification.NotifEvenement;
+
 public class Association implements ServiceVertObserver{
     public final String nom;
 
@@ -10,5 +12,5 @@ public class Association implements ServiceVertObserver{
 
 
     @Override
-    public void notify(Notification notification) {}
+    public void notify(NotifEvenement notification) {}
 }

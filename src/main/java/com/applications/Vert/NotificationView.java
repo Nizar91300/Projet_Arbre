@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
-import common.MessageNomination;
-import common.Notification;
+import common.notification.NotifNominationArbre;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,16 +26,16 @@ import java.util.List;
 public class NotificationView {
 
     @FXML
-    private TableView<MessageNomination> tabNoti;
+    private TableView<NotifNominationArbre> tabNoti;
 
     @FXML
-    private TableColumn<MessageNomination, String> colEm;
+    private TableColumn<NotifNominationArbre, String> colEm;
     @FXML
-    private TableColumn<MessageNomination, String> colTy;
+    private TableColumn<NotifNominationArbre, String> colTy;
     @FXML
-    private TableColumn<MessageNomination, List<Arbre>> colArb;
+    private TableColumn<NotifNominationArbre, List<Arbre>> colArb;
     @FXML
-    private TableColumn<MessageNomination, Date> colDate;
+    private TableColumn<NotifNominationArbre, Date> colDate;
 
     @FXML
     private ComboBox<String> filtre;
@@ -49,7 +46,7 @@ public class NotificationView {
     @FXML
     private Button btnBackCons, btnSearch, btnReset, btnSup, btnAccepter;
 
-    private final ObservableList<MessageNomination> messages = FXCollections.observableArrayList();
+    private final ObservableList<NotifNominationArbre> messages = FXCollections.observableArrayList();
     private final File inboxDirectory = new File("inbox");
 
     public static void load() {
@@ -136,7 +133,7 @@ public class NotificationView {
                     arbres.add(arbre);
 
                     // Créer une notification pour chaque arbre
-                    MessageNomination notification = new MessageNomination( arbres);
+                    NotifNominationArbre notification = new NotifNominationArbre( arbres);
 
 
                     // Ajouter la notification à la liste
@@ -229,9 +226,9 @@ public class NotificationView {
 
     private void filterNotifications() {
         String selectedFilter = filtre.getSelectionModel().getSelectedItem();
-        ObservableList<MessageNomination> filteredList = FXCollections.observableArrayList();
+        ObservableList<NotifNominationArbre> filteredList = FXCollections.observableArrayList();
 
-        for (MessageNomination message : messages) {
+        for (NotifNominationArbre message : messages) {
             boolean matchesFilter = false;
 
             switch (selectedFilter) {
@@ -267,7 +264,7 @@ public class NotificationView {
 
 
     public void supprimerNotification() {
-        MessageNomination selectedMsg = tabNoti.getSelectionModel().getSelectedItem();
+        NotifNominationArbre selectedMsg = tabNoti.getSelectionModel().getSelectedItem();
         // Supprimer la notification de la liste
         messages.remove(selectedMsg);
 
@@ -319,7 +316,7 @@ public class NotificationView {
     }
 
 
-    private boolean contientArbre(MessageNomination notification, int id) {
+    private boolean contientArbre(NotifNominationArbre notification, int id) {
         return notification.getArbres().stream().anyMatch(arbre -> arbre.getId() == id);
     }
 

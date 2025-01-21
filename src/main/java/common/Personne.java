@@ -1,5 +1,7 @@
 package common;
 
+import common.notification.NotifEvenement;
+
 import java.util.Date;
 
 public class Personne implements ServiceVertObserver {
@@ -29,5 +31,5 @@ public class Personne implements ServiceVertObserver {
     }
 
     @Override
-    public void notify(Notification notification) {}
+    public void notify(NotifEvenement notification) {}
 }

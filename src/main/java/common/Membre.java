@@ -1,11 +1,11 @@
 package common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import common.notification.NotifEvenement;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
 import common.virement.Virement;
-import org.apache.commons.collections.MultiMap;
 
 import java.util.*;
 
@@ -13,7 +13,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
     private String adresse;
     private Date dateDerniereInscription;
-    private List<Notification> notifications;
+    private List<NotifEvenement> notifications;
     private List<Vote> votes;
     private List<Visite> visites;
     @JsonProperty("solde")
@@ -49,7 +49,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
 
     @Override
-    public void notify(Notification notification) {
+    public void notify(NotifEvenement notification) {
         notifications.add(notification);
         //todo cadepend de l implementation de  l interface graphgique
     }
