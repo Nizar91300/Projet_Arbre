@@ -27,4 +27,10 @@ module com.applications {
     exports com.applications.Association.vue to javafx.graphics;
     exports common.notification to com.fasterxml.jackson.databind;
     opens common.notification to com.fasterxml.jackson.databind, javafx.base;
+
+
+
+    exports com.applications.Association.controleur;
+    opens com.applications.Association.controleur to javafx.fxml;
+
 }
