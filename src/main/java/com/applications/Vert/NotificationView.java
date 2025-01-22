@@ -333,7 +333,7 @@ public class NotificationView {
         Date dateNotification = notification.getDateNotification();
         Arbre arbre = notification.getArbres().get(0);
 
-        NotifReponseNomination message = new NotifReponseNomination("ServiceDesEspacesVerts", typeNotification, dateNotification, x, arbre);
+        NotifReponseNomination message = new NotifReponseNomination("espaces_verts", typeNotification, dateNotification, x, arbre);
 
         String nomFichier = "Reponse_Nomination_" + arbre.getId() + ".json";
 
