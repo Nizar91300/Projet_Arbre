@@ -40,6 +40,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         visites = new LinkedList<>();
         this.solde = solde;      // solde initial du membre en supposant qu'il apporte une somme
         demandesRecus = new ArrayList<>();
+        dateDerniereInscription = new Date();
     }
 
     public Membre(){
@@ -49,6 +50,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         visites = new LinkedList<>();
         solde = 0;      // solde initial du membre en supposant qu'il apporte une somme
         demandesRecus = new ArrayList<>();
+        dateDerniereInscription = new Date();
     }
 
     public int getNbVisites() {

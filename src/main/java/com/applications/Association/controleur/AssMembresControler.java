@@ -5,6 +5,7 @@ import com.applications.Association.vue.AssAjoutVisiteView;
 import com.applications.Association.vue.AssMainView;
 import com.applications.Association.vue.AssMembresView;
 import common.Arbre;
+import common.AssociationVert;
 import common.EntityManager;
 import common.Membre;
 import javafx.collections.FXCollections;
@@ -93,10 +94,7 @@ public class AssMembresControler {
 
 
     private void loadTableData() {
-        Membre membre = new Membre("ala","ala",new Date(),555, "allll", "ald");
-        membre.setAdresse("loolol");
-        ArrayList<Membre> membres = new ArrayList<>();
-        membres.add(membre);
+        ArrayList<Membre> membres = new ArrayList<>(AssociationVert.get().getMembres());
         ObservableList<Membre> membressList = FXCollections.observableArrayList(membres);
         table.setItems(membressList);
     }

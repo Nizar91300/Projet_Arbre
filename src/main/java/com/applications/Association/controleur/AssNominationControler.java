@@ -91,8 +91,8 @@ public class AssNominationControler {
     }
 
     private void loadTableData() {
-        //ObservableList<Arbre> arbresList = FXCollections.observableArrayList(AssociationVert.get().getArbresNominees());
-        //tabCons.setItems(arbresList);
+        ObservableList<Arbre> arbresList = FXCollections.observableArrayList(AssociationVert.get().getArbresNominees());
+        tabCons.setItems(arbresList);
     }
 
 
