@@ -35,9 +35,9 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </Button>
-      <Label fx:id="LabelVue2" layoutX="353.0" layoutY="626.0" prefHeight="38.0" prefWidth="557.0" textFill="#d4120c">
+      <Label fx:id="LabelVue2" layoutX="318.0" layoutY="626.0" prefHeight="38.0" prefWidth="557.0" textFill="#d4120c">
          <font>
-            <Font size="20.0" />
+            <Font size="14.0" />
          </font>
       </Label>
       <TextField fx:id="TFD" layoutX="385.0" layoutY="348.0" prefHeight="40.0" prefWidth="300.0" promptText="Date de naissance jj/mm/aaaa" />

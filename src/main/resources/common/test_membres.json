@@ -55,5 +55,6 @@
   {"nom": "Robert", "prenom": "Jacqueline", "dateNaissance": "1978-01-25", "solde": 742, "pseudo": "jacqueline.robert", "motDePasse": "jacqueline1978"},
   {"nom": "Beaufort", "prenom": "Lucienne", "dateNaissance": "1991-10-05", "solde": 643, "pseudo": "lucienne.beaufort", "motDePasse": "lucienne1991"},
   {"nom": "Durand", "prenom": "Lucie", "dateNaissance": "1994-09-10", "solde": 490, "pseudo": "lucie.durand", "motDePasse": "lucie1994"},
-  {"nom": "Lemoine", "prenom": "Gérard", "dateNaissance": "1980-04-16", "solde": 938, "pseudo": "gerard.lemoine", "motDePasse": "gerard1980"}
+  {"nom": "Lemoine", "prenom": "Gérard", "dateNaissance": "1980-04-16", "solde": 938, "pseudo": "gerard.lemoine", "motDePasse": "gerard1980"},
+  {"nom": "Lemoine", "prenom": "Gérard", "dateNaissance": "1980-04-16", "solde": 938, "pseudo": "a", "motDePasse": "a"}
 ]
