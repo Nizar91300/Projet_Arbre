@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1080" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6A0DAD, #FFD700);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="605.0" spacing="50.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gestionnaire Association">
+                    <font><Font name="System Bold" size="50.0" /></font>
+                </Text>
+                <Button fx:id="btnBienvenue" mnemonicParsing="false" text="Bienvenue" textAlignment="CENTER">
+                    <VBox.margin><Insets/></VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </children>
+</StackPane>
