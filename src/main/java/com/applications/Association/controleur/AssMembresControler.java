@@ -1,5 +1,7 @@
 package com.applications.Association.controleur;
 
+import com.applications.Association.vue.AssAjoutMembreView;
+import com.applications.Association.vue.AssAjoutVisiteView;
 import com.applications.Association.vue.AssMainView;
 import com.applications.Association.vue.AssMembresView;
 import common.Arbre;
@@ -12,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class AssMembresControler {
 
 
     @FXML
-    public Button btnBack,btnAjout,btnRetirer;
+    public Button btnBack,btnAjout,btnRetirer,btnVisite;
 
     @FXML
     public TableView<Membre> table;
@@ -43,6 +44,7 @@ public class AssMembresControler {
     @FXML
     public void initialize() {
         btnRetirer.setDisable(true);
+        btnVisite.setDisable(true);
 
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
@@ -65,6 +67,7 @@ public class AssMembresControler {
         table.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             boolean isSelected = newValue != null;
             btnRetirer.setDisable(!isSelected);
+            btnVisite.setDisable(!isSelected);
         });
 
         btnBack.setOnAction((actionEvent) -> {
@@ -72,11 +75,17 @@ public class AssMembresControler {
         });
 
         btnAjout.setOnAction((actionEvent) -> {
-
+            AssAjoutMembreView.load();
         });
 
         btnRetirer.setOnAction((actionEvent) -> {
             Membre selectedMembre = table.getSelectionModel().getSelectedItem();
+            //todo
+        });
+
+        btnVisite.setOnAction((actionEvent) -> {
+            Membre selectedMembre = table.getSelectionModel().getSelectedItem();
+            AssAjoutVisiteView.load(selectedMembre);
         });
 
         loadTableData();
