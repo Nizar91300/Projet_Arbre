@@ -11,7 +11,7 @@ public class PageAccueil extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Charger le layout FXML
-        Parent root = FXMLLoader.load(getClass().getResource("/com/applications/PageAccueil.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/applications/Main.fxml"));
         // Configurer et afficher la scène
         primaryStage.setTitle("Accueil");
         primaryStage.setScene(new Scene(root, 1080, 720));
