@@ -10,8 +10,7 @@ import common.virement.Virement;
 import java.util.*;
 
 public class Membre extends Personne implements Emetteur, Recepteur {
-    private String pseudo;
-    private String motDePasse;
+
     private String adresse;
     private Date dateDerniereInscription;
     private List<NotifEvenement> notifications;
@@ -25,11 +24,12 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     //private List<Visite> visites;
 
 
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
-    public Membre(String nom, String prenom, Date dateNaissance, double solde,String pseudo, String motDePasse) {
+    public Membre(String nom, String prenom, Date dateNaissance, double solde) {
         super(nom, prenom, dateNaissance);
-        this.pseudo = pseudo;
-        this.motDePasse = motDePasse;
         notifications = new ArrayList<>();
         votes = new LinkedList<>();
         visites = new LinkedList<>();
@@ -45,8 +45,6 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         solde = 0;      // solde initial du membre en supposant qu'il apporte une somme
         demandesRecus = new ArrayList<>();
     }
-
-
 
     public int getNbVisites() {
         return visites.size();
@@ -182,32 +180,12 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         return new ResultatVirement(accepte, description, v);
     }
 
-    public boolean verifierMotDePasse(String motDePasseSaisi) {
-        return this.motDePasse.equals(motDePasseSaisi);
-    }
-    // Getters et setters pour pseudo et motDePasse
-    public String getPseudo() {
-        return pseudo;
+
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public Date getDateDerniereInscription() {
+        return dateDerniereInscription;
     }
-
-    public String getMotDePasse() {
-        return motDePasse;
-    }
-
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse  = adresse;
-    }
-
-
-    // Autres getters et setters...
 }
-
-
