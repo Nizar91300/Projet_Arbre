@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
 import common.notification.NotifNominationArbre;
+import common.notification.Notification;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +101,8 @@ public class NotificationView {
         // Action du bouton "Reset"
         btnReset.setOnAction(event -> resetFilters());
 
-        btnSup.setOnAction(event -> supprimerNotification());
+        btnSup.setOnAction(event -> supprimerNotification(false));
+        btnAccepter.setOnAction(event -> supprimerNotification(true));
     }
 
     private void loadMessagesFromFile(String filePath) {
@@ -263,8 +266,11 @@ public class NotificationView {
     }
 
 
-    public void supprimerNotification() {
+    public void supprimerNotification(boolean x) {
         NotifNominationArbre selectedMsg = tabNoti.getSelectionModel().getSelectedItem();
+        if (x){
+            ReponseMessage(x,selectedMsg);
+        }else{ReponseMessage(x,selectedMsg);}
         // Supprimer la notification de la liste
         messages.remove(selectedMsg);
 
@@ -319,5 +325,33 @@ public class NotificationView {
     private boolean contientArbre(NotifNominationArbre notification, int id) {
         return notification.getArbres().stream().anyMatch(arbre -> arbre.getId() == id);
     }
+
+    // envoyer le classement des arbres à l'espace vert
+    public void ReponseMessage(boolean x, NotifNominationArbre notification) {
+
+        String message;
+        // Création du message de nomination
+        if (x){
+            message = "votre demande concernant l'arbre " + notification.getArbres().get(0).getId() + " a ete accepté ! ";
+        }else{
+            message = "votre demande concernant l'arbre " + notification.getArbres().get(0).getId() + " a ete refusé. ";
+        }
+
+        // Génération d'un nom de fichier unique avec un horodatage
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String nomFichier = "Reponse_msg_" + timestamp + ".json";
+
+        // Écriture du fichier
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            File file = new File("inbox/Association-vert/" + nomFichier);
+            objectMapper.writeValue(file, message);
+            System.out.println("Message envoyé avec succès : " + file.getName());
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
 
 }

@@ -24,6 +24,9 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     //private List<Visite> visites;
 
 
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
     public Membre(String nom, String prenom, Date dateNaissance, double solde) {
         super(nom, prenom, dateNaissance);
@@ -175,5 +178,14 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
         // prevenir l'emetteur du resultat
         return new ResultatVirement(accepte, description, v);
+    }
+
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public Date getDateDerniereInscription() {
+        return dateDerniereInscription;
     }
 }

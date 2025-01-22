@@ -11,7 +11,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 
 
-
+/*
 
 public class Controller0 {
     @FXML
@@ -74,3 +74,4 @@ public class Controller0 {
         // Configuration initiale, si nécessaire
     }
 }
+*/
