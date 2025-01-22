@@ -10,7 +10,8 @@ import common.virement.Virement;
 import java.util.*;
 
 public class Membre extends Personne implements Emetteur, Recepteur {
-
+    private String pseudo;
+    private String MotDePasse;
     private String adresse;
     private Date dateDerniereInscription;
     private List<NotifEvenement> notifications;
@@ -28,12 +29,14 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         this.adresse = adresse;
     }
 
-    public Membre(String nom, String prenom, Date dateNaissance, double solde) {
+    public Membre(String nom, String prenom, Date dateNaissance, double solde,String pseudo,String MotDePasse) {
         super(nom, prenom, dateNaissance);
+        this.pseudo = pseudo;
+        this.MotDePasse = MotDePasse;
         notifications = new ArrayList<>();
         votes = new LinkedList<>();
         visites = new LinkedList<>();
-        solde = solde;      // solde initial du membre en supposant qu'il apporte une somme
+        this.solde = solde;      // solde initial du membre en supposant qu'il apporte une somme
         demandesRecus = new ArrayList<>();
     }
 
@@ -187,5 +190,13 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
     public Date getDateDerniereInscription() {
         return dateDerniereInscription;
+    }
+
+    public String getPseudo(){
+        return pseudo;
+    }
+
+    public boolean verifierMotDePasse(String motDePasse) {
+        return motDePasse.equals(MotDePasse);
     }
 }

@@ -1,5 +1,6 @@
 package com.applications.Membres;
-
+import common.AssociationVert;
+import common.Membre;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 

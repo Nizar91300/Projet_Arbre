@@ -93,7 +93,7 @@ public class AssMembresControler {
 
 
     private void loadTableData() {
-        Membre membre = new Membre("ala","ala",new Date(),555);
+        Membre membre = new Membre("ala","ala",new Date(),555, "allll", "ald");
         membre.setAdresse("loolol");
         ArrayList<Membre> membres = new ArrayList<>();
         membres.add(membre);

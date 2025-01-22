@@ -1,4 +1,6 @@
 package com.applications.Membres;
+import common.AssociationVert;
+import common.Membre;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +13,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 
 
-/*
+
 
 public class Controller0 {
     @FXML
@@ -46,15 +48,21 @@ public class Controller0 {
     private void handleSeConnecter(ActionEvent event) {
         String pseudo = TextFieldPseudo.getText().trim();
         String motDePasse = TextFieldMDP.getText();
-        GestionMembres gestionMembres = new GestionMembres();
-        if (gestionMembres.connecterMembre(pseudo, motDePasse)) {
-            // Obtient le Stage à partir de l'événement
+
+        // Utilise la méthode connecterMembre de AssociationVert pour la connexion
+        Membre membre = AssociationVert.get().connecterMembre(pseudo, motDePasse);
+
+        if (membre != null) {
+            // Si la connexion est réussie, ouvrir la vue membre (Vue1.fxml)
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Espace Membre");
         } else {
-            labelMessageErreur.setText("Pseudo ou mot de passe incorrect.");
+            // Si la connexion échoue, afficher un message d'erreur dans le label
+            labelMessageErreur.setText("Pseudo ou mot de passe incorrect. Veuillez réessayer.");
         }
     }
+
+
 
 
     @FXML
@@ -74,4 +82,3 @@ public class Controller0 {
         // Configuration initiale, si nécessaire
     }
 }
-*/

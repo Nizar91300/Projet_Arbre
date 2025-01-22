@@ -32,7 +32,7 @@
       </Button>
       <TextField fx:id="TextFieldPseudo" layoutX="349.0" layoutY="314.0" onAction="#handlePseudo" prefHeight="40.0" prefWidth="380.0" promptText="Pseudo" />
       <TextField fx:id="TextFieldMDP" layoutX="349.0" layoutY="368.0" onAction="#handleMDP" prefHeight="40.0" prefWidth="380.0" promptText="Mot de passe" />
-      <Label fx:id="labelMessageErreur" layoutX="371.0" layoutY="518.0" prefHeight="38.0" prefWidth="399.0" textFill="#d40b0b">
+      <Label fx:id="labelMessageErreur" layoutX="371.0" layoutY="518.0" prefHeight="38.0" prefWidth="399.0" textFill="#d41310">
          <font>
             <Font name="System Bold Italic" size="19.0" />
          </font>
