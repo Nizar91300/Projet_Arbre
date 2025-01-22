@@ -77,17 +77,13 @@
                   <TableColumn fx:id="colHauteur" prefWidth="64.0" text="Hauteur" />
                   <TableColumn fx:id="colStade" prefWidth="75.0" text="Stade Dev." />
                   <TableColumn fx:id="colRem" prefWidth="86.0" text="Remarquable" />
-                  <TableColumn fx:id="colDateRem" prefWidth="64.0" text="Date Rem" />
-                  <TableColumn fx:id="colGPS" prefWidth="75.0" text="GPS" />
+                  <TableColumn fx:id="colDateRem" prefWidth="187.0" text="Date Rem" />
+                  <TableColumn fx:id="colGPS" minWidth="0.0" prefWidth="171.0" text="GPS" />
               </columns>
             </TableView>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button fx:id="btnPlante" mnemonicParsing="false" stylesheets="@Style.css" text="Plantation d'un nouvel arbre">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
+                  <Button fx:id="btnPlante" mnemonicParsing="false" stylesheets="@Style.css" text="Plantation d'un nouvel arbre" />
                   <Button fx:id="btnAbattre" mnemonicParsing="false" text="Abattre l'arbre" />
                   <Button fx:id="btnClassifier" mnemonicParsing="false" text="Classifier Remarquable" />
                   <Button fx:id="btnNotif" mnemonicParsing="false" text="Notifications" />

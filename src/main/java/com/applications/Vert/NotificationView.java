@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
 import common.notification.NotifNominationArbre;
+import common.notification.NotifReponseNomination;
 import common.notification.Notification;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -326,28 +327,37 @@ public class NotificationView {
         return notification.getArbres().stream().anyMatch(arbre -> arbre.getId() == id);
     }
 
-    // envoyer le classement des arbres à l'espace vert
     public void ReponseMessage(boolean x, NotifNominationArbre notification) {
+        String emetteur = notification.getEmetteur();
+        String typeNotification = notification.getTypeNotification();
+        Date dateNotification = notification.getDateNotification();
+        Arbre arbre = notification.getArbres().get(0);
 
-        String message;
-        // Création du message de nomination
-        if (x){
-            message = "votre demande concernant l'arbre " + notification.getArbres().get(0).getId() + " a ete accepté ! ";
-        }else{
-            message = "votre demande concernant l'arbre " + notification.getArbres().get(0).getId() + " a ete refusé. ";
+        NotifReponseNomination message = new NotifReponseNomination("espaces_verts", typeNotification, dateNotification, x, arbre);
+
+        String nomFichier = "Reponse_Nomination_" + arbre.getId() + ".json";
+
+        // Créer le chemin du dossier basé sur le nom de l'émetteur
+        String cheminDossier = "inbox/" + emetteur;
+
+        // Vérifier si le dossier existe, sinon le créer
+        File dossier = new File(cheminDossier);
+        if (!dossier.exists()) {
+            if (dossier.mkdirs()) {
+                System.out.println("Dossier créé : " + cheminDossier);
+            } else {
+                System.err.println("Erreur lors de la création du dossier : " + cheminDossier);
+                return; // Arrêter l'exécution si le dossier ne peut pas être créé
+            }
         }
 
-        // Génération d'un nom de fichier unique avec un horodatage
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String nomFichier = "Reponse_msg_" + timestamp + ".json";
-
-        // Écriture du fichier
+        // Créer le fichier JSON dans le dossier
+        File fichier = new File(dossier, nomFichier);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            File file = new File("inbox/Association-vert/" + nomFichier);
-            objectMapper.writeValue(file, message);
-            System.out.println("Message envoyé avec succès : " + file.getName());
+            objectMapper.writeValue(fichier, message);
+            System.out.println("Message envoyé avec succès : " + fichier.getPath());
         } catch (IOException e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }

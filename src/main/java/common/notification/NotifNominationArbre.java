@@ -13,7 +13,7 @@ public class NotifNominationArbre extends Notification{
     private List<Arbre> arbres;
 
     public NotifNominationArbre(List<Arbre> arbres) {
-        super("AssociationVert", "nomination", new Date());
+        super("association_vert", "nomination", new Date());
         this.arbres = arbres;
     }
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class AssociationVert extends Association  {
+public final class AssociationVert extends Association {
 
     private static AssociationVert instance = null;
 
@@ -356,7 +356,8 @@ public final class AssociationVert extends Association  {
     }
 
 
-
-
+    public Set<Membre> getMembres() {
+        return membres;
+    }
 }
 

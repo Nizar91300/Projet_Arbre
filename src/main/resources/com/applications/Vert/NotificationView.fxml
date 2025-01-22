@@ -76,7 +76,7 @@
                 </TableView>
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button fx:id="btnAccepter" mnemonicParsing="false" text="Accepter demande">
+                        <Button fx:id="btnAccepter" mnemonicParsing="false" text="Accepter">
                             <font>
                                 <Font size="14.0" />
                             </font>

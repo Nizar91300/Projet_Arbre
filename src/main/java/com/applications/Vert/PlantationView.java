@@ -1,6 +1,8 @@
 package com.applications.Vert;
 
 import common.Arbre;
+import common.ServiceEspaceVert;
+import common.notification.NotifEvenement;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -62,8 +64,8 @@ public class PlantationView {
             Pair<Double, Double> coordonnees = parseCoordonnees(txtCoordonnees.getText());
 
             // Créer un nouvel arbre avec les valeurs saisies
-            new Arbre(id, adresse, nomCommun, genre, espece, circonference, hauteur, stade, remarquable, coordonnees);
-
+            Arbre arbre = new Arbre(id, adresse, nomCommun, genre, espece, circonference, hauteur, stade, remarquable, coordonnees);
+            envoimsg(NotifEvenement.Evenement.PLANTATION,arbre);
             // Fermer la fenêtre
             fermerFenetre();
 
@@ -108,5 +110,11 @@ public class PlantationView {
         }
         return false;
     }
+
+    private void envoimsg(NotifEvenement.Evenement event, Arbre arbre){
+        NotifEvenement message = new NotifEvenement("ServiceDesEspacesVerts", event, arbre);
+        ServiceEspaceVert.get().notifyObservers(message);
+    }
+
 
 }
