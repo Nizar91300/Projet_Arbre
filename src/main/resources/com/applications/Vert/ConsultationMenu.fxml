@@ -14,14 +14,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="imgbackcons" fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@street-with-trees.jpg" />
          </image>
       </ImageView>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" spacing="10.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" spacing="10.0" stylesheets="@Style.css">
          <children>
             <HBox prefHeight="50.0" prefWidth="600.0">
                <children>
@@ -81,23 +81,19 @@
                   <TableColumn fx:id="colGPS" prefWidth="75.0" text="GPS" />
               </columns>
             </TableView>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button fx:id="btnPlante" mnemonicParsing="false" text="Plantation d'un nouvel arbre">
+                  <Button fx:id="btnPlante" mnemonicParsing="false" stylesheets="@Style.css" text="Plantation d'un nouvel arbre">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnAbattre" mnemonicParsing="false" text="Abattre l'arbre">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
+                  <Button fx:id="btnAbattre" mnemonicParsing="false" text="Abattre l'arbre" />
                   <Button fx:id="btnClassifier" mnemonicParsing="false" text="Classifier Remarquable" />
                   <Button fx:id="btnNotif" mnemonicParsing="false" text="Notifications" />
                </children>
                <VBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="30.0" />
                </VBox.margin>
             </HBox>
          </children>

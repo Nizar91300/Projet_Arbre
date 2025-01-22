@@ -20,6 +20,31 @@
 
 }
 
+#btnPlante{
+    -fx-pref-width: 232.5px; /* Largeur fixe */
+    -fx-pref-height: 40px; /* Hauteur fixe */
+    -fx-background-color: #4CAF50; /* Vert classique pour le fond */
+    -fx-text-fill: white; /* Couleur du texte en blanc */
+    -fx-font-family: 'Arial', sans-serif; /* Police simple et lisible */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-border-radius: 5; /* Coins arrondis */
+    -fx-border-color: #388E3C; /* Bordure verte plus foncée */
+    -fx-border-width: 2; /* Bordure fine */
+    -fx-padding: 10 20; /* Padding autour du texte pour plus d'espace */
+    -fx-background-insets: 0, 1, 2; /* Décalage des couches de fond */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.0, 2, 2); /* Ombre légère */
+}
+
+#btnPlante:hover{
+    -fx-pref-width: 232.5px; /* Largeur fixe */
+    -fx-pref-height: 40px; /* Hauteur fixe */
+    -fx-background-color: #45A049; /* Couleur légèrement plus foncée au survol */
+    -fx-border-color: #388E3C; /* Bordure verte plus foncée au survol */
+    -fx-font-size: 13px; /* Taille de police fixe */
+    -fx-font-weight: bold; /* Assurez-vous que le poids reste constant */
+
+}
+
 /* Style pour les boutons */
 .button {
     -fx-background-color: #4CAF50; /* Vert classique pour le fond */
@@ -94,7 +119,7 @@
     -fx-background-color: #4CAF50; /* Fond vert */
     -fx-text-fill: white; /* Texte en blanc */
     -fx-font-family: 'Arial', sans-serif; /* Police simple */
-    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-size: 13px; /* Taille de la police */
     -fx-border-radius: 5; /* Coins arrondis */
     -fx-border-color: #388E3C; /* Bordure verte plus foncée */
     -fx-border-width: 2; /* Bordure fine */
