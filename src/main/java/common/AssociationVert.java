@@ -314,16 +314,16 @@ public final class AssociationVert extends Association  {
         budgetAssociation.demanderSubventionsDons();
     }
 
-    /*public Membre connecterMembre(String pseudo, String motDePasse) {
+    public Membre connecterMembre(String pseudo, String motDePasse) {
         for (Membre membre : membres) {
             if (membre.getPseudo().equals(pseudo) && membre.verifierMotDePasse(motDePasse)) {
                 return membre;
             }
         }
         return null; // Aucun membre trouvé avec ce pseudo et mot de passe
-    }*/
+    }
 
-    /*public boolean inscrireMembre(String nom, String prenom, Date dateNaissance, String pseudo, String motDePasse, String adresse) {
+    public boolean inscrireMembre(String nom, String prenom, Date dateNaissance, String pseudo, String motDePasse, String adresse) {
         // Vérifie si le pseudo existe déjà
         for (Membre membre : membres) {
             if (membre.getPseudo().equals(pseudo)) {
@@ -337,7 +337,7 @@ public final class AssociationVert extends Association  {
         nouveauMembre.setAdresse(adresse);
         membres.add(nouveauMembre);
         return true;
-    }*/
+    }
 
     public Set<Arbre> getArbresNominees(){
         return arbresProposes.keySet();
