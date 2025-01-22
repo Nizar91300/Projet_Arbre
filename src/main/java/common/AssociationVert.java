@@ -315,6 +315,31 @@ public final class AssociationVert extends Association  {
         budgetAssociation.demanderSubventionsDons();
     }
 
+    public Membre connecterMembre(String pseudo, String motDePasse) {
+        for (Membre membre : membres) {
+            if (membre.getPseudo().equals(pseudo) && membre.verifierMotDePasse(motDePasse)) {
+                return membre;
+            }
+        }
+        return null; // Aucun membre trouvé avec ce pseudo et mot de passe
+    }
+
+    public boolean inscrireMembre(String nom, String prenom, Date dateNaissance, String pseudo, String motDePasse, String adresse) {
+        // Vérifie si le pseudo existe déjà
+        for (Membre membre : membres) {
+            if (membre.getPseudo().equals(pseudo)) {
+                return false; // Pseudo déjà pris
+            }
+        }
+
+        // Crée et ajoute le nouveau membre
+        double soldeInitial = 0; // Définir un solde initial, si nécessaire autre que 0
+        Membre nouveauMembre = new Membre(nom, prenom, dateNaissance, soldeInitial, pseudo, motDePasse);
+        nouveauMembre.setAdresse(adresse);
+        membres.add(nouveauMembre);
+        return true;
+    }
+
 
 
 
