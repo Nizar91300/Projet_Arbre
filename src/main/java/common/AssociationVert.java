@@ -43,6 +43,9 @@ public final class AssociationVert extends Association  {
         visitesPlanifiees = new ArrayList<>();
         budgetAssociation = new BudgetAssociation(10000);      // budget initial de 10000 euros
 
+        // load data if not loaded
+        EntityManager.get();
+
         loadMembers();
         loadVotes();
         loadVisites();
@@ -75,6 +78,11 @@ public final class AssociationVert extends Association  {
 
             // Ajouter les membres au Set
             membres.addAll(loadedMembers);
+
+            // afficher tous les membres
+            for (Membre m : membres) {
+                System.out.println("Membre : " + m.getNom() + " " + m.getPrenom());
+            }
 
             System.out.println("Membres chargés avec succès : " + membres.size());
         } catch (IOException e) {

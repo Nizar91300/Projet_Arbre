@@ -8,7 +8,7 @@ import java.io.IOException;
 //Classe principale de l'application Espace vert
 public class Main1 extends Application {
 
-    private static Stage stage;.
+    private static Stage stage;
 
     public static final int WIDTH = 1080;
     public static final int HEIGHT = 720;

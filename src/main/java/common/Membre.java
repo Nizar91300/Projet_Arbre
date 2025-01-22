@@ -10,8 +10,10 @@ import common.virement.Virement;
 import java.util.*;
 
 public class Membre extends Personne implements Emetteur, Recepteur {
+    @JsonProperty("pseudo")
     private String pseudo;
-    private String MotDePasse;
+    @JsonProperty("motDePasse")
+    private String motDePasse;
     private String adresse;
     private Date dateDerniereInscription;
     private List<NotifEvenement> notifications;
@@ -32,7 +34,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     public Membre(String nom, String prenom, Date dateNaissance, double solde,String pseudo,String MotDePasse) {
         super(nom, prenom, dateNaissance);
         this.pseudo = pseudo;
-        this.MotDePasse = MotDePasse;
+        this.motDePasse = MotDePasse;
         notifications = new ArrayList<>();
         votes = new LinkedList<>();
         visites = new LinkedList<>();
@@ -197,6 +199,6 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     }
 
     public boolean verifierMotDePasse(String motDePasse) {
-        return motDePasse.equals(MotDePasse);
+        return motDePasse.equals(motDePasse);
     }
 }
