@@ -6,13 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class PageAccueil extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Charger le layout FXML
-        Parent root = FXMLLoader.load(getClass().getResource("/com/applications/PageAccueil.fxml"));
-        // Configurer et afficher la scène
+        Parent root = FXMLLoader.load(getClass().getResource("/com/applications/Main.fxml"));
         primaryStage.setTitle("Accueil");
         primaryStage.setScene(new Scene(root, 1080, 720));
         primaryStage.show();
