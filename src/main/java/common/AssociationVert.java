@@ -48,7 +48,6 @@ public final class AssociationVert extends Association  {
         loadVisites();
         loadDonateurs();
         loadFactures();
-        envoyerClassement();
     }
 
     public static AssociationVert get() {
@@ -217,7 +216,7 @@ public final class AssociationVert extends Association  {
 
     public void supprimerVote(Vote vote) {
         votes.remove(vote);
-        arbresProposes.put(vote.arbre(),  Integer.min(arbresProposes.getOrDefault(vote.arbre(),0) - 1,0));
+        arbresProposes.put(vote.arbre(),  Integer.max(arbresProposes.getOrDefault(vote.arbre(),0) - 1,0));
     }
 
     // plannifier une visite
