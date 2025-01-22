@@ -41,6 +41,20 @@ public class Arbre implements Comparable<Arbre> {
         arbres.add(this);
     }
 
+    public Arbre(){
+        this.id = 0;
+        this.adresseAcces = "";
+        this.nomCommun = "";
+        this.genre = "";
+        this.espece = "";
+        this.circonference = 0;
+        this.hauteur = 0;
+        this.stadeDeDeveloppement = StadeDeveloppement.UNKOWN;
+        this.classificationRemarquable = false;
+        this.dateClassificationRemarquable = null;
+        this.coordonneesGPS = new Pair<>(0.0,0.0);
+    }
+
     @Override
     public int compareTo(Arbre o) {
         return Integer.compare(this.id,o.id);

@@ -25,4 +25,6 @@ module com.applications {
     opens com.applications.Vert to javafx.fxml;
 
     exports com.applications.Association.vue to javafx.graphics;
+    exports common.notification to com.fasterxml.jackson.databind;
+    opens common.notification to com.fasterxml.jackson.databind, javafx.base;
 }

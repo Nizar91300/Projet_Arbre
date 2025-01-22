@@ -1,6 +1,8 @@
 package common;
 
+import common.notification.NotifEvenement;
+
 public interface ServiceVertObserver {
-    public void notify(Notification notification);
+    public void notify(NotifEvenement notification);
 
 }

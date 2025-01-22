@@ -1,6 +1,5 @@
 package com.applications.Vert;
 
-import com.applications.Vert.ConsultationView;
 import common.Arbre;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

@@ -2,6 +2,8 @@ package common;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.notification.NotifNominationArbre;
+import common.notification.NotifEvenement;
 import common.virement.Recepteur;
 
 import java.io.File;
@@ -15,7 +17,7 @@ public final class AssociationVert extends Association  {
 
     private Membre president;
     private Set<Membre> membres;
-    private List<Notification> notifications;
+    private List<NotifEvenement> notifications;
     private Set<Vote> votes;
     private HashMap<Arbre,Integer> arbresProposes;
     private List<Visite> visitesEffectuees;
@@ -33,17 +35,20 @@ public final class AssociationVert extends Association  {
 
     private AssociationVert() {
         super("Association Vert");
-        notifications = new ArrayList<Notification>();
+        notifications = new ArrayList<NotifEvenement>();
         membres = new HashSet<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
         visitesEffectuees = new ArrayList<>();
         visitesPlanifiees = new ArrayList<>();
-        budgetAssociation = new BudgetAssociation(1000);      // budget initial de 1000 euros
+        budgetAssociation = new BudgetAssociation(10000);      // budget initial de 10000 euros
 
         loadMembers();
         loadVotes();
         loadVisites();
+        loadDonateurs();
+        loadFactures();
+        envoyerClassement();
     }
 
     public static AssociationVert get() {
@@ -56,7 +61,7 @@ public final class AssociationVert extends Association  {
     }
 
     // Charger les membres de test stockés dans le fichier
-    public void loadMembers() {
+    private void loadMembers() {
         var res = AssociationVert.class.getResource("test_membres.json");
 
         if (res == null) {
@@ -88,7 +93,7 @@ public final class AssociationVert extends Association  {
     }
 
     // ajouter des votes de test
-    public void loadVotes() {
+    private void loadVotes() {
         Random random = new Random();
         for (int i = 0; i < 100; i++) {
             Membre membre = membres.stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
@@ -103,7 +108,7 @@ public final class AssociationVert extends Association  {
     }
 
     // charger des visites planifiées de test
-    public void loadVisites() {
+    private void loadVisites() {
         Random random = new Random();
 
         List<Arbre> arbresRemarquables = Arbre.arbres.stream()
@@ -153,8 +158,37 @@ public final class AssociationVert extends Association  {
         }
     }
 
+    private void loadDonateurs(){
+        Donateur d1 = new Donateur("Jean", "Dupont", new Date(2000, 1, 1), 500);
+        Donateur d2 = new Donateur("Marie", "Durand", new Date(1990, 7, 10), 1000);
+        Donateur d3 = new Donateur("Pierre", "Martin", new Date(1980, 5, 15), 2000);
+        Donateur d4 = new Donateur("Sophie", "Bernard", new Date(1970, 3, 20), 3000);
+        Donateur d5 = new Donateur("Luc", "Lefevre", new Date(1960, 11, 25), 4000);
+
+        budgetAssociation.ajouterEmetteurSubventionDon(d1);
+        budgetAssociation.ajouterEmetteurSubventionDon(d2);
+        budgetAssociation.ajouterEmetteurSubventionDon(d3);
+        budgetAssociation.ajouterEmetteurSubventionDon(d4);
+        budgetAssociation.ajouterEmetteurSubventionDon(d5);
+    }
+
+    private void loadFactures(){
+        var d = budgetAssociation.getEmetteursSubventionDon();
+        Facture f1 = new Facture((Recepteur) d.getFirst(),100, new Date(2021, 1, 1), "Facture 1");
+        Facture f2 = new Facture((Recepteur) d.get(1), 200, new Date(2021, 2, 1), "Facture 2");
+        Facture f3 = new Facture((Recepteur) d.get(2),300, new Date(2021, 3, 1), "Facture 3");
+        Facture f4 = new Facture((Recepteur) d.getFirst(), 400, new Date(2021, 4, 1), "Facture 4");
+        Facture f5 = new Facture((Recepteur) d.get(3),500, new Date(2021, 5, 1), "Facture 5");
+
+        budgetAssociation.ajouterFacture(f1);
+        budgetAssociation.ajouterFacture(f2);
+        budgetAssociation.ajouterFacture(f3);
+        budgetAssociation.ajouterFacture(f4);
+        budgetAssociation.ajouterFacture(f5);
+    }
+
     @Override
-    public void notify(Notification notification) {
+    public void notify(NotifEvenement notification) {
         notifications.add(notification);
         //todo cadepend de l implementation de  l interface graphgique
     }
@@ -242,7 +276,7 @@ public final class AssociationVert extends Association  {
         List<Arbre> top5 = getTop5Arbres();
 
         // Création du message de nomination
-        MessageNomination message = new MessageNomination(top5);
+        NotifNominationArbre message = new NotifNominationArbre(top5);
 
         // Écriture du fichier
         ObjectMapper objectMapper = new ObjectMapper();
@@ -273,8 +307,12 @@ public final class AssociationVert extends Association  {
 
         // envoyer le classement des arbres
         envoyerClassement();
+
         // genere le rapport d'activite
         budgetAssociation.generateRapport();
+
+        // demander les subventions et dons
+        budgetAssociation.demanderSubventionsDons();
     }
 
     public Membre connecterMembre(String pseudo, String motDePasse) {

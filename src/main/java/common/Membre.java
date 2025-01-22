@@ -1,11 +1,11 @@
 package common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import common.notification.NotifEvenement;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
 import common.virement.Virement;
-import org.apache.commons.collections.MultiMap;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     private String motDePasse;
     private String adresse;
     private Date dateDerniereInscription;
-    private List<Notification> notifications;
+    private List<NotifEvenement> notifications;
     private List<Vote> votes;
     private List<Visite> visites;
     @JsonProperty("solde")
@@ -54,7 +54,7 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
 
     @Override
-    public void notify(Notification notification) {
+    public void notify(NotifEvenement notification) {
         notifications.add(notification);
         //todo cadepend de l implementation de  l interface graphgique
     }
@@ -149,22 +149,37 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     @Override
     public ResultatVirement recevoirVirement(Virement v) {
         String description = "";
+        boolean accepte = true;
 
-        if( v.type() == Virement.TypeVirement.DEMANDE_SUBVENTION || v.type() == Virement.TypeVirement.DEMANDE_DONS){
-            demandesRecus.add(v);
-            description = "Demande reçue";
+        switch (v.type()){
+            case DON ->{
+                description = "Don reçu";
+                // traiter pour le recepteur la validation du virement
+                solde += v.montant();
+            }
+            case DEFRAIEMENT ->{
+                description = "Defraiement reçu";
+                // traiter pour le recepteur la validation du virement
+                solde += v.montant();
+            }
+
+            case PAIEMENT_FACTURE, SUBVENTION -> {
+                description = "Impossible de recevoir un paiement ou une subvention";
+                accepte = false;
+            }
+            case DEMANDE_SUBVENTION, DEMANDE_DONS -> {
+                demandesRecus.add(v);
+                description = "Demande reçue";
+            }
+            case COTISATION -> {
+                // un membre ne peut pas recevoir de cotisation
+                description = "Un membre ne peut pas recevoir de cotisation";
+                accepte = false;
+            }
         }
-
-        if( v.type() == Virement.TypeVirement.COTISATION){
-            // un membre ne peut pas recevoir de cotisation
-            return new ResultatVirement(false, "Un membre ne peut pas recevoir de cotisation", v);
-        }
-
-        // traiter pour le recepteur la validation du virement
-        solde += v.montant();
 
         // prevenir l'emetteur du resultat
-        return new ResultatVirement(true, description, v);
+        return new ResultatVirement(accepte, description, v);
     }
 
     public boolean verifierMotDePasse(String motDePasseSaisi) {
