@@ -2,7 +2,10 @@ package com.applications.Vert;
 
 
 import common.Arbre;
+import common.AssociationVert;
 import common.EntityManager;
+import common.ServiceEspaceVert;
+import common.notification.NotifEvenement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -178,6 +181,9 @@ public class ConsultationView {
 
         btnNotif.setOnAction(event -> NotificationView.load());
 
+        ServiceEspaceVert.get().addObserver(AssociationVert.get());
+
+
 
 
 
@@ -241,7 +247,7 @@ public class ConsultationView {
                     }
                     break;
                 case "Remarquable":
-                    if ((arbre.isClassificationRemarquable() ? "oui" : "non").contains(searchText)) {
+                    if ((arbre.isClassificationRemarquable() ? "true" : "false").contains(searchText)) {
                         filteredList.add(arbre);
                     }
                     break;
@@ -269,6 +275,7 @@ public class ConsultationView {
                 alert.setTitle("Abattage");
                 alert.setHeaderText("Arbre abattu");
                 alert.setContentText("L'arbre ID " + selectedArbre.getId() + " a été abattu avec succès.");
+                envoimsg(NotifEvenement.Evenement.ABATTAGE, selectedArbre);
                 alert.showAndWait();
             } else {
                 // Message d'erreur si l'arbre n'a pas pu être supprimé
@@ -300,6 +307,7 @@ public class ConsultationView {
             alert.setTitle("Classification Remarquable");
             alert.setHeaderText("Classification mise à jour");
             alert.setContentText(message);
+            envoimsg(NotifEvenement.Evenement.CLASSIFICATION, selectedArbre);
             alert.showAndWait();
         }
     }
@@ -322,6 +330,10 @@ public class ConsultationView {
         }
     }
 
+    private void envoimsg(NotifEvenement.Evenement event, Arbre arbre){
+        NotifEvenement message = new NotifEvenement("ServiceDesEspacesVerts", event, arbre);
+        ServiceEspaceVert.get().notifyObservers(message);
+    }
 
 
 
