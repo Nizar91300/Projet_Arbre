@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.applications.Membres.CotisationController">
+    <children>
+      <ImageView fitHeight="952.0" fitWidth="1209.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Vue4.jpg" />
+         </image>
+      </ImageView>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1079.0" spacing="20.0">
+            <children>
+            <Label prefHeight="147.0" prefWidth="460.0" text="Cotisez ou faites un Don">
+               <font>
+                  <Font name="System Bold Italic" size="40.0" />
+               </font>
+            </Label>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <Label prefHeight="110.0" prefWidth="162.0" text="Montant :">
+                     <font>
+                        <Font name="System Bold Italic" size="20.0" />
+                     </font></Label>
+                        <TextField fx:id="montantField" prefHeight="61.0" prefWidth="254.0" promptText="Entrer le montant" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Button fx:id="btnCotiser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.88" prefHeight="70.0" prefWidth="200.0" text="Cotiser" />
+                        <Button fx:id="btnDon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.88" prefHeight="70.0" prefWidth="200.0" text="Faire un Don" />
+                    </children>
+                </HBox>
+                <Button fx:id="btnRetour" opacity="0.88" prefHeight="50.0" prefWidth="110.0" text="Retour" />
+            </children>
+        </VBox>
+    </children>
+</StackPane>

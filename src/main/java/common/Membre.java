@@ -187,7 +187,9 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         return new ResultatVirement(accepte, description, v);
     }
 
-
+    public double getSolde() {
+        return solde;
+    }
     public String getAdresse() {
         return adresse;
     }
