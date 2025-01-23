@@ -1,10 +1,7 @@
 package com.applications.Vert;
 
 
-import common.Arbre;
-import common.AssociationVert;
-import common.EntityManager;
-import common.ServiceEspaceVert;
+import common.*;
 import common.notification.NotifEvenement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -134,7 +131,7 @@ public class ConsultationView {
 
         // Colonne coordonneesGPS : utiliser un CellFactory pour afficher la paire sous forme de String
         colGPS.setCellValueFactory(cellData -> {
-            Pair<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
+            Paire<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
             return new javafx.beans.property.SimpleStringProperty(gpsCoord.getKey() + ", " + gpsCoord.getValue());
         });
 

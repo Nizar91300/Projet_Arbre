@@ -80,7 +80,7 @@ public class EntityManager {
                         String stadeDeDeveloppement = line[14];  //[, Adulte, Jeune (arbre), Jeune (arbre)Adulte, Mature]
                         boolean remarquable = fromStringToBoolean(line[15]);   //[, NON, OUI]
                         String[] separateurGps = line[16].split(",");
-                        Pair<Double, Double> coordonneesGps = new Pair<>(Double.parseDouble(separateurGps[0]), Double.parseDouble(separateurGps[1]));
+                        Paire<Double, Double> coordonneesGps = new Paire<>(Double.parseDouble(separateurGps[0]), Double.parseDouble(separateurGps[1]));
                         new Arbre(arbreId, adresseComplet, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, coordonneesGps);
                     }catch (Exception e){
                         e.printStackTrace();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
+import common.Paire;
 import common.notification.NotifNominationArbre;
 import common.notification.NotifReponseNomination;
 import common.notification.Notification;
@@ -169,7 +170,7 @@ public class NotificationView {
         String stade = arbreNode.get("stadeDeDeveloppement").asText();
         boolean classificationRemarquable = arbreNode.get("classificationRemarquable").asBoolean();
         JsonNode coordonneesNode = arbreNode.get("coordonneesGPS");
-        Pair<Double, Double> coordonneesGPS = new Pair<>(coordonneesNode.get("key").asDouble(), coordonneesNode.get("value").asDouble());
+        Paire<Double, Double> coordonneesGPS = new Paire<>(coordonneesNode.get("key").asDouble(), coordonneesNode.get("value").asDouble());
 
         // Créer un nouvel objet Arbre avec les informations extraites
         return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur, stade, classificationRemarquable, coordonneesGPS);

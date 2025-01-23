@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import common.Arbre;
 
 import java.util.Date;
+import java.util.List;
 
 public class NotifEvenement extends Notification {
     @JsonProperty
     Evenement evenementNotification;
     @JsonProperty
     Arbre arbre;
+
+
 
     public enum Evenement {
         PLANTATION,
@@ -33,8 +36,14 @@ public class NotifEvenement extends Notification {
         this.arbre = arbre;
     }
 
+    public NotifEvenement(){
+        super("", "Evenement", new Date());
+        this.evenementNotification = Evenement.PLANTATION;
+        this.arbre = new Arbre();
+    }
 
-    public Arbre getarbre(){
+
+    public Arbre getArbre(){
         return arbre;
     }
     public Date getDateNotification(){

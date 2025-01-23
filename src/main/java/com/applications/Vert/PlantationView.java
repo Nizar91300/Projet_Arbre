@@ -1,6 +1,7 @@
 package com.applications.Vert;
 
 import common.Arbre;
+import common.Paire;
 import common.ServiceEspaceVert;
 import common.notification.NotifEvenement;
 import javafx.fxml.FXML;
@@ -61,7 +62,7 @@ public class PlantationView {
 
             boolean remarquable = false;
             //boolean remarquable = chkRemarquable.isSelected();
-            Pair<Double, Double> coordonnees = parseCoordonnees(txtCoordonnees.getText());
+            Paire<Double, Double> coordonnees = parseCoordonnees(txtCoordonnees.getText());
 
             // Créer un nouvel arbre avec les valeurs saisies
             Arbre arbre = new Arbre(id, adresse, nomCommun, genre, espece, circonference, hauteur, stade, remarquable, coordonnees);
@@ -82,18 +83,18 @@ public class PlantationView {
         }
     }
 
-    private Pair<Double, Double> parseCoordonnees(String coordonnees) {
+    private Paire<Double, Double> parseCoordonnees(String coordonnees) {
         String[] parts = coordonnees.split(",");
         if (parts.length == 2) {
             try {
                 double latitude = Double.parseDouble(parts[0].trim());
                 double longitude = Double.parseDouble(parts[1].trim());
-                return new Pair<>(latitude, longitude);
+                return new Paire<>(latitude, longitude);
             } catch (NumberFormatException e) {
-                return new Pair<>(0.0, 0.0); // Retourner des valeurs par défaut si la conversion échoue
+                return new Paire<>(0.0, 0.0); // Retourner des valeurs par défaut si la conversion échoue
             }
         }
-        return new Pair<>(0.0, 0.0); // Retourner des valeurs par défaut si le format est incorrect
+        return new Paire<>(0.0, 0.0); // Retourner des valeurs par défaut si le format est incorrect
     }
 
     private void fermerFenetre() {

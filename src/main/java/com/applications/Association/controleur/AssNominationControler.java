@@ -8,6 +8,7 @@ import com.applications.Vert.NotificationView;
 import common.Arbre;
 import common.AssociationVert;
 import common.EntityManager;
+import common.Paire;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -76,7 +77,7 @@ public class AssNominationControler {
         colDateRem.setCellValueFactory(new PropertyValueFactory<>("dateClassificationRemarquable"));
         colGPS.setCellValueFactory(new PropertyValueFactory<>("coordonneesGPS"));
         colGPS.setCellValueFactory(cellData -> {
-            Pair<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
+            Paire<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
             return new javafx.beans.property.SimpleStringProperty(gpsCoord.getKey() + ", " + gpsCoord.getValue());
         });
         colNomination.setCellValueFactory(cellData -> {

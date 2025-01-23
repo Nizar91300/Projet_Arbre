@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" spacing="10.0">
+            <children>
+                <HBox prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Button fx:id="btnBackCons" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="BACK">
+                            <HBox.margin>
+                                <Insets left="20.0" top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Text fx:id="titreconsul" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications" textAlignment="CENTER" wrappingWidth="503.3070373535156">
+                            <HBox.margin>
+                                <Insets top="20.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Text>
+                        <TextField fx:id="TextSearch" prefHeight="26.0" prefWidth="97.0">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <ComboBox fx:id="filtre" prefWidth="150.0">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </ComboBox>
+                        <Button fx:id="btnReset" mnemonicParsing="false" text="Reset">
+                            <HBox.margin>
+                                <Insets left="10.0" top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnSearch" mnemonicParsing="false" text="Search">
+                            <HBox.margin>
+                                <Insets left="10.0" top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin>
+                </HBox>
+
+                      <!-- TableView pour les notifications -->
+                <Text fill="WHITE" text="Notifications liés aux evenements " />
+                <TableView fx:id="tabNotiEvenement" prefHeight="400.0" prefWidth="1000.0">
+                    <columns>
+                        <TableColumn fx:id="colEmEvenement" prefWidth="154.0" text="Emetteur" />
+                        <TableColumn fx:id="colTyEvenement" prefWidth="197.0" text="Type d'évènement" />
+                        <TableColumn fx:id="colArbEvenement" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
+                        <TableColumn fx:id="colDateEvenement" minWidth="0.0" prefWidth="281.0" text="Date" />
+                    </columns>
+                </TableView>
+                <Text fill="WHITE" text="Notifications de réponses suite à la demande de nomination" />
+                <TableView fx:id="tabNotiReponseNomination" prefHeight="400.0" prefWidth="1000.0">
+                    <columns>
+                        <TableColumn fx:id="colEmReponse" prefWidth="154.0" text="Emetteur" />
+                        <TableColumn fx:id="colRepReponse" prefWidth="197.0" text="Réponse" />
+                        <TableColumn fx:id="colArbReponse" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
+                        <TableColumn fx:id="colDateReponse" minWidth="0.0" prefWidth="281.0" text="Date" />
+                    </columns>
+                </TableView>
+
+                <!-- Zone de boutons pour accepter ou refuser les notifications -->
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnSupEvenement" mnemonicParsing="false" text="Supprimer un évènement">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                  <Button fx:id="btnSupReponse" mnemonicParsing="false" text="Supprimer une réponse">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

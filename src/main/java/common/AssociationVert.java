@@ -17,7 +17,6 @@ public final class AssociationVert extends Association {
 
     private Membre president;
     private Set<Membre> membres;
-    private List<NotifEvenement> notifications;
     private Set<Vote> votes;
     private HashMap<Arbre,Integer> arbresProposes;
     private List<Visite> visitesEffectuees;
@@ -35,7 +34,6 @@ public final class AssociationVert extends Association {
 
     private AssociationVert() {
         super("Association Vert");
-        notifications = new ArrayList<NotifEvenement>();
         membres = new HashSet<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
@@ -196,8 +194,31 @@ public final class AssociationVert extends Association {
 
     @Override
     public void notify(NotifEvenement notification) {
-        notifications.add(notification);
-        //todo cadepend de l implementation de  l interface graphgique
+        // creer un fichier json correspondant a la notification et le stocker
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            File directory = new File("inbox/association_vert");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            // connaitre le prochain numero de fichier a creer
+            int nextNumber = 1;
+            File[] files = directory.listFiles((dir, name) -> name.startsWith("evenement") && name.endsWith(".json"));
+            if (files != null && files.length > 0) {
+                nextNumber = Arrays.stream(files)
+                        .map(file -> file.getName().replace("evenement", "").replace(".json", ""))
+                        .mapToInt(Integer::parseInt)
+                        .max()
+                        .orElse(0) + 1;
+            }
+
+            File file = new File(directory, "evenement" + nextNumber + ".json");
+
+            objectMapper.writeValue(file, notification);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
     }
 
     // Ajouter un membre

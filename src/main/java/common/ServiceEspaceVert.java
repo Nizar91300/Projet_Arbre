@@ -16,6 +16,7 @@ public class ServiceEspaceVert implements DonateurVert {
 
     private ServiceEspaceVert() {
         observers = new HashSet<>();
+        addObserver(AssociationVert.get());
     }
 
     public void addObserver(ServiceVertObserver observer) {

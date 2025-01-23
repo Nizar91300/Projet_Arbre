@@ -3,6 +3,7 @@ package com.applications.Association.controleur;
 import com.applications.Association.vue.AssMainView;
 import com.applications.Association.vue.AssMembresView;
 import com.applications.Association.vue.AssNominationView;
+import com.applications.Association.vue.AssNotificationView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -34,7 +35,7 @@ public class AssMainControler {
         });
 
         btnNotifications.setOnAction((actionEvent) -> {
-
+            AssNotificationView.load();
         });
     }
 

@@ -17,9 +17,15 @@ public class NotifReponseNomination extends Notification {
         this.arbre = arbre;
     }
 
+    public NotifReponseNomination() {
+        super("", "", new Date());
+        this.reponse = false;
+        this.arbre = new Arbre();
+    }
+
     // getters
-    public boolean getReponse() {
-        return reponse;
+    public String getReponse() {
+        return reponse ? "Acceptée" : "Refusée";
     }
 
     public Arbre getArbre() {

@@ -23,9 +23,6 @@ public class NotifNominationArbre extends Notification{
     }
 
     // Getters
-    public String getEmetteur() {
-        return emetteur;
-    }
 
     public String getTypeNotification() {
         return typeNotification;

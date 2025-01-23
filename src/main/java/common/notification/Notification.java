@@ -15,6 +15,11 @@ public class Notification{
     @JsonProperty
     protected Date dateNotification;
 
+    public enum CategorieNotification{
+        EVENEMENT,
+        REPONSE
+    }
+
     public Notification(String emetteur, String typeNotification, Date dateNotification){
         this.emetteur = emetteur;
         this.typeNotification = typeNotification;
@@ -23,6 +28,14 @@ public class Notification{
 
     public Date getDateNotification() {
         return dateNotification;
+    }
+
+    public String getTypeNotification() {
+        return typeNotification;
+    }
+
+    public String getEmetteur() {
+        return emetteur;
     }
 
 }
