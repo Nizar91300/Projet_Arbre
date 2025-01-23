@@ -5,42 +5,38 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.applications.Membres.CotisationController">
-    <children>
-      <ImageView fitHeight="952.0" fitWidth="1209.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Vue4.jpg" />
-         </image>
-      </ImageView>
-        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1079.0" spacing="20.0">
-            <children>
-            <Label prefHeight="147.0" prefWidth="460.0" text="Cotisez ou faites un Don">
-               <font>
-                  <Font name="System Bold Italic" size="40.0" />
-               </font>
-            </Label>
-                <HBox alignment="CENTER" spacing="10.0">
-                    <children>
-                        <Label prefHeight="110.0" prefWidth="162.0" text="Montant :">
-                     <font>
-                        <Font name="System Bold Italic" size="20.0" />
-                     </font></Label>
-                        <TextField fx:id="montantField" prefHeight="61.0" prefWidth="254.0" promptText="Entrer le montant" />
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER" spacing="20.0">
-                    <children>
-                        <Button fx:id="btnCotiser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.88" prefHeight="70.0" prefWidth="200.0" text="Cotiser" />
-                        <Button fx:id="btnDon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.88" prefHeight="70.0" prefWidth="200.0" text="Faire un Don" />
-                    </children>
-                </HBox>
-                <Button fx:id="btnRetour" opacity="0.88" prefHeight="50.0" prefWidth="110.0" text="Retour" />
-            </children>
-        </VBox>
-    </children>
-</StackPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.applications.Membres.CotisationController">
+   <ImageView fitHeight="879.0" fitWidth="1545.0" layoutX="-10.0" layoutY="-152.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@Vue4.jpg" />
+      </image>
+   </ImageView>
+   <AnchorPane layoutX="340.0" layoutY="246.0" prefHeight="367.0" prefWidth="412.0">
+      <children>
+          <TextField fx:id="montantField" layoutX="71.0" layoutY="84.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="250.0" promptText="Montant" />
+          <Button fx:id="btnCotiser" layoutX="72.0" layoutY="203.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="200" opacity="0.88" prefHeight="30.0" prefWidth="250.0" text="Cotiser (50€)">
+            <font>
+               <Font name="System Bold Italic" size="12.0" />
+            </font>
+         </Button>
+          <Button fx:id="btnDon" layoutX="72.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="200" opacity="0.88" prefHeight="30.0" prefWidth="250.0" text="Faire un Don">
+            <font>
+               <Font name="System Bold Italic" size="12.0" />
+            </font>
+         </Button>
+          <Button fx:id="btnRetour" layoutX="164.0" layoutY="271.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="70.0" onAction="#handleRetour" opacity="0.88" prefHeight="30.0" prefWidth="70.0" text="Back">
+            <font>
+               <Font name="System Bold Italic" size="12.0" />
+            </font>
+         </Button>
+         <Label fx:id="soldeLabel" layoutX="72.0" layoutY="35.0" prefHeight="34.0" prefWidth="246.0" text=" Solde :">
+            <font>
+               <Font name="System Bold Italic" size="14.0" />
+            </font>
+         </Label>
+      </children>
+   </AnchorPane>
+</AnchorPane>

@@ -53,7 +53,10 @@ public class Controller0 {
         Membre membre = AssociationVert.get().connecterMembre(pseudo, motDePasse);
 
         if (membre != null) {
-            // Si la connexion est réussie, ouvrir la vue membre (Vue1.fxml)
+            // Si la connexion est réussie, stocker le membre connecté dans le gestionnaire de session
+            SessionManager.setMembreConnecte(membre);
+
+            // Ouvrir la vue membre (Vue1.fxml)
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Espace Membre");
         } else {
@@ -61,6 +64,7 @@ public class Controller0 {
             labelMessageErreur.setText("Pseudo ou mot de passe incorrect. Veuillez réessayer.");
         }
     }
+
 
 
 

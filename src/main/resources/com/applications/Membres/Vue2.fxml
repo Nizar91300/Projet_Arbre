@@ -25,9 +25,9 @@
             <Font name="System Bold Italic" size="63.0" />
          </font>
       </Text>
-      <Button fx:id="ButtonMenu" layoutX="40.0" layoutY="45.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonMenu" opacity="0.88" prefHeight="50.0" prefWidth="80.0" text="Revenir">
+      <Button fx:id="ButtonMenu" layoutX="26.0" layoutY="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonMenu" opacity="0.88" prefHeight="29.0" prefWidth="69.0" text="Back">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Button>
       <Button fx:id="ButtonInscription" layoutX="467.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleInscription" opacity="0.88" prefHeight="47.0" prefWidth="126.0" text="s'inscrire">
