@@ -259,6 +259,8 @@ public final class AssociationVert extends Association {
         Visite v = new Visite(m,a,date,null);
         visitesPlanifiees.add(v);
 
+        System.out.println("Visite planifiée pour l'arbre " + a.getNomCommun() + " par " + m.getNom() + " " + m.getPrenom());
+
         m.addVisite(v);
     }
 

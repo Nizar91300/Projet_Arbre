@@ -79,7 +79,7 @@ public class MembreController {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
         if (selectedArbre != null) {
             // Logique pour voter
-            association.ajouterVote(new common.Vote(null, selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
+            association.ajouterVote(new common.Vote(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
             showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre sélectionné", "Veuillez sélectionner un arbre pour voter.");
@@ -90,7 +90,7 @@ public class MembreController {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
             // Logique pour planifier une visite
-            association.planifierVisite(null, selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
+            association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
             showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite.");

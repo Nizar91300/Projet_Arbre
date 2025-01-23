@@ -203,6 +203,6 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     }
 
     public boolean verifierMotDePasse(String motDePasse) {
-        return motDePasse.equals(motDePasse);
+        return motDePasse.equals(this.motDePasse);
     }
 }
