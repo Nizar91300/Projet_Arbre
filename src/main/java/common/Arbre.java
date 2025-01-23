@@ -11,6 +11,8 @@ import java.util.TreeSet;
  */
 public class Arbre implements Comparable<Arbre> {
 
+
+
     public enum StadeDeveloppement {UNKOWN, ADULTE, JEUNE, JEUNE_ADULTE, MATURE}
 
     public static TreeSet<Arbre> arbres = new TreeSet<>();
@@ -168,6 +170,13 @@ public class Arbre implements Comparable<Arbre> {
         classificationRemarquable = !classificationRemarquable;
         if(classificationRemarquable)dateClassificationRemarquable = new Date();
         else dateClassificationRemarquable = null;
+    }
+
+    public static Arbre getArbreById(Integer value) {
+        for (Arbre arbre : arbres) {
+            if(arbre.getId() == value) return arbre;
+        }
+        return null;
     }
 
 }

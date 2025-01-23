@@ -81,7 +81,8 @@ public class AssMembresControler {
 
         btnRetirer.setOnAction((actionEvent) -> {
             Membre selectedMembre = table.getSelectionModel().getSelectedItem();
-            //todo
+            AssociationVert.get().supprimerMembre(selectedMembre);
+            AssMembresView.load();
         });
 
         btnVisite.setOnAction((actionEvent) -> {
