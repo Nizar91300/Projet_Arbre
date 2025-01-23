@@ -71,7 +71,7 @@ public class AssNotificationControler {
 
         // Configuration des colonnes de la TableView pour les notifications d'événements
         colEmEvenement.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
-        colTyEvenement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeNotification()));
+        colTyEvenement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvenementNotification().toString()));
         colArbEvenement.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getArbre()));
         colDateEvenement.setCellValueFactory(new PropertyValueFactory<>("dateNotification"));
 
