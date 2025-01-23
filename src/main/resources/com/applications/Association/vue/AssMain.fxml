@@ -4,14 +4,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPnae" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #B0B0B0, #4682B4);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6A0DAD, #FFD700);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22">
     <Button fx:id="btnGestionMembres" layoutX="370.0" layoutY="143.0" prefHeight="107.0" prefWidth="170.0" style="-fx-font-size: 16px; -fx-background-color: #5A5DBD; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Gestion Membres" />
     <Button fx:id="btnGestionVisites" layoutX="670.0" layoutY="470.0" prefHeight="107.0" prefWidth="170.0" style="-fx-font-size: 16px; -fx-background-color: #FFD700; -fx-text-fill: black; -fx-padding: 10px;-fx-background-radius: 50%;" text="Gestion Visites" />
     <Button fx:id="btnNominationArbres" layoutX="630.0" layoutY="161.0" prefHeight="107.0" prefWidth="170" style="-fx-font-size: 16px; -fx-background-color: #4B0082; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Nomination Arbres" />
     <Button fx:id="btnNotifications" layoutX="685.0" layoutY="314.0" prefHeight="107.0" prefWidth="177.0" style="-fx-font-size: 16px; -fx-background-color: #008080; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Notifications" />
-   <Button fx:id="btnFinExercice" layoutX="246.0" layoutY="295.0" prefHeight="252.0" prefWidth="377.0" style="-fx-font-size: 16px; -fx-background-color: #5A5DBD; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Effetuer les actions de fin d'exercice budgétaire">
-      <font>
-         <Font size="10.0" />
-      </font>
-   </Button>
+    <Button fx:id="btnFinExercice" layoutX="246.0" layoutY="295.0" prefHeight="252.0" prefWidth="377.0" style="-fx-font-size: 16px; -fx-background-color: #205D5D; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Effetuer les actions de fin d'exercice budgétaire"/>
 </AnchorPane>

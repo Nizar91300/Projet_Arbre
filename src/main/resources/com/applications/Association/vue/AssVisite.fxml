@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6A0DAD, #FFD700);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" spacing="10.0">
             <children>
@@ -43,25 +43,31 @@
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin></Text>
-                <TableView fx:id="tabNotiEvenement" prefHeight="400.0" prefWidth="1000.0">
+                <TableView fx:id="table1" prefHeight="400.0" prefWidth="1000.0">
                     <columns>
-                        <TableColumn fx:id="colEmEvenement" prefWidth="154.0" text="Membre" />
-                        <TableColumn fx:id="colArbEvenement" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
-                        <TableColumn fx:id="colDateEvenement" minWidth="0.0" prefWidth="281.0" text="Date" />
-                        <TableColumn fx:id="colTyEvenement" prefWidth="197.0" text="Compte rendu" />
+                        <TableColumn fx:id="colMembre1" prefWidth="150.0" text="Membre" />
+                        <TableColumn fx:id="colArbre1" minWidth="0.0" prefWidth="250.0" text="Arbre concerné" />
+                        <TableColumn fx:id="colDate1" minWidth="0.0" prefWidth="150.0" text="Date" />
+                        <TableColumn fx:id="colCompteRendu1" prefWidth="450.0" text="Compte rendu" />
                     </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
                 </TableView>
                 <Text fill="WHITE" text="Visites effectuées">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin></Text>
-            <TableView fx:id="tabNotiEvenement1" prefHeight="400.0" prefWidth="1000.0">
+            <TableView fx:id="table2" prefHeight="400.0" prefWidth="1000.0">
                <columns>
-                  <TableColumn fx:id="colEmEvenement1" prefWidth="154.0" text="Membre" />
-                  <TableColumn fx:id="colArbEvenement1" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
-                  <TableColumn fx:id="colDateEvenement1" minWidth="0.0" prefWidth="281.0" text="Date" />
-                  <TableColumn fx:id="colTyEvenement1" prefWidth="197.0" text="Compte rendu" />
+                  <TableColumn fx:id="colMembre2" prefWidth="150.0" text="Membre" />
+                  <TableColumn fx:id="colArbre2" minWidth="0.0" prefWidth="250.0" text="Arbre concerné" />
+                  <TableColumn fx:id="colDate2" minWidth="0.0" prefWidth="150.0" text="Date" />
+                  <TableColumn fx:id="colCompteRendu2" prefWidth="450.0" text="Compte rendu" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
 
                 <!-- Zone de boutons pour accepter ou refuser les notifications -->

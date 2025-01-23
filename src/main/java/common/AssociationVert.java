@@ -383,5 +383,14 @@ public final class AssociationVert extends Association {
     public Set<Membre> getMembres() {
         return membres;
     }
+
+
+    public List<Visite> getVisitesPlanifiees() {
+        return visitesPlanifiees;
+    }
+
+    public List<Visite> getVisitesEffectuees() {
+        return visitesEffectuees;
+    }
 }
 

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" hgap="10" prefHeight="460.0" prefWidth="350.0" vgap="10" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" hgap="10" prefHeight="460.0" prefWidth="350.0" vgap="10" xmlns="http://javafx.com/javafx/22"  xmlns:fx="http://javafx.com/fxml/1">
 
     <Label text="Nom:" GridPane.rowIndex="1" />
     <Label fx:id="fieldNom" GridPane.columnIndex="1" GridPane.rowIndex="1" />

@@ -17,10 +17,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        // Charger la base de donnée
-
-
-        // Lancer l'application JavaFX
+        // Charger la base de donnée todo
         launch(args);
     }
 }
