@@ -1,10 +1,9 @@
 package com.applications.Association.controleur;
 
-import com.applications.Association.vue.AssMainView;
-import com.applications.Association.vue.AssMembresView;
-import com.applications.Association.vue.AssNominationView;
-import com.applications.Association.vue.AssNotificationView;
+import com.applications.Association.vue.*;
+import common.AssociationVert;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 public class AssMainControler {
@@ -18,6 +17,9 @@ public class AssMainControler {
     @FXML
     public Button btnNotifications;
 
+    @FXML
+    public Button btnFinExercice;
+
 
 
     @FXML
@@ -27,7 +29,7 @@ public class AssMainControler {
         });
 
         btnGestionVisites.setOnAction((actionEvent) -> {
-
+            AssVisiteView.load();
         });
 
         btnNominationArbres.setOnAction((actionEvent) -> {
@@ -37,6 +39,20 @@ public class AssMainControler {
         btnNotifications.setOnAction((actionEvent) -> {
             AssNotificationView.load();
         });
+
+        btnFinExercice.setOnAction((actionEvent) ->{
+            finExercice();
+        });
+    }
+
+    private void finExercice(){
+        AssociationVert.get().finExercice();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin d'exercice budgetaire");
+        alert.setHeaderText(null);
+        alert.setContentText("Les actions de fin d'exercice budgétaire ont été éffectués.");
+        alert.showAndWait();
     }
 
 

@@ -9,6 +9,7 @@ import common.Arbre;
 import common.notification.NotifEvenement;
 import common.notification.Notification;
 import common.notification.NotifReponseNomination;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -43,7 +44,7 @@ public class AssNotificationControler {
     @FXML
     private TableColumn<NotifReponseNomination, String> colEmReponse;
     @FXML
-    private TableColumn<NotifReponseNomination, String> colRepReponse;
+    private TableColumn<NotifReponseNomination, Boolean> colRepReponse;
     @FXML
     private TableColumn<NotifReponseNomination, Arbre> colArbReponse;
     @FXML
@@ -76,7 +77,7 @@ public class AssNotificationControler {
 
         // Configuration des colonnes de la TableView pour les réponses de nomination
         colEmReponse.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
-        colRepReponse.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReponse()));
+        colRepReponse.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().getReponse()));
         colArbReponse.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getArbre()));
         colDateReponse.setCellValueFactory(new PropertyValueFactory<>("dateNotification"));
 
@@ -245,7 +246,7 @@ public class AssNotificationControler {
                     matchesFilter = message.getEmetteur().contains(TextSearch.getText());
                     break;
                 case "Reponse":
-                    matchesFilter = message.getReponse().contains(TextSearch.getText());
+                    matchesFilter = String.valueOf(message.getReponse()).contains(TextSearch.getText());
                     break;
                 case "Arbre concerné":
                     String arbreIdString = String.valueOf(message.getArbre().getId()).trim();

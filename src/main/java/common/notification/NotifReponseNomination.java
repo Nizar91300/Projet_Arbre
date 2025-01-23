@@ -24,8 +24,8 @@ public class NotifReponseNomination extends Notification {
     }
 
     // getters
-    public String getReponse() {
-        return reponse ? "Acceptée" : "Refusée";
+    public boolean getReponse(){
+        return reponse;
     }
 
     public Arbre getArbre() {

@@ -321,8 +321,11 @@ public final class AssociationVert extends Association {
     private void revocationMembresNonCotises() {
         List<Cotisation> cotisations = budgetAssociation.getCotisationsRecues();
 
-        for(Membre m : membres) {
+        Iterator<Membre> iterator = membres.iterator();
+        while (iterator.hasNext()) {
+            Membre m = iterator.next();
             if(cotisations.stream().noneMatch(c -> c.membre().equals(m))) {
+                iterator.remove();
                 supprimerMembre(m);
             }
         }

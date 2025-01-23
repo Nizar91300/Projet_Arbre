@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="paneCons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #50dfff, #f30606);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" spacing="10.0">
+            <children>
+                <HBox prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Back">
+                            <HBox.margin>
+                                <Insets left="20.0" top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Text fx:id="titreconsul" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Visites" textAlignment="CENTER" wrappingWidth="906.3070373535156">
+                            <HBox.margin>
+                                <Insets top="20.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin>
+                </HBox>
+
+                      <!-- TableView pour les notifications -->
+                <Text fill="WHITE" text="Visites Planifiées">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Text>
+                <TableView fx:id="tabNotiEvenement" prefHeight="400.0" prefWidth="1000.0">
+                    <columns>
+                        <TableColumn fx:id="colEmEvenement" prefWidth="154.0" text="Membre" />
+                        <TableColumn fx:id="colArbEvenement" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
+                        <TableColumn fx:id="colDateEvenement" minWidth="0.0" prefWidth="281.0" text="Date" />
+                        <TableColumn fx:id="colTyEvenement" prefWidth="197.0" text="Compte rendu" />
+                    </columns>
+                </TableView>
+                <Text fill="WHITE" text="Visites effectuées">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Text>
+            <TableView fx:id="tabNotiEvenement1" prefHeight="400.0" prefWidth="1000.0">
+               <columns>
+                  <TableColumn fx:id="colEmEvenement1" prefWidth="154.0" text="Membre" />
+                  <TableColumn fx:id="colArbEvenement1" minWidth="0.0" prefWidth="440.0" text="Arbre concerné" />
+                  <TableColumn fx:id="colDateEvenement1" minWidth="0.0" prefWidth="281.0" text="Date" />
+                  <TableColumn fx:id="colTyEvenement1" prefWidth="197.0" text="Compte rendu" />
+               </columns>
+            </TableView>
+
+                <!-- Zone de boutons pour accepter ou refuser les notifications -->
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <VBox.margin>
+                        <Insets left="20.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>
