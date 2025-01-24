@@ -84,69 +84,52 @@ public class NotificationView {
         filtre.getItems().addAll("Tous", "Emetteur", "Type", "Arbre concerné", "Date");
         filtre.getSelectionModel().select("Tous");
 
-        //Methode pour load tous nos fichiers
+        //Methode pour load tous nos fichiers lié aux notifications
         loadtouslesfichiers();
 
 
 
         // Action du bouton "Retour"
         btnBackCons.setOnAction(event -> ConsultationView.load());
-
         // Action du bouton "Search"
         btnSearch.setOnAction(event -> filterNotifications());
-
         // Initialiser l'écouteur de la comboBox sans appliquer immédiatement le filtre
         filtre.setOnAction(event -> {
             // Ne rien faire ici pour ne pas filtrer immédiatement
         });
-
         // Action du bouton "Reset"
         btnReset.setOnAction(event -> resetFilters());
-
         btnSup.setOnAction(event -> supprimerNotification(false));
         btnAccepter.setOnAction(event -> supprimerNotification(true));
     }
 
+    //Méthode pour charger un fichier json
     private void loadMessagesFromFile(String filePath) {
         try {
             // Lire le fichier JSON et désérialiser les notifications
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(new FileReader(filePath));
 
-            // Affichage du contenu du JSON pour le débogage
-            System.out.println("Contenu du fichier JSON : " + rootNode.toString());
-
             if (rootNode.isObject()) {
                 // Récupérer l'émetteur
                 String emetteur = rootNode.get("emetteur").asText();
-                System.out.println("Émetteur: " + emetteur);
-
                 // Récupérer le type de message
                 String typeMessage = rootNode.get("typeNotification").asText();
-                System.out.println("Type de message: " + typeMessage);
-
                 // Récupérer la liste des arbres
                 JsonNode arbresNode = rootNode.get("arbres");
-                System.out.println("Nombre d'arbres: " + arbresNode.size());
-
 
                 // Mapper chaque arbre et créer une notification
                 for (JsonNode arbreNode : arbresNode) {
-                    // Mapper l'arbre
                     Arbre arbre = mapJsonToArbre(arbreNode);
                     List<Arbre> arbres = new ArrayList<>();
                     arbres.add(arbre);
-
                     // Créer une notification pour chaque arbre
                     NotifNominationArbre notification = new NotifNominationArbre( arbres);
-
-
                     // Ajouter la notification à la liste
                     messages.add(notification);
                 }
 
-                // Vérifier le nombre de notifications chargées
-                System.out.println("messages chargées : " + messages.size());
+
             } else {
                 System.out.println("Le fichier JSON n'est pas dans le bon format.");
             }
@@ -176,9 +159,6 @@ public class NotificationView {
         return new Arbre(id, adresseAcces, nomCommun, genre, espece, circonference, hauteur, stade, classificationRemarquable, coordonneesGPS);
     }
 
-
-
-
     // Afficher une alerte d'erreur
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -201,6 +181,7 @@ public class NotificationView {
 
     }
 
+    //Méthode pour load les fichiers dans inbox/espaces_verts
     private void loadtouslesfichiers() {
         // Chemin du dossier à parcourir
         String folderPath = "inbox/espaces_verts";

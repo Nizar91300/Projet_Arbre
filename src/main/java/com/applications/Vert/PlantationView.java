@@ -15,8 +15,7 @@ public class PlantationView {
     private TextField txtId, txtAdresse, txtNomCommun, txtGenre, txtEspece, txtCirconference, txtHauteur, txtCoordonnees;
     @FXML
     private ComboBox<String> cmbStade;
-    //@FXML
-    //private CheckBox chkRemarquable;
+
     @FXML
     private Button btnAjouter, btnAnnuler;
 
@@ -30,21 +29,14 @@ public class PlantationView {
                 "Mature",
                 "UNKOWN"
         );
-
-        // Initialiser la ComboBox avec les stades de développement possibles
-        //cmbStade.getItems().addAll("UNKOWN", "ADULTE", "JEUNE", "JEUNE_ADULTE", "MATURE");
-
         // Action du bouton Ajouter
         btnAjouter.setOnAction(event -> ajouterArbre());
-
         // Action du bouton Annuler
         btnAnnuler.setOnAction(event -> fermerFenetre());
     }
 
     private void ajouterArbre() {
         try {
-            // Récupérer les valeurs des champs
-            //int id = Integer.parseInt(txtId.getText());
             int id = Arbre.arbres.size() + 1;
             String adresse = txtAdresse.getText();
             String nomCommun = txtNomCommun.getText();
@@ -69,7 +61,6 @@ public class PlantationView {
             envoimsg(NotifEvenement.Evenement.PLANTATION,arbre);
             // Fermer la fenêtre
             fermerFenetre();
-
             // Mettre à jour la vue de consultation si nécessaire
             ConsultationView.load();
 
@@ -82,7 +73,7 @@ public class PlantationView {
             alert.showAndWait();
         }
     }
-
+    //Méthode pour transformer un string en paire de Double pour Coor GPS
     private Paire<Double, Double> parseCoordonnees(String coordonnees) {
         String[] parts = coordonnees.split(",");
         if (parts.length == 2) {
@@ -101,15 +92,6 @@ public class PlantationView {
         // Fermer la fenêtre de plantation
         Stage stage = (Stage) btnAnnuler.getScene().getWindow();
         stage.close();
-    }
-
-    private boolean isValidStadeDeDeveloppement(String stade) {
-        for (Arbre.StadeDeveloppement value : Arbre.StadeDeveloppement.values()) {
-            if (value.name().equalsIgnoreCase(stade)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void envoimsg(NotifEvenement.Evenement event, Arbre arbre){
