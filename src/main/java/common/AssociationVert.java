@@ -254,7 +254,7 @@ public final class AssociationVert extends Association {
 
         // verifier si quelqu'un d'autre n'a pas deja planifié une visite
         for(Visite v : visitesPlanifiees) {
-            if(v.arbre().equals(a))  return ;
+            if(v.getArbre().equals(a))  return ;
         }
         Visite v = new Visite(m,a,date,null);
         visitesPlanifiees.add(v);
@@ -265,7 +265,7 @@ public final class AssociationVert extends Association {
     // rendre compte d'une visite
     public void rendreCompteVisite(Membre m, Arbre a, String compteRendu) {
         visitesPlanifiees.stream()
-                .filter(v -> v.arbre().equals(a) && v.membre().equals(m))  // Vérifie que la visite correspond à l'arbre et au membre
+                .filter(v -> v.getArbre().equals(a) && v.getMembre().equals(m))  // Vérifie que la visite correspond à l'arbre et au membre
                 .findFirst()  // Récupérer la première correspondance
                 .ifPresent(v -> {
                     visitesPlanifiees.remove(v);  // Retirer la visite de la liste des visites planifiées
@@ -392,5 +392,7 @@ public final class AssociationVert extends Association {
     public List<Visite> getVisitesEffectuees() {
         return visitesEffectuees;
     }
+
+
 }
 

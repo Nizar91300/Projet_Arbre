@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import common.Membre;
 
 public class MembreController {
 
@@ -51,6 +52,8 @@ public class MembreController {
 
     private AssociationVert association = AssociationVert.get();
 
+    private  Membre membreCourant = SessionManager.getMembreConnecte();
+
     @FXML
     private void initialize() {
         // Configuration des colonnes de la table
@@ -77,25 +80,25 @@ public class MembreController {
 
     private void handleVoter() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-        if (selectedArbre != null) {
-            // Logique pour voter
-            association.ajouterVote(new common.Vote(null, selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
+        if (selectedArbre != null && membreCourant != null) {
+            association.ajouterVote(new common.Vote(membreCourant, selectedArbre, new java.util.Date()));
             showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Aucun arbre sélectionné", "Veuillez sélectionner un arbre pour voter.");
+            showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre pour voter et être connecté.");
         }
     }
 
+
     private void handlePlanifierVisite() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-        if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
-            // Logique pour planifier une visite
-            association.planifierVisite(null, selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
+        if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
+            association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
             showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Aucun arbre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite.");
+            showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite et être connecté.");
         }
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);

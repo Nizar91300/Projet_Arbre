@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.applications.Membres.Vue5"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.applications.Membres.VisitesController" spacing="15" alignment="CENTER" prefWidth="600" prefHeight="500">
+    <Label text="Gestion des Visites et Comptes Rendus" style="-fx-font-size: 20px;"/>
 
-</AnchorPane>
+    <TabPane tabClosingPolicy="UNAVAILABLE">
+        <!-- Onglet : Visites à Venir -->
+        <Tab text="Visites à Venir">
+            <VBox spacing="10">
+                <TableView fx:id="tableVisitesAvenir">
+                    <columns>
+                        <TableColumn fx:id="colDateAvenir" text="Date"/>
+                        <TableColumn fx:id="colArbreAvenir" text="Arbre"/>
+                        <TableColumn fx:id="colLieuAvenir" text="Lieu"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Onglet : Visites Effectuées -->
+        <Tab text="Visites Effectuées">
+            <VBox spacing="10">
+                <TableView fx:id="tableVisitesEffectuees">
+                    <columns>
+                        <TableColumn fx:id="colDateEffectuee" text="Date"/>
+                        <TableColumn fx:id="colArbreEffectuee" text="Arbre"/>
+                        <TableColumn fx:id="colCompteRendu" text="Compte Rendu"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+    </TabPane>
+
+    <HBox spacing="10">
+        <Button text="Ajouter Compte Rendu" onAction="#handleAjouterCompteRendu"/>
+        <Button text="Retour" onAction="#handleRetour"/>
+    </HBox>
+</VBox>
