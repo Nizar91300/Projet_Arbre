@@ -129,7 +129,7 @@ public class ConsultationView {
         colDateRem.setCellValueFactory(new PropertyValueFactory<>("dateClassificationRemarquable"));
         colGPS.setCellValueFactory(new PropertyValueFactory<>("coordonneesGPS"));
 
-        // Colonne coordonneesGPS : utiliser un CellFactory pour afficher la paire sous forme de String
+        // CellFactory pour afficher la paire(GPS) sous forme de String
         colGPS.setCellValueFactory(cellData -> {
             Paire<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
             return new javafx.beans.property.SimpleStringProperty(gpsCoord.getKey() + ", " + gpsCoord.getValue());
@@ -139,7 +139,7 @@ public class ConsultationView {
         // Charger les données dans le tableau
         loadTableData();
 
-
+        //Pour revenir au menu
         btnBackMenu.setOnAction((actionEvent) -> {
             MenuView.load();
         });
@@ -173,11 +173,10 @@ public class ConsultationView {
         // Configurer les actions des boutons
         btnAbattre.setOnAction(event -> handleAbattage());
         btnClassifier.setOnAction(event -> handleClassificationRemarquable());
-
         btnPlante.setOnAction(event -> handlePlantation());
-
         btnNotif.setOnAction(event -> NotificationView.load());
 
+        //Ajout de AssociationVert à notre ensemble
         ServiceEspaceVert.get().addObserver(AssociationVert.get());
 
 
@@ -187,6 +186,7 @@ public class ConsultationView {
 
     }
 
+    //Méthode pour charger la liste d'arbres
     private void loadTableData() {
         EntityManager.get();
         ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres);
@@ -194,7 +194,7 @@ public class ConsultationView {
     }
 
 
-
+    //Méthode pour effectuer la recherche
     private void performSearch() {
         String selectedFilter = String.valueOf(filtre.getValue()); // Récupère la colonne choisie
         String searchText = TextSearch.getText().toLowerCase(); // Texte de recherche (minuscule pour comparaison)
@@ -257,6 +257,7 @@ public class ConsultationView {
         tabCons.setItems(filteredList);
     }
 
+    //Méthode pour l'abattage
     private void handleAbattage() {
         // Récupérer l'arbre sélectionné
         Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
@@ -285,6 +286,7 @@ public class ConsultationView {
         }
     }
 
+    //Méthode pour la classification
     private void handleClassificationRemarquable() {
         // Récupérer l'arbre sélectionné
         Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
@@ -309,6 +311,7 @@ public class ConsultationView {
         }
     }
 
+    //Méthode pour la classification
     @FXML
     private void handlePlantation() {
         try {
@@ -327,19 +330,10 @@ public class ConsultationView {
         }
     }
 
+    //Méthode pour envoyer un message lorsque l'on effectue une action sur un arbre
     private void envoimsg(NotifEvenement.Evenement event, Arbre arbre){
         NotifEvenement message = new NotifEvenement("ServiceDesEspacesVerts", event, arbre);
         ServiceEspaceVert.get().notifyObservers(message);
     }
-
-
-
-
-
-
-
-
-
-
 }
 

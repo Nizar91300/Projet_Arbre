@@ -52,23 +52,11 @@ public class MenuView  {
 
     @FXML
     public void initialize() {
-
         btnBienvenue.setOnAction((actionEvent) -> {
             ConsultationView.load();
         });
-
-
         //image Background
         Image imProfile = new Image(getClass().getResourceAsStream("/com/applications/Vert/street-with-trees.jpg"));
         imageBackground.setImage(imProfile);
-
     }
-
-
-
-
-
-
-
-
 }

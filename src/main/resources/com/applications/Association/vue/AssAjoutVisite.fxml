@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" hgap="10" prefHeight="460.0" prefWidth="350.0" vgap="10" xmlns="http://javafx.com/javafx/22"  xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" alignment="CENTER" hgap="10" prefHeight="460.0" prefWidth="350.0" vgap="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <Label text="Nom:" GridPane.rowIndex="1" />
     <Label fx:id="fieldNom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -17,7 +17,7 @@
     <Label fx:id="fieldPrenom" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
     <Label text="arbre (id):" GridPane.rowIndex="3" />
-    <TextField fx:id="fieldAdresse" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   <ComboBox fx:id="cboxId" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
     <Label text="Date de visite:" GridPane.rowIndex="4" />
     <DatePicker fx:id="gridDate" GridPane.columnIndex="1" GridPane.rowIndex="4" />

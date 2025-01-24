@@ -80,8 +80,14 @@ public class MembreController {
 
     private void handleVoter() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
+<<<<<<< HEAD
         if (selectedArbre != null && membreCourant != null) {
             association.ajouterVote(new common.Vote(membreCourant, selectedArbre, new java.util.Date()));
+=======
+        if (selectedArbre != null) {
+            // Logique pour voter
+            association.ajouterVote(new common.Vote(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
+>>>>>>> 21d043a66d420ab7553f557f19231b179549c7f6
             showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre pour voter et être connecté.");
@@ -91,8 +97,14 @@ public class MembreController {
 
     private void handlePlanifierVisite() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
+<<<<<<< HEAD
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
             association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
+=======
+        if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
+            // Logique pour planifier une visite
+            association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
+>>>>>>> 21d043a66d420ab7553f557f19231b179549c7f6
             showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite et être connecté.");
