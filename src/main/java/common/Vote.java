@@ -15,7 +15,7 @@ public record Vote(Membre membre, Arbre arbre, Date dateVote) {
 
     public void saveToJson(){
 
-        String fileName = "vote_"+ new Date().getTime() + ".json";
+        String fileName = "vote_"+ arbre.getId() +"_"+ dateVote.getTime() + ".json";
         String folderPath = "./database/membres/" + membre.getPseudo();
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode voteJson = mapper.createObjectNode();

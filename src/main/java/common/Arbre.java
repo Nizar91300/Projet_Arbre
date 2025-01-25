@@ -1,10 +1,12 @@
 package common;
 
-import javafx.util.Pair;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.TreeSet;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * represente l objet arbre. deux arbres avec un meme id sont egales. le treeset nous aide a garantir l unicité des ids
@@ -14,7 +16,7 @@ public class Arbre implements Comparable<Arbre> {
 
 
     public enum StadeDeveloppement {UNKOWN, ADULTE, JEUNE, JEUNE_ADULTE, MATURE}
-    public static TreeSet<Arbre> arbres = new TreeSet<>();
+    public static TreeMap<Integer,Arbre> arbres = new TreeMap<>();
     private final int id;
     private final String adresseAcces;
     private final String nomCommun;
@@ -39,7 +41,7 @@ public class Arbre implements Comparable<Arbre> {
         this.classificationRemarquable = (classificationRemarquable);
         this.dateClassificationRemarquable = null;
         this.coordonneesGPS = coordonneesGPS;
-        arbres.add(this);
+        arbres.put(id,this);
     }
 
     public Arbre(){
@@ -75,13 +77,13 @@ public class Arbre implements Comparable<Arbre> {
         if (stade == null || stade.isBlank()) {
             return StadeDeveloppement.UNKOWN;
         }
-        switch (stade.toLowerCase()) {
-            case "adulte": return StadeDeveloppement.ADULTE;
-            case "jeune (arbre)": return StadeDeveloppement.JEUNE;
-            case "jeune (arbre)adulte": return StadeDeveloppement.JEUNE_ADULTE;
-            case "mature": return StadeDeveloppement.MATURE;
-            default: return StadeDeveloppement.UNKOWN;
-        }
+        return switch (stade.toLowerCase()) {
+            case "adulte" -> StadeDeveloppement.ADULTE;
+            case "jeune (arbre)" -> StadeDeveloppement.JEUNE;
+            case "jeune (arbre)adulte" -> StadeDeveloppement.JEUNE_ADULTE;
+            case "mature" -> StadeDeveloppement.MATURE;
+            default -> StadeDeveloppement.UNKOWN;
+        };
     }
 
     // Getter pour l'id
@@ -139,14 +141,6 @@ public class Arbre implements Comparable<Arbre> {
         return coordonneesGPS;
     }
 
-    public boolean ajouterArbre(Arbre arbre) {
-        return arbres.add(arbre);
-    }
-
-    public boolean retirerArbre(Arbre arbre) {
-        return arbres.remove(arbre);
-    }
-
     public void inverserClassificationRemarquable() {
         classificationRemarquable = !classificationRemarquable;
         if(classificationRemarquable)dateClassificationRemarquable = new Date();
@@ -154,8 +148,58 @@ public class Arbre implements Comparable<Arbre> {
     }
 
     public static Arbre getArbreById(Integer value) {
-        for (Arbre arbre : arbres) {if(arbre.getId() == value) return arbre;}
-        return null;
+        return arbres.getOrDefault(value,null);
     }
+
+
+    public boolean deleteJson(){
+        return new File(id+".json").delete();
+    }
+
+
+    public void saveToJson(){
+        String fileName = id + ".json";
+        String folderPath = "./database/arbres";
+        ObjectMapper mapper = new ObjectMapper();
+        File fichier = new File(folderPath, fileName);
+        try {
+            mapper.writeValue(fichier, this);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
+    public static void readArbresFromJson() {
+        String folderPath = "./database/arbres";
+        File folder = new File(folderPath);
+
+        if (folder.exists() && folder.isDirectory()) {
+            for (File file : Objects.requireNonNull(folder.listFiles())) {
+                if (file.isFile()) {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        Arbre arbre = mapper.readValue(file, Arbre.class);
+                        arbres.put(arbre.id,arbre);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            System.out.println("Le chemin spécifié n'est pas un dossier ou n'existe pas.");
+        }
+    }
+
+    public static Arbre readFromJson(int id) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("./database/arbres/"+id+".json");
+            return mapper.readValue(file, Arbre.class);
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

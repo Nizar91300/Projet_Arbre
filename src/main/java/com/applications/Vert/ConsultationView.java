@@ -142,7 +142,7 @@ public class ConsultationView {
         // Configurer le bouton de recherche
         btnSearch.setOnAction(event -> performSearch());
         btnReset.setOnAction( event -> {
-            tabCons.setItems(FXCollections.observableArrayList(Arbre.arbres)); // Réinitialise les données
+            tabCons.setItems(FXCollections.observableArrayList(Arbre.arbres.values())); // Réinitialise les données
             TextSearch.clear(); // Vide le champ de recherche
             filtre.getSelectionModel().selectFirst(); // Réinitialise la ComboBox
         });
@@ -170,7 +170,7 @@ public class ConsultationView {
     //Méthode pour charger la liste d'arbres
     private void loadTableData() {
         EntityManager.get();
-        ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres);
+        ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres.values());
         tabCons.setItems(arbresList);
     }
 
@@ -182,7 +182,7 @@ public class ConsultationView {
 
         // Filtrer les arbres selon la colonne choisie et le texte de recherche
         ObservableList<Arbre> filteredList = FXCollections.observableArrayList();
-        for (Arbre arbre : Arbre.arbres) {
+        for (Arbre arbre : Arbre.arbres.values()) {
             switch (selectedFilter) {
                 case "ID":
                     if (String.valueOf(arbre.getId()).contains(searchText)) {
@@ -244,7 +244,7 @@ public class ConsultationView {
         Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
         if (selectedArbre != null) {
             // Supprimer l'arbre via la méthode retirerArbre
-            boolean removed = Arbre.arbres.remove(selectedArbre);
+            boolean removed = Arbre.arbres.remove(selectedArbre.getId())==null;
             if (removed) {
                 // Supprimer également de l'affichage
                 tabCons.getItems().remove(selectedArbre);

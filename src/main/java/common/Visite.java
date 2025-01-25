@@ -19,7 +19,7 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
 
     public void saveToJson(){
 
-        String fileName = "visite_"+ new Date().getTime() + ".json";
+        String fileName = "visite_"+ arbre.getId() +"_"+ date.getTime() + ".json";
         String folderPath = "./database/membres/" + membre.getPseudo();
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode visiteJson = mapper.createObjectNode();

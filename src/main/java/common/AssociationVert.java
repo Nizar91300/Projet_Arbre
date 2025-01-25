@@ -94,7 +94,7 @@ public final class AssociationVert extends Association {
         Random random = new Random();
         for (int i = 0; i < 100; i++) {
             Membre membre = membres.values().stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
-            Arbre arbre = Arbre.arbres.stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
+            Arbre arbre = Arbre.arbres.values().stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
             ajouterVote(new Vote(membre, arbre, new Date()));
         }
 
@@ -108,7 +108,7 @@ public final class AssociationVert extends Association {
     private void loadVisites() {
         Random random = new Random();
 
-        List<Arbre> arbresRemarquables = Arbre.arbres.stream()
+        List<Arbre> arbresRemarquables = Arbre.arbres.values().stream()
                 .filter(Arbre::isClassificationRemarquable)  // Filtrer uniquement les arbres remarquables
                 .toList();
 
@@ -222,6 +222,7 @@ public final class AssociationVert extends Association {
     // Supprimer un membre
     public boolean supprimerMembre(Membre membre) {
         membres.remove(membre.getPseudo());
+        EntityManager.deleteDirectory("./database/membres/"+membre.getPseudo());
         return true;
     }
 
@@ -248,10 +249,11 @@ public final class AssociationVert extends Association {
         //verifier si l arbre est remarquable
         if(!arbre.isClassificationRemarquable())    return;
         // verifier si quelqu'un d'autre n'a pas deja planifié une visite
-        for(Visite v : visitesPlanifiees) {if(v.arbre().equals(arbre))  return ;}
-        Visite v = new Visite(membre,arbre,date,null);
-        visitesPlanifiees.add(v);
-        membre.addVisite(v);
+        for(Visite visite : visitesPlanifiees) {if(visite.arbre().equals(arbre))  return ;}
+        Visite visite = new Visite(membre,arbre,date,null);
+        visite.saveToJson();
+        visitesPlanifiees.add(visite);
+        membre.addVisite(visite);
     }
 
 

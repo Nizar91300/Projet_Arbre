@@ -9,6 +9,8 @@ import javafx.util.Pair;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,7 +48,7 @@ public class EntityManager {
 
         int i = 0;
         // Inverser la classification remarquable pour les arbres sélectionnés
-        for (Arbre arbre : Arbre.arbres) {
+        for (Arbre arbre : Arbre.arbres.values()) {
             if (indices.contains(i)) {
                 arbre.inverserClassificationRemarquable();
             }
@@ -108,6 +110,31 @@ public class EntityManager {
                 return false;
             default:
                 throw new IllegalArgumentException("Valeur inconnue : " + value);
+        }
+    }
+
+
+    /**
+\     *a function that deletes a directory
+     */
+    public static void deleteDirectory(String path) {
+        try {
+            Path directory = Paths.get(path);
+            Files.walkFileTree(directory, new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file); // Delete each file
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.delete(dir); // Delete the directory after its contents are deleted
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

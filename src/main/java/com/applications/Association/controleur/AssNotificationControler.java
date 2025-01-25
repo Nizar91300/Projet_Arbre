@@ -28,10 +28,8 @@ import java.util.List;
 public class AssNotificationControler {
     @FXML
     private TableView<NotifEvenement> tabNotiEvenement;
-
     @FXML
     private TableView<NotifReponseNomination> tabNotiReponseNomination;
-
     @FXML
     private TableColumn<NotifEvenement, String> colEmEvenement;
     @FXML
@@ -40,7 +38,6 @@ public class AssNotificationControler {
     private TableColumn<NotifEvenement, Arbre> colArbEvenement;
     @FXML
     private TableColumn<NotifReponseNomination, Date> colDateEvenement;
-
     @FXML
     private TableColumn<NotifReponseNomination, String> colEmReponse;
     @FXML
@@ -52,7 +49,6 @@ public class AssNotificationControler {
 
     private final ObservableList<NotifEvenement> messagesEvenement = FXCollections.observableArrayList();
     private final ObservableList<NotifReponseNomination> messagesReponse = FXCollections.observableArrayList();
-
     @FXML
     private ComboBox<String> filtre;
 
@@ -67,48 +63,37 @@ public class AssNotificationControler {
 
     @FXML
     public void initialize() {
-        notifFile = new HashMap<>();
 
+        notifFile = new HashMap<>();
         // Configuration des colonnes de la TableView pour les notifications d'événements
         colEmEvenement.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
         colTyEvenement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvenementNotification().toString()));
         colArbEvenement.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getArbre()));
         colDateEvenement.setCellValueFactory(new PropertyValueFactory<>("dateNotification"));
-
         // Configuration des colonnes de la TableView pour les réponses de nomination
         colEmReponse.setCellValueFactory(new PropertyValueFactory<>("emetteur"));
         colRepReponse.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().getReponse()));
         colArbReponse.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getArbre()));
         colDateReponse.setCellValueFactory(new PropertyValueFactory<>("dateNotification"));
-
         tabNotiEvenement.setItems(messagesEvenement);
         tabNotiReponseNomination.setItems(messagesReponse);
-
         // Ajouter des filtres
         filtre.getItems().addAll("Tous", "Emetteur", "Type", "Arbre concerné", "Date", "Reponse");
         filtre.getSelectionModel().select("Tous");
-
         //Methode pour load tous nos fichiers
         loadtouslesfichiers();
 
-
-
         // Action du bouton "Retour"
         btnBackCons.setOnAction(event -> AssMainView.load());
-
         // Action du bouton "Search"
         btnSearch.setOnAction(event -> filterNotifications());
-
         // Initialiser l'écouteur de la comboBox sans appliquer immédiatement le filtre
         filtre.setOnAction(event -> {
             // Ne rien faire ici pour ne pas filtrer immédiatement
         });
-
         // Action du bouton "Reset"
         btnReset.setOnAction(event -> resetFilters());
-
         btnSupEvenement.setOnAction(event -> supprimerNotification(Notification.CategorieNotification.EVENEMENT));
-
         btnSupReponse.setOnAction(event -> supprimerNotification(Notification.CategorieNotification.REPONSE));
     }
 

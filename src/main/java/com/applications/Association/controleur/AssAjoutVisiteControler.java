@@ -49,7 +49,7 @@ public class AssAjoutVisiteControler {
     }
 
     private void loadComboBox(){
-        var arbres = Arbre.arbres;
+        var arbres = Arbre.arbres.values();
 
         for (Arbre arbre : arbres) {
             cboxId.getItems().add(arbre.getId());
@@ -63,22 +63,22 @@ public class AssAjoutVisiteControler {
         }
 
         var arbre = Arbre.getArbreById(cboxId.getValue());
-        var date = gridDate.getValue();
+        var tmpDate = gridDate.getValue();
 
         if(arbre == null){
             labelError.setText("Arbre introuvable");
             return;
         }
 
-        if(date.isAfter(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())){
+        if(tmpDate.isBefore(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())){
             labelError.setText("Date invalide");
             return;
         }
 
         // convert LocalDate to Date
-        Date d = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(tmpDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        AssociationVert.get().planifierVisite(membre, arbre, d);
+        AssociationVert.get().planifierVisite(membre, arbre, date);
 
         Stage stage = (Stage) btnAjouter.getScene().getWindow();
         stage.close();
