@@ -66,7 +66,7 @@ public class VisitesController {
             // Ouvre une boîte de dialogue pour saisir le compte rendu
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Ajouter un Compte Rendu");
-            dialog.setHeaderText("Ajouter un compte rendu pour l'arbre : " + selectedVisite.getArbre().getNomCommun());
+            dialog.setHeaderText("Ajouter un compte rendu pour l'arbre : " + selectedVisite.arbre().getNomCommun());
             dialog.setContentText("Compte Rendu :");
 
             dialog.showAndWait().ifPresent(compteRendu -> {

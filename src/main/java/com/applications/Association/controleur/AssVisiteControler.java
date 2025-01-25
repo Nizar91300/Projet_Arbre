@@ -41,44 +41,44 @@ public class AssVisiteControler {
     public void initialize() {
         //table 1 ________
         colMembre1.setCellValueFactory(cellData -> {
-            Membre membre = cellData.getValue().getMembre();
+            Membre membre = cellData.getValue().membre();
             if(membre!=null) return new javafx.beans.property.SimpleStringProperty(membre.getNom()+" "+membre.getPrenom());
             else return new javafx.beans.property.SimpleStringProperty("");
         });
         colArbre1.setCellValueFactory(cellData -> {
-            Arbre arbre = cellData.getValue().getArbre();
+            Arbre arbre = cellData.getValue().arbre();
             if(arbre!=null) return new javafx.beans.property.SimpleStringProperty(arbre.getId()+" "+arbre.getNomCommun()+" "+arbre.getAdresseAcces());
             else return new javafx.beans.property.SimpleStringProperty("");
         });
         colDate1.setCellValueFactory(cellData -> {
-            Date date = cellData.getValue().getDateVisite();
+            Date date = cellData.getValue().date();
             if(date!=null) return new javafx.beans.property.SimpleStringProperty(date.toString());
             else return new javafx.beans.property.SimpleStringProperty("--/--/--");
         });
         colCompteRendu1.setCellValueFactory(cellData -> {
-            String compte = cellData.getValue().getCompteRendu();
+            String compte = cellData.getValue().compteRendu();
             if(compte!=null) return new javafx.beans.property.SimpleStringProperty(compte);
             else return new javafx.beans.property.SimpleStringProperty("...");
         });
 
         //table 2 ________
         colMembre2.setCellValueFactory(cellData -> {
-            Membre membre = cellData.getValue().getMembre();
+            Membre membre = cellData.getValue().membre();
             if(membre!=null) return new javafx.beans.property.SimpleStringProperty(membre.getNom()+" "+membre.getPrenom());
             else return new javafx.beans.property.SimpleStringProperty("");
         });
         colArbre2.setCellValueFactory(cellData -> {
-            Arbre arbre = cellData.getValue().getArbre();
+            Arbre arbre = cellData.getValue().arbre();
             if(arbre!=null) return new javafx.beans.property.SimpleStringProperty(arbre.getId()+" "+arbre.getNomCommun()+" "+arbre.getAdresseAcces());
             else return new javafx.beans.property.SimpleStringProperty("");
         });
         colDate2.setCellValueFactory(cellData -> {
-            Date date = cellData.getValue().getDateVisite();
+            Date date = cellData.getValue().date();
             if(date!=null) return new javafx.beans.property.SimpleStringProperty(date.toString());
             else return new javafx.beans.property.SimpleStringProperty("--/--/--");
         });
         colCompteRendu2.setCellValueFactory(cellData -> {
-            String compte = cellData.getValue().getCompteRendu();
+            String compte = cellData.getValue().compteRendu();
             if(compte!=null) return new javafx.beans.property.SimpleStringProperty(compte);
             else return new javafx.beans.property.SimpleStringProperty("...");
         });

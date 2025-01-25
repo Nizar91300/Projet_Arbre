@@ -41,7 +41,6 @@ public final class AssociationVert extends Association {
 
         // load data if not loaded
         EntityManager.get();
-
         loadMembers();
         loadVotes();
         loadVisites();
@@ -185,6 +184,7 @@ public final class AssociationVert extends Association {
         budgetAssociation.ajouterFacture(f5);
     }
 
+
     @Override
     public void notify(NotifEvenement notification) {
         // creer un fichier json correspondant a la notification et le stocker
@@ -242,36 +242,33 @@ public final class AssociationVert extends Association {
         arbresProposes.put(vote.arbre(),  Integer.max(arbresProposes.getOrDefault(vote.arbre(),0) - 1,0));
     }
 
+
     // plannifier une visite
-    public void planifierVisite(Membre m, Arbre a, Date date) {
-        if(!a.isClassificationRemarquable())    return;
-
+    public void planifierVisite(Membre membre, Arbre arbre, Date date) {
+        //verifier si l arbre est remarquable
+        if(!arbre.isClassificationRemarquable())    return;
         // verifier si quelqu'un d'autre n'a pas deja planifié une visite
-        for(Visite v : visitesPlanifiees) {
-            if(v.getArbre().equals(a))  return ;
-        }
-        Visite v = new Visite(m,a,date,null);
+        for(Visite v : visitesPlanifiees) {if(v.arbre().equals(arbre))  return ;}
+        Visite v = new Visite(membre,arbre,date,null);
         visitesPlanifiees.add(v);
-
-        System.out.println("Visite planifiée pour l'arbre " + a.getNomCommun() + " par " + m.getNom() + " " + m.getPrenom());
-
-        m.addVisite(v);
+        membre.addVisite(v);
     }
 
+
     // rendre compte d'une visite
-    public void rendreCompteVisite(Membre m, Arbre a, String compteRendu) {
+    public void rendreCompteVisite(Membre membre, Arbre arbre, String compteRendu) {
         visitesPlanifiees.stream()
-                .filter(v -> v.getArbre().equals(a) && v.getMembre().equals(m))  // Vérifie que la visite correspond à l'arbre et au membre
+                .filter(v -> v.arbre().equals(arbre) && v.membre().equals(membre))  // Vérifie que la visite correspond à l'arbre et au membre
                 .findFirst()  // Récupérer la première correspondance
                 .ifPresent(v -> {
                     visitesPlanifiees.remove(v);  // Retirer la visite de la liste des visites planifiées
                     Visite newVisite = v.withCompteRendu(compteRendu);  // Créer une nouvelle visite avec le compte rendu
                     visitesEffectuees.add(newVisite);  // Ajouter la visite effectuée avec le compte rendu
-                    m.changeVisite(v, newVisite);
+                    membre.changeVisite(v, newVisite);
                 });
 
         // defrayer le membre si le nombre de visites effectuees
-        budgetAssociation.defrayerVisite(m);
+        budgetAssociation.defrayerVisite(membre);
     }
 
 
@@ -297,9 +294,8 @@ public final class AssociationVert extends Association {
 
     // envoyer le classement des arbres a l'espace vert
     public void envoyerClassement() {
-        List<Arbre> top5 = getTop5Arbres();
 
-        // Création du message de nomination
+        List<Arbre> top5 = getTop5Arbres();
         NotifNominationArbre message = new NotifNominationArbre(top5);
 
         // Écriture du fichier
@@ -343,48 +339,29 @@ public final class AssociationVert extends Association {
     }
 
     public Membre connecterMembre(String pseudo, String motDePasse) {
-        for (Membre membre : membres.values()) {
-            if (membre.getPseudo().equals(pseudo) && membre.verifierMotDePasse(motDePasse)) {
-                return membre;
-            }
-        }
-        return null; // Aucun membre trouvé avec ce pseudo et mot de passe
+        var membre = membres.get(pseudo);
+        if (membre==null || !membre.verifierMotDePasse(motDePasse)) return null;
+        return membre;
     }
 
     public boolean inscrireMembre(String nom, String prenom, Date dateNaissance, String pseudo, String motDePasse, String adresse) {
-        // Vérifie si le pseudo existe déjà
-        for (Membre membre : membres.values()) {
-            if (membre.getPseudo().equals(pseudo)) {
-                return false; // Pseudo déjà pris
-            }
-        }
-
-        // Crée et ajoute le nouveau membre
-        double soldeInitial = 0; // Définir un solde initial, si nécessaire autre que 0
-        Membre nouveauMembre = new Membre(nom, prenom, dateNaissance, soldeInitial, pseudo, motDePasse,"");
-        nouveauMembre.setAdresse(adresse);
+        if(membres.containsKey(pseudo)) return false;
+        Membre nouveauMembre = new Membre(nom, prenom, dateNaissance, 500, pseudo, motDePasse,adresse);
         membres.put(nouveauMembre.getPseudo(), nouveauMembre);
+        nouveauMembre.saveToJson();
         return true;
     }
 
     public Set<Arbre> getArbresNominees(){
         return arbresProposes.keySet();
     }
-
     public int getNomination(Arbre arbre){
         return arbresProposes.getOrDefault(arbre,0);
     }
-
-
-    public TreeMap<String,Membre> getMembres() {
-        return membres;
-    }
-
-
+    public TreeMap<String,Membre> getMembres() {return membres;}
     public List<Visite> getVisitesPlanifiees() {
         return visitesPlanifiees;
     }
-
     public List<Visite> getVisitesEffectuees() {
         return visitesEffectuees;
     }

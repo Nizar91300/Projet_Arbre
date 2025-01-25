@@ -69,10 +69,10 @@ public class AssAjoutMembreControler {
             return;
         }
 
-        // ajouter le membre
-        Membre membre = new Membre(fieldNom.getText(), fieldPrenom.getText(), date, 0, fieldNom.getText(), fieldMotDePasse.getText(),fieldAdresse.getText());
-
-        AssociationVert.get().ajouterMembre(membre);
+        if (!AssociationVert.get().inscrireMembre(fieldNom.getText(), fieldPrenom.getText(), date, fieldNom.getText()+"."+fieldPrenom, fieldMotDePasse.getText(),fieldAdresse.getText())){
+            labelError.setText("On a pas pu inscrire le membre, un autre porte le mem pseudo"+fieldNom.getText()+"."+fieldPrenom);
+            return;
+        }
 
         Stage stage = (Stage) btnAjouter.getScene().getWindow();
         stage.close();

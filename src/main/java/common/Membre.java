@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import common.notification.NotifEvenement;
 import common.notification.NotifNominationArbre;
 import common.notification.NotifReponseNomination;
+import common.notification.Notification;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
@@ -15,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Membre extends Personne implements Emetteur, Recepteur {
+public class Membre extends Personne implements Emetteur, Recepteur,Comparable<Membre> {
 
     @JsonProperty
     private final String pseudo;
@@ -24,12 +25,17 @@ public class Membre extends Personne implements Emetteur, Recepteur {
     @JsonProperty
     private final String motDePasse;
     @JsonProperty
-    private String adresse;
+    private final String adresse;
     @JsonProperty
     private Date dateDerniereInscription;
+
+    @JsonIgnore
     private List<NotifEvenement> notifications;
+    @JsonIgnore
     private List<Vote> votes;
+    @JsonIgnore
     private List<Visite> visites;
+    @JsonIgnore
     private List<Virement> demandesRecus;
 
 
@@ -43,8 +49,8 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         this.adresse = adresse;
         dateDerniereInscription = new Date();
         notifications = new ArrayList<>();
-        votes = new LinkedList<>();
-        visites = new LinkedList<>();
+        votes = new ArrayList<>();
+        visites = new ArrayList<>();
         demandesRecus = new ArrayList<>();
     }
 
@@ -186,31 +192,24 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         return new ResultatVirement(accepte, description, v);
     }
 
+    public String getPseudo(){
+        return pseudo;
+    }
     public double getSolde() {
         return solde;
     }
     public String getAdresse() {
         return adresse;
     }
-
     public Date getDateDerniereInscription() {
         return dateDerniereInscription;
     }
-
-    public String getPseudo(){
-        return pseudo;
-    }
-
     public boolean verifierMotDePasse(String motDePasse) {
         return motDePasse.equals(this.motDePasse);
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
 
-
-    public void loadToData() {
+    public void saveToJson() {
         String nomFichier = pseudo + ".json";
         String cheminDossier = "./database/membres/" + pseudo;
         File dossier = new File(cheminDossier);
@@ -227,10 +226,15 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         } catch (IOException e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
+
+        for (var notif : notifications) notif.saveToJsonToMembre(this);
+        for (var vote : votes) vote.saveToJson();
+        for (var visite : visites)visite.saveToJson();
+        //for (var demandesRecus : demandesRecus); //todo
     }
 
 
-    public static Membre readDataOf(String pseudo) {
+    public static Membre readFromJson(String pseudo) {
         ObjectMapper mapper = new ObjectMapper();
         Membre membre = null;
         try {
@@ -238,6 +242,10 @@ public class Membre extends Personne implements Emetteur, Recepteur {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        membre.notifications = NotifEvenement.readNotifsEveFromJsonOf(membre);
+        membre.votes = Vote.readVotesFromJsonOf(membre);
+        membre.visites = Visite.readVisitesFromJsonOf(membre);
+        //for (var demandesRecus : demandesRecus); //todo
         return membre;
     }
 
@@ -255,5 +263,21 @@ public class Membre extends Personne implements Emetteur, Recepteur {
                 ", visites=" + visites +
                 ", demandesRecus=" + demandesRecus +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Membre o) {
+        return this.pseudo.compareTo(o.pseudo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Membre membre)) return false;
+        return Objects.equals(pseudo, membre.pseudo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(pseudo);
     }
 }
