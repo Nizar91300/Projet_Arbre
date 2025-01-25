@@ -1,13 +1,18 @@
 package common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import common.notification.NotifEvenement;
 
 import java.util.Date;
 
 public class Personne implements ServiceVertObserver {
 
+
+    @JsonProperty
     private final String nom;
+    @JsonProperty
     private final String prenom;
+    @JsonProperty
     private final Date dateNaissance;
 
 
@@ -16,7 +21,6 @@ public class Personne implements ServiceVertObserver {
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
     }
-
 
     public String getNom() {
         return nom;

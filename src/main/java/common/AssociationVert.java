@@ -14,27 +14,25 @@ import java.util.stream.Collectors;
 public final class AssociationVert extends Association {
 
     private static AssociationVert instance = null;
+    static final int NB_MAX_VISITES = 10;
+    static final double DEFRAIEMENT_VISITE = 5;
+    public static final double COTISATION = 50;
+
 
     private Membre president;
-    private Set<Membre> membres;
+    private TreeMap<String,Membre> membres;
     private Set<Vote> votes;
     private HashMap<Arbre,Integer> arbresProposes;
     private List<Visite> visitesEffectuees;
     private List<Visite> visitesPlanifiees;
-
-    static final int NB_MAX_VISITES = 10;      // nombre maximum de visites qui peuvent etre remunerees
-
-    static final double DEFRAIEMENT_VISITE = 5;
-
-    public static final double COTISATION = 50;
-
     private static BudgetAssociation budgetAssociation;
+
     //private List<Donateur> donateurs;
     //private List<Facture> factures;
 
     private AssociationVert() {
         super("Association Vert");
-        membres = new HashSet<>();
+        membres = new TreeMap<>();
         votes = new HashSet<>();
         arbresProposes = new HashMap<>();
         visitesEffectuees = new ArrayList<>();
@@ -75,12 +73,7 @@ public final class AssociationVert extends Association {
             Set<Membre> loadedMembers = objectMapper.readValue(jsonFile, new TypeReference<Set<Membre>>() {});
 
             // Ajouter les membres au Set
-            membres.addAll(loadedMembers);
-
-            // afficher tous les membres
-            for (Membre m : membres) {
-                System.out.println("Membre : " + m.getNom() + " " + m.getPrenom());
-            }
+            for (var m : loadedMembers) membres.put(m.getPseudo(),m);
 
             System.out.println("Membres chargés avec succès : " + membres.size());
         } catch (IOException e) {
@@ -89,7 +82,7 @@ public final class AssociationVert extends Association {
 
         // cotiser pour un certain nombre de membres
         int i = 0;
-        for(Membre m : membres) {
+        for(Membre m : membres.values()) {
             if(i < 6) {
                 m.cotiser();
                 i++;
@@ -101,7 +94,7 @@ public final class AssociationVert extends Association {
     private void loadVotes() {
         Random random = new Random();
         for (int i = 0; i < 100; i++) {
-            Membre membre = membres.stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
+            Membre membre = membres.values().stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
             Arbre arbre = Arbre.arbres.stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
             ajouterVote(new Vote(membre, arbre, new Date()));
         }
@@ -136,7 +129,7 @@ public final class AssociationVert extends Association {
         long oneMonthAgoMillis = System.currentTimeMillis() - (long) 30 * 24 * 60 * 60 * 1000;  // 1 mois en millisecondes
 
         for (int i = 0; i < 40; i++) {
-            Membre membre = membres.stream()
+            Membre membre = membres.values().stream()
                     .skip(random.nextInt(membres.size()))  // Choisir un membre aléatoire
                     .findFirst()
                     .orElse(null);
@@ -223,17 +216,18 @@ public final class AssociationVert extends Association {
 
     // Ajouter un membre
     public boolean ajouterMembre(Membre membre) {
-        return membres.add(membre);
+        return membres.putIfAbsent(membre.getPseudo(),membre)==null;
     }
 
     // Supprimer un membre
     public boolean supprimerMembre(Membre membre) {
-        return membres.remove(membre);
+        membres.remove(membre.getPseudo());
+        return true;
     }
 
     public boolean designerPresident(Membre membre) {
         if (president != null) {return false;}
-        if (!membres.contains(membre)) {return false;}
+        if (!membres.containsKey(membre.getPseudo())) {return false;}
         president = membre;
         return true;
     }
@@ -323,7 +317,7 @@ public final class AssociationVert extends Association {
     private void revocationMembresNonCotises() {
         List<Cotisation> cotisations = budgetAssociation.getCotisationsRecues();
 
-        Iterator<Membre> iterator = membres.iterator();
+        Iterator<Membre> iterator = membres.values().iterator();
         while (iterator.hasNext()) {
             Membre m = iterator.next();
             if(cotisations.stream().noneMatch(c -> c.membre().equals(m))) {
@@ -349,7 +343,7 @@ public final class AssociationVert extends Association {
     }
 
     public Membre connecterMembre(String pseudo, String motDePasse) {
-        for (Membre membre : membres) {
+        for (Membre membre : membres.values()) {
             if (membre.getPseudo().equals(pseudo) && membre.verifierMotDePasse(motDePasse)) {
                 return membre;
             }
@@ -359,7 +353,7 @@ public final class AssociationVert extends Association {
 
     public boolean inscrireMembre(String nom, String prenom, Date dateNaissance, String pseudo, String motDePasse, String adresse) {
         // Vérifie si le pseudo existe déjà
-        for (Membre membre : membres) {
+        for (Membre membre : membres.values()) {
             if (membre.getPseudo().equals(pseudo)) {
                 return false; // Pseudo déjà pris
             }
@@ -367,9 +361,9 @@ public final class AssociationVert extends Association {
 
         // Crée et ajoute le nouveau membre
         double soldeInitial = 0; // Définir un solde initial, si nécessaire autre que 0
-        Membre nouveauMembre = new Membre(nom, prenom, dateNaissance, soldeInitial, pseudo, motDePasse);
+        Membre nouveauMembre = new Membre(nom, prenom, dateNaissance, soldeInitial, pseudo, motDePasse,"");
         nouveauMembre.setAdresse(adresse);
-        membres.add(nouveauMembre);
+        membres.put(nouveauMembre.getPseudo(), nouveauMembre);
         return true;
     }
 
@@ -382,7 +376,7 @@ public final class AssociationVert extends Association {
     }
 
 
-    public Set<Membre> getMembres() {
+    public TreeMap<String,Membre> getMembres() {
         return membres;
     }
 
@@ -394,7 +388,5 @@ public final class AssociationVert extends Association {
     public List<Visite> getVisitesEffectuees() {
         return visitesEffectuees;
     }
-
-
 }
 

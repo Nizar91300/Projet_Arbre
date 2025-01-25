@@ -1,64 +1,63 @@
 package common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.notification.NotifEvenement;
+import common.notification.NotifNominationArbre;
+import common.notification.NotifReponseNomination;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
 import common.virement.Virement;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Membre extends Personne implements Emetteur, Recepteur {
-    @JsonProperty("pseudo")
-    private String pseudo;
-    @JsonProperty("motDePasse")
-    private String motDePasse;
+
+    @JsonProperty
+    private final String pseudo;
+    @JsonProperty
+    private double solde;
+    @JsonProperty
+    private final String motDePasse;
+    @JsonProperty
     private String adresse;
+    @JsonProperty
     private Date dateDerniereInscription;
     private List<NotifEvenement> notifications;
     private List<Vote> votes;
     private List<Visite> visites;
-    @JsonProperty("solde")
-    private double solde;
     private List<Virement> demandesRecus;
 
-    //private List<Cotisation> cotisations;
-    //private List<Visite> visites;
 
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
 
-    public Membre(String nom, String prenom, Date dateNaissance, double solde,String pseudo,String MotDePasse) {
-        super(nom, prenom, dateNaissance);
+    public Membre(String nom, String prenom, Date dateNaissance, double solde,String pseudo,String MotDePasse,String adresse) {
+        super(nom,prenom,dateNaissance);
+        this.solde = solde;
         this.pseudo = pseudo;
         this.motDePasse = MotDePasse;
+        this.adresse = adresse;
+        dateDerniereInscription = new Date();
         notifications = new ArrayList<>();
         votes = new LinkedList<>();
         visites = new LinkedList<>();
-        this.solde = solde;      // solde initial du membre en supposant qu'il apporte une somme
         demandesRecus = new ArrayList<>();
-        dateDerniereInscription = new Date();
     }
 
     public Membre(){
-        super("Inconnu", "Inconnu", new Date());
-        notifications = new ArrayList<>();
-        votes = new LinkedList<>();
-        visites = new LinkedList<>();
-        solde = 0;      // solde initial du membre en supposant qu'il apporte une somme
-        demandesRecus = new ArrayList<>();
-        dateDerniereInscription = new Date();
+        this("Inconnu","Inconnu",new Date(),0,"Inconnu","Inconnu","Inconnu");
     }
 
+    @JsonIgnore
     public int getNbVisites() {
         return visites.size();
     }
 
 
-    @Override
     public void notify(NotifEvenement notification) {
         notifications.add(notification);
         //todo cadepend de l implementation de  l interface graphgique
@@ -204,5 +203,57 @@ public class Membre extends Personne implements Emetteur, Recepteur {
 
     public boolean verifierMotDePasse(String motDePasse) {
         return motDePasse.equals(this.motDePasse);
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+
+    public void loadToData() {
+        String nomFichier = pseudo + ".json";
+        String cheminDossier = "./database/membres/" + pseudo;
+        File dossier = new File(cheminDossier);
+        if (!dossier.exists()) {
+            if (!dossier.mkdirs()) {
+                System.err.println("Erreur lors de la création du dossier : " + cheminDossier);
+                return;
+            }
+        }
+        File fichier = new File(dossier, nomFichier);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writeValue(fichier, this);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
+
+    public static Membre readDataOf(String pseudo) {
+        ObjectMapper mapper = new ObjectMapper();
+        Membre membre = null;
+        try {
+            membre = mapper.readValue(new File("./database/membres/"+pseudo+"/"+pseudo+".json"), Membre.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return membre;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Membre{" +
+                "pseudo='" + pseudo + '\'' +
+                ", solde=" + solde +
+                ", motDePasse='" + motDePasse + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", dateDerniereInscription=" + dateDerniereInscription +
+                ", notifications=" + notifications +
+                ", votes=" + votes +
+                ", visites=" + visites +
+                ", demandesRecus=" + demandesRecus +
+                '}';
     }
 }

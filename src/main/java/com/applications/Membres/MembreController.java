@@ -15,7 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import common.Membre;
 
-public class MembreController {
+/*public class MembreController {
 
     @FXML
     private Button ButtonBack;
@@ -80,14 +80,11 @@ public class MembreController {
 
     private void handleVoter() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-<<<<<<< HEAD
         if (selectedArbre != null && membreCourant != null) {
             association.ajouterVote(new common.Vote(membreCourant, selectedArbre, new java.util.Date()));
-=======
         if (selectedArbre != null) {
             // Logique pour voter
             association.ajouterVote(new common.Vote(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
->>>>>>> 21d043a66d420ab7553f557f19231b179549c7f6
             showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre pour voter et être connecté.");
@@ -123,4 +120,4 @@ public class MembreController {
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Vote et planification de visites");
     }
-}
+}*/

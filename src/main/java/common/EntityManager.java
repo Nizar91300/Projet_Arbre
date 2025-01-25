@@ -111,7 +111,7 @@ public class EntityManager {
         }
     }
 
-    public static void main(String[] args) {
-        EntityManager.get();
-    }
+
+
+
 }

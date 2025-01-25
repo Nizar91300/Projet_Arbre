@@ -70,7 +70,7 @@ public class AssAjoutMembreControler {
         }
 
         // ajouter le membre
-        Membre membre = new Membre(fieldNom.getText(), fieldPrenom.getText(), date, 0, fieldNom.getText(), fieldMotDePasse.getText());
+        Membre membre = new Membre(fieldNom.getText(), fieldPrenom.getText(), date, 0, fieldNom.getText(), fieldMotDePasse.getText(),fieldAdresse.getText());
 
         AssociationVert.get().ajouterMembre(membre);
 

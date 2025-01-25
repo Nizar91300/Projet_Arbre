@@ -14,7 +14,6 @@ public class Arbre implements Comparable<Arbre> {
 
 
     public enum StadeDeveloppement {UNKOWN, ADULTE, JEUNE, JEUNE_ADULTE, MATURE}
-
     public static TreeSet<Arbre> arbres = new TreeSet<>();
     private final int id;
     private final String adresseAcces;
@@ -139,23 +138,6 @@ public class Arbre implements Comparable<Arbre> {
     public Paire<Double, Double> getCoordonneesGPS() {
         return coordonneesGPS;
     }
-    @Override
-    public String toString() {
-        return "Arbre{" +
-                "id=" + id +
-                ", adresseAcces='" + adresseAcces + '\'' +
-                ", nomCommun='" + nomCommun + '\'' +
-                ", genre='" + genre + '\'' +
-                ", espece='" + espece + '\'' +
-                ", circonference=" + circonference +
-                ", hauteur=" + hauteur +
-                ", stadeDeDeveloppement=" + stadeDeDeveloppement +
-                ", classificationRemarquable=" + classificationRemarquable +
-                ", dateClassificationRemarquable=" + dateClassificationRemarquable +
-                ", coordonneesGPS=" + coordonneesGPS +
-                '}';
-    }
-
 
     public boolean ajouterArbre(Arbre arbre) {
         return arbres.add(arbre);
@@ -165,7 +147,6 @@ public class Arbre implements Comparable<Arbre> {
         return arbres.remove(arbre);
     }
 
-
     public void inverserClassificationRemarquable() {
         classificationRemarquable = !classificationRemarquable;
         if(classificationRemarquable)dateClassificationRemarquable = new Date();
@@ -173,9 +154,7 @@ public class Arbre implements Comparable<Arbre> {
     }
 
     public static Arbre getArbreById(Integer value) {
-        for (Arbre arbre : arbres) {
-            if(arbre.getId() == value) return arbre;
-        }
+        for (Arbre arbre : arbres) {if(arbre.getId() == value) return arbre;}
         return null;
     }
 

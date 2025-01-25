@@ -112,11 +112,10 @@ public class ConsultationView {
 
     @FXML
     public void initialize() {
-
         //image Background
         Image imProfile = new Image(getClass().getResourceAsStream("/com/applications/Vert/street-with-trees.jpg"));
         imgbackcons.setImage(imProfile);
-
+        //table coloumns
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colAdr.setCellValueFactory(new PropertyValueFactory<>("adresseAcces"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nomCommun"));
@@ -128,62 +127,44 @@ public class ConsultationView {
         colRem.setCellValueFactory(new PropertyValueFactory<>("classificationRemarquable"));
         colDateRem.setCellValueFactory(new PropertyValueFactory<>("dateClassificationRemarquable"));
         colGPS.setCellValueFactory(new PropertyValueFactory<>("coordonneesGPS"));
-
-        // CellFactory pour afficher la paire(GPS) sous forme de String
         colGPS.setCellValueFactory(cellData -> {
             Paire<Double, Double> gpsCoord = cellData.getValue().getCoordonneesGPS();
             return new javafx.beans.property.SimpleStringProperty(gpsCoord.getKey() + ", " + gpsCoord.getValue());
         });
-
-
         // Charger les données dans le tableau
         loadTableData();
-
         //Pour revenir au menu
-        btnBackMenu.setOnAction((actionEvent) -> {
-            MenuView.load();
-        });
-
+        btnBackMenu.setOnAction((actionEvent) -> {MenuView.load();});
         // Ajouter les colonnes filtrables à la ComboBox
         filtre.getItems().addAll("ID", "Adresse", "Nom Commun", "Genre", "Espèce", "Circonférence", "Hauteur", "Stade", "Remarquable");
-
         // Définir un élément par défaut
         filtre.getSelectionModel().selectFirst();
-
         // Configurer le bouton de recherche
         btnSearch.setOnAction(event -> performSearch());
-
         btnReset.setOnAction( event -> {
             tabCons.setItems(FXCollections.observableArrayList(Arbre.arbres)); // Réinitialise les données
             TextSearch.clear(); // Vide le champ de recherche
             filtre.getSelectionModel().selectFirst(); // Réinitialise la ComboBox
         });
-
         // Griser les boutons par défaut
         btnAbattre.setDisable(true);
         btnClassifier.setDisable(true);
-
         // Activer les boutons lorsque l'utilisateur sélectionne un arbre
         tabCons.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             boolean isSelected = newValue != null;
             btnAbattre.setDisable(!isSelected);
             btnClassifier.setDisable(!isSelected);
         });
-
         // Configurer les actions des boutons
         btnAbattre.setOnAction(event -> handleAbattage());
         btnClassifier.setOnAction(event -> handleClassificationRemarquable());
         btnPlante.setOnAction(event -> handlePlantation());
         btnNotif.setOnAction(event -> NotificationView.load());
 
+
         //Ajout de AssociationVert à notre ensemble
         ServiceEspaceVert.get().addObserver(AssociationVert.get());
-
-
-
-
-
-
+        //ajout des autres membres todo
     }
 
     //Méthode pour charger la liste d'arbres
