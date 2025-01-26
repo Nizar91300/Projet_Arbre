@@ -72,6 +72,23 @@ public class Arbre implements Comparable<Arbre> {
     }
 
     @Override
+    public String toString() {
+        return "Arbre{" +
+                "id=" + id +
+                ", adresseAcces='" + adresseAcces + '\'' +
+                ", nomCommun='" + nomCommun + '\'' +
+                ", genre='" + genre + '\'' +
+                ", espece='" + espece + '\'' +
+                ", circonference=" + circonference +
+                ", hauteur=" + hauteur +
+                ", stadeDeDeveloppement=" + stadeDeDeveloppement +
+                ", classificationRemarquable=" + classificationRemarquable +
+                ", dateClassificationRemarquable=" + dateClassificationRemarquable +
+                ", coordonneesGPS=" + coordonneesGPS +
+                '}';
+    }
+
+    @Override
     public int hashCode() {return Objects.hashCode(id);}
     public static StadeDeveloppement fromString(String stade) throws IllegalArgumentException{
         if (stade == null || stade.isBlank()) {
