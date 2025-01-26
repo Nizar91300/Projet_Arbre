@@ -314,4 +314,8 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
     public List<Vote> getAllVotes(){
         return votes;
     }
+
+    public List<Visite> getAllVisites(){
+        return visites;
+    }
 }

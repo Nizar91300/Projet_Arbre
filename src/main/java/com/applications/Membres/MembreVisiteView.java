@@ -1,5 +1,7 @@
 package com.applications.Membres;
 
+import com.applications.Association.vue.AssMainView;
+import common.Arbre;
 import common.AssociationVert;
 import common.Visite;
 import javafx.collections.FXCollections;
@@ -12,6 +14,9 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MembreVisiteView {
 
@@ -22,8 +27,6 @@ public class MembreVisiteView {
     private TableColumn<Visite, String> colDateAvenir;
     @FXML
     private TableColumn<Visite, String> colArbreAvenir;
-    @FXML
-    private TableColumn<Visite, String> colLieuAvenir;
 
     // Table et colonnes pour les visites effectuées
     @FXML
@@ -34,6 +37,17 @@ public class MembreVisiteView {
     private TableColumn<Visite, String> colArbreEffectuee;
     @FXML
     private TableColumn<Visite, String> colCompteRendu;
+
+
+
+    @FXML
+    private TextField textField;
+    @FXML
+    private Tab va;
+    @FXML
+    private Tab ve;
+    @FXML
+    Button btnBack,btnAcr;
 
 
     public static void load() {
@@ -50,40 +64,87 @@ public class MembreVisiteView {
     }
 
 
+
     @FXML
     public void initialize() {
-        // Configuration des colonnes pour les visites à venir
-        colDateAvenir.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
-        colArbreAvenir.setCellValueFactory(new PropertyValueFactory<>("arbre"));
-        colLieuAvenir.setCellValueFactory(new PropertyValueFactory<>("lieu"));
+        colDateAvenir.setCellValueFactory(cellData -> {
+            Date date = cellData.getValue().date();
+            if(date!=null) return new javafx.beans.property.SimpleStringProperty(date.toString());
+            else return new javafx.beans.property.SimpleStringProperty("--/--/--");
+        });
 
-        // Configuration des colonnes pour les visites effectuées
-        colDateEffectuee.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
-        colArbreEffectuee.setCellValueFactory(new PropertyValueFactory<>("arbre"));
-        colCompteRendu.setCellValueFactory(new PropertyValueFactory<>("compteRendu"));
+        colArbreAvenir.setCellValueFactory(cellData -> {
+            Arbre arbre = cellData.getValue().arbre();
+            if(arbre!=null) return new javafx.beans.property.SimpleStringProperty(arbre.getId()+" "+arbre.getNomCommun()+" "+arbre.getAdresseAcces());
+            else return new javafx.beans.property.SimpleStringProperty("");
+        });
 
-        // Chargement des données dans les tables
-        loadVisitesAvenir();
-        loadVisitesEffectuees();
+        colCompteRendu.setCellValueFactory(cellData -> {
+            String compte = cellData.getValue().compteRendu();
+            if(compte!=null || compte.isBlank()) return new javafx.beans.property.SimpleStringProperty(compte);
+            else return new javafx.beans.property.SimpleStringProperty("...");
+        });
+
+
+        colDateEffectuee.setCellValueFactory(cellData -> {
+            Date date = cellData.getValue().date();
+            if(date!=null) return new javafx.beans.property.SimpleStringProperty(date.toString());
+            else return new javafx.beans.property.SimpleStringProperty("--/--/--");
+        });
+
+        colArbreEffectuee.setCellValueFactory(cellData -> {
+            Arbre arbre = cellData.getValue().arbre();
+            if(arbre!=null) return new javafx.beans.property.SimpleStringProperty(arbre.getId()+" "+arbre.getNomCommun()+" "+arbre.getAdresseAcces());
+            else return new javafx.beans.property.SimpleStringProperty("");
+        });
+
+        btnAcr.setDisable(ve.isSelected());
+        textField.setDisable(ve.isSelected());
+
+        ve.setOnSelectionChanged(event -> {
+            btnAcr.setDisable(ve.isSelected());
+            textField.setDisable(ve.isSelected());
+        });
+
+        btnBack.setOnAction(event -> MembreMenu2View.load());
+        btnAcr.setOnAction(actionEvent -> {
+
+            Visite selectedVisite = tableVisitesAvenir.getSelectionModel().getSelectedItem();
+            String text = textField.getText();
+            if (selectedVisite!=null && text!=null && !text.isBlank()) {
+                Visite visite = selectedVisite.withCompteRendu(text);
+                selectedVisite.deleteJson();
+                visite.saveToJson();
+                loadVisites();
+            }
+        });
+
+        loadVisites();
     }
 
-    private void loadVisitesAvenir() {
-        tableVisitesAvenir.setItems(FXCollections.observableArrayList(AssociationVert.get().getVisitesPlanifiees()));
+    private void loadVisites() {
+        List<Visite> visites = SessionManager.get().getMembre().getAllVisites();
+        ArrayList<Visite> visites1 = new ArrayList<>();
+        ArrayList<Visite> visites2 = new ArrayList<>();
+
+
+        for (var visite : visites){
+            if (visite.compteRendu()==null || visite.compteRendu().isBlank() || visite.compteRendu().equals("null")) visites1.add(visite);
+            else visites2.add(visite);
+        }
+
+        tableVisitesAvenir.setItems(FXCollections.observableArrayList(visites1));
+        tableVisitesEffectuees.setItems(FXCollections.observableArrayList(visites2));
     }
 
-    private void loadVisitesEffectuees() {
-        tableVisitesEffectuees.setItems(FXCollections.observableArrayList(AssociationVert.get().getVisitesEffectuees()));
-    }
 
     @FXML
     private void handleAjouterCompteRendu() {
-        // Récupère la visite sélectionnée dans la table des visites effectuées
-        Visite selectedVisite = tableVisitesEffectuees.getSelectionModel().getSelectedItem();
+        Visite selectedVisite = tableVisitesAvenir.getSelectionModel().getSelectedItem();
         if (selectedVisite != null) {
-            // Ouvre une boîte de dialogue pour saisir le compte rendu
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Ajouter un Compte Rendu");
-            dialog.setHeaderText("Ajouter un compte rendu pour l'arbre : " + selectedVisite.arbre().getNomCommun());
+            dialog.setHeaderText("Ajouter un compte rendu pour l'arbre : " + selectedVisite.arbre().getId());
             dialog.setContentText("Compte Rendu :");
 
             dialog.showAndWait().ifPresent(compteRendu -> {
@@ -95,23 +156,11 @@ public class MembreVisiteView {
                 AssociationVert.get().getVisitesEffectuees().add(updatedVisite);
 
                 // Rafraîchit la table pour afficher la mise à jour
-                loadVisitesEffectuees();
+                loadVisites();
             });
-        } else {
-            showAlert("Aucune visite sélectionnée", "Veuillez sélectionner une visite pour ajouter un compte rendu.");
         }
     }
 
-    @FXML
-    private void handleRetour(ActionEvent event) {
-       MembreMenu2View.load();
-    }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+
 }
