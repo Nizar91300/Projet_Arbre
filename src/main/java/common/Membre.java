@@ -252,6 +252,7 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
     }
 
     public static void readMembresFromJson() {
+        AssociationVert.get().getMembres().clear();
         File folder = new File("./database/membres");
         if (folder.exists() && folder.isDirectory()) {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
@@ -260,10 +261,8 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
                     AssociationVert.get().ajouterMembre(membre);
                     for (var visite : membre.visites){
                         if (visite.compteRendu() == null || visite.compteRendu().equals("null") || visite.compteRendu().isBlank()){
-                            System.out.println("Visite planifiée : "+visite.compteRendu());
                             AssociationVert.get().getVisitesPlanifiees().add(visite);
                         }else{
-                            System.out.println("Visite effectuée : "+visite.compteRendu());
                             AssociationVert.get().getVisitesEffectuees().add(visite);
                         }
                     }
