@@ -4,12 +4,16 @@ import common.AssociationVert;
 import common.Visite;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
-public class VisitesController {
+import java.io.IOException;
+
+public class MembreVisiteView {
 
     // Table et colonnes pour les visites à venir
     @FXML
@@ -31,6 +35,21 @@ public class VisitesController {
     @FXML
     private TableColumn<Visite, String> colCompteRendu;
 
+
+    public static void load() {
+        try {
+            MembreVisiteView view = new MembreVisiteView();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreVisiteView.class.getResource("/com/applications/Membres/Vue5.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @FXML
     public void initialize() {
         // Configuration des colonnes pour les visites à venir
@@ -49,12 +68,10 @@ public class VisitesController {
     }
 
     private void loadVisitesAvenir() {
-        // Charge les visites planifiées depuis AssociationVert
         tableVisitesAvenir.setItems(FXCollections.observableArrayList(AssociationVert.get().getVisitesPlanifiees()));
     }
 
     private void loadVisitesEffectuees() {
-        // Charge les visites effectuées depuis AssociationVert
         tableVisitesEffectuees.setItems(FXCollections.observableArrayList(AssociationVert.get().getVisitesEffectuees()));
     }
 
@@ -87,9 +104,7 @@ public class VisitesController {
 
     @FXML
     private void handleRetour(ActionEvent event) {
-        // Retour à la vue précédente
-        Stage currentStage = (Stage) tableVisitesAvenir.getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Espace Membre");
+       MembreMenu2View.load();
     }
 
     private void showAlert(String title, String content) {

@@ -1,13 +1,6 @@
 package com.applications.Membres;
 
-import com.applications.Association.controleur.AssAjoutMembreControler;
 import com.applications.Association.vue.AssAjoutMembreView;
-import com.applications.Association.vue.AssAjoutVisiteView;
-import com.applications.Association.vue.AssMainView;
-import com.applications.Association.vue.AssMembresView;
-import common.Arbre;
-import common.AssociationVert;
-import common.Membre;
 import common.Vote;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,13 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class VoteView {
 
@@ -59,7 +50,7 @@ public class VoteView {
 
         });
 
-        ArrayList<Vote> votes = new ArrayList<>(SessionManager.get().getMembreConnecte().getAllVotes());
+        ArrayList<Vote> votes = new ArrayList<>(SessionManager.get().getMembre().getAllVotes());
         ObservableList<Vote> membressList = FXCollections.observableArrayList(votes);
         table.setItems(membressList);
     }

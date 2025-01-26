@@ -1,22 +1,18 @@
 package com.applications.Membres;
 
 import common.Arbre;
-import common.AssociationVert;
 import common.Vote;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import common.Membre;
 
 import java.io.IOException;
 
@@ -96,9 +92,9 @@ public class MembreVoteView {
 
     private void handleVoter() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-        if (selectedArbre != null && SessionManager.get().getMembreConnecte() != null) {
-            Vote vote = new Vote(SessionManager.get().getMembreConnecte() , selectedArbre, new java.util.Date());
-            SessionManager.get().getMembreConnecte().ajouterVote(vote);
+        if (selectedArbre != null && SessionManager.get().getMembre() != null) {
+            Vote vote = new Vote(SessionManager.get().getMembre() , selectedArbre, new java.util.Date());
+            SessionManager.get().getMembre().ajouterVote(vote);
             showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Erreur de vote", "Veuillez sélectionner un arbre et être connecté pour voter.");

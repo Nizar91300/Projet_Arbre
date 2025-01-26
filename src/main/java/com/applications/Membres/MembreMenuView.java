@@ -11,9 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.Node;
-
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -71,7 +68,7 @@ public class MembreMenuView {
         if (membre != null) {
 
             // Si la connexion est réussie, stocker le membre connecté dans le gestionnaire de session
-            SessionManager.get().setMembreConnecte(membre);
+            SessionManager.get().setMembre(membre);
             MembreMenu2View.load();
         } else {
             // Si la connexion échoue, afficher un message d'erreur dans le label

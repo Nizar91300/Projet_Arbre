@@ -55,14 +55,12 @@ public class MembreMenu2View {
 
     @FXML
     private void handleCotiser(ActionEvent event){
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue4.fxml", "cotiser et faire un don");
+        MembreCotisationView.load();
     }
 
     @FXML
     private void handleVisite(ActionEvent event){
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue5.fxml", "Comptes Rendu visites");
+        MembreVisiteView.load();
     }
 
 }

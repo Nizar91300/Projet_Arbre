@@ -1,9 +1,10 @@
 package com.applications.Membres;
 
 import common.AssociationVert;
-import common.Membre;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
-public class CotisationController {
+import java.io.IOException;
+
+public class MembreCotisationView {
 
     @FXML
     private TextField montantField;
@@ -24,24 +27,38 @@ public class CotisationController {
     @FXML
     private Label soldeLabel;  // Label pour afficher le solde
 
-    // Utilisation de SessionManager pour récupérer le membre actuel
-    private Membre membreActuel = SessionManager.get().getMembreConnecte();
+
+    public static void load() {
+        try {
+            MembreCotisationView view = new MembreCotisationView();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreCotisationView.class.getResource("/com/applications/Membres/Vue4.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     @FXML
     private void initialize() {
-        updateSoldeLabel();  // Mise à jour de l'affichage du solde au démarrage
+        updateSoldeLabel();
         btnCotiser.setOnAction(event -> handleCotiser());
         btnDon.setOnAction(event -> handleDon());
     }
 
     private void handleCotiser() {
-        if (membreActuel == null) {
+        if (SessionManager.get().getMembre() == null) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun membre connecté.");
             return;
         }
         double montantCotisation = AssociationVert.COTISATION;
-        if (membreActuel.getSolde() >= montantCotisation) {
-            membreActuel.debiter(montantCotisation);
+        if (SessionManager.get().getMembre().getSolde() >= montantCotisation) {
+            SessionManager.get().getMembre().debiter(montantCotisation);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Cotisation de " + montantCotisation + "€ enregistrée avec succès !");
             updateSoldeLabel();
         } else {
@@ -52,8 +69,8 @@ public class CotisationController {
     private void handleDon() {
         try {
             double montant = Double.parseDouble(montantField.getText());
-            if (montant > 0 && membreActuel.getSolde() >= montant) {
-                membreActuel.debiter(montant);
+            if (montant > 0 && SessionManager.get().getMembre().getSolde() >= montant) {
+                SessionManager.get().getMembre().debiter(montant);
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Don de " + montant + "€ enregistré !");
                 updateSoldeLabel();
             } else {
@@ -65,8 +82,7 @@ public class CotisationController {
     }
     @FXML
     private void handleRetour(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Espace Membres");
+        MembreMenu2View.load();
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
@@ -78,8 +94,8 @@ public class CotisationController {
     }
 
     private void updateSoldeLabel() {
-        if (membreActuel != null) {
-            soldeLabel.setText(String.format("Solde actuel : %.2f €", membreActuel.getSolde()));
+        if (SessionManager.get().getMembre() != null) {
+            soldeLabel.setText(String.format("Solde actuel : %.2f €", SessionManager.get().getMembre().getSolde()));
         }
     }
 }

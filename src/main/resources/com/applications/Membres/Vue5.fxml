@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.applications.Membres.VisitesController" spacing="15" alignment="CENTER" prefWidth="600" prefHeight="500">
+      fx:controller="com.applications.Membres.MembreVisiteView" spacing="15" alignment="CENTER" prefWidth="600" prefHeight="500">
     <Label text="Gestion des Visites et Comptes Rendus" style="-fx-font-size: 20px;"/>
 
     <TabPane tabClosingPolicy="UNAVAILABLE">

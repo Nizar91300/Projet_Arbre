@@ -1,5 +1,4 @@
 package com.applications.Membres;
-import common.AssociationVert;
 import common.Membre;
 
 
@@ -17,11 +16,11 @@ public class SessionManager {
     private SessionManager(){}
 
 
-    public void setMembreConnecte(Membre membre) {
+    public void setMembre(Membre membre) {
         membreConnecte = membre;
     }
 
-    public Membre getMembreConnecte() {
+    public Membre getMembre() {
         return membreConnecte;
     }
 

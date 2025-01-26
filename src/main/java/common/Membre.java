@@ -73,6 +73,7 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
 
 
     public void ajouterVote(Vote vote) {
+        for (var v : votes) if (v.arbre().getId()==vote.arbre().getId()) return;
         if (votes.size() >= 5) {
             Vote tmpVote = votes.removeFirst();
             tmpVote.deleteJson();
