@@ -50,6 +50,7 @@ public class AssMainControler {
         EntityManager.get();
         EntityManager.get().loadArbres();
         EntityManager.get().loadMembres();
+        AssociationVert.get().loadBudget();
     }
 
     private void finExercice(){

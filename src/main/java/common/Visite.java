@@ -24,7 +24,6 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         return file.delete();
     }
 
-
     public void saveToJson(){
 
         String fileName = "visite_"+ arbre.getId() +"_"+ date.getTime() + ".json";
@@ -43,7 +42,6 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         }
 
     }
-
 
     public static ArrayList<Visite> readVisitesFromJsonOf(Membre membre){
 
@@ -73,8 +71,6 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         return visites;
     }
 
-
-
     public static Visite readFromJson(String filePath){
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -92,13 +88,4 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Visite{" +
-                "membre=" + membre.getPseudo() +
-                ", arbre=" + arbre.getId() +
-                ", date=" + date +
-                ", compteRendu='" + compteRendu + '\'' +
-                '}';
-    }
 }

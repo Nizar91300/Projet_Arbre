@@ -234,6 +234,26 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
     }
 
 
+    public void updateSolde() {
+        String nomFichier = pseudo + ".json";
+        String cheminDossier = "./database/membres/" + pseudo;
+        File dossier = new File(cheminDossier);
+        if (!dossier.exists()) {
+            if (!dossier.mkdirs()) {
+                System.err.println("Erreur lors de la création du dossier : " + cheminDossier);
+                return;
+            }
+        }
+        File fichier = new File(dossier, nomFichier);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writeValue(fichier, this);
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
+
     public static Membre readFromJson(String pseudo) {
         ObjectMapper mapper = new ObjectMapper();
         Membre membre = null;
@@ -310,10 +330,12 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         return Objects.hashCode(pseudo);
     }
 
+    @JsonIgnore
     public List<Vote> getAllVotes(){
         return votes;
     }
 
+    @JsonIgnore
     public List<Visite> getAllVisites(){
         return visites;
     }

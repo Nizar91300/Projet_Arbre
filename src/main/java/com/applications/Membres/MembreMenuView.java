@@ -99,5 +99,6 @@ public class MembreMenuView {
     public void initialize() {
         AssociationVert.get();
         EntityManager.get().loadArbres();
+        AssociationVert.get().loadBudget();
     }
 }

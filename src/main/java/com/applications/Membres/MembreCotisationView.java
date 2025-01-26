@@ -1,6 +1,8 @@
 package com.applications.Membres;
 
 import common.AssociationVert;
+import common.Cotisation;
+import common.ServiceEspaceVert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class MembreCotisationView {
 
@@ -59,7 +62,10 @@ public class MembreCotisationView {
         double montantCotisation = AssociationVert.COTISATION;
         if (SessionManager.get().getMembre().getSolde() >= montantCotisation) {
             SessionManager.get().getMembre().debiter(montantCotisation);
+            AssociationVert.get().crediter(montantCotisation);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Cotisation de " + montantCotisation + "€ enregistrée avec succès !");
+            Cotisation cotisation = new Cotisation(SessionManager.get().getMembre(),montantCotisation,new Date());
+            cotisation.saveToJson();
             updateSoldeLabel();
         } else {
             showAlert(Alert.AlertType.ERROR, "Échec", "Votre solde est insuffisant pour effectuer cette cotisation.");
@@ -71,6 +77,7 @@ public class MembreCotisationView {
             double montant = Double.parseDouble(montantField.getText());
             if (montant > 0 && SessionManager.get().getMembre().getSolde() >= montant) {
                 SessionManager.get().getMembre().debiter(montant);
+                AssociationVert.get().crediter(montant);
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Don de " + montant + "€ enregistré !");
                 updateSoldeLabel();
             } else {
@@ -96,6 +103,8 @@ public class MembreCotisationView {
     private void updateSoldeLabel() {
         if (SessionManager.get().getMembre() != null) {
             soldeLabel.setText(String.format("Solde actuel : %.2f €", SessionManager.get().getMembre().getSolde()));
+            SessionManager.get().getMembre().updateSolde();
+            AssociationVert.get().updateBudget();
         }
     }
 }

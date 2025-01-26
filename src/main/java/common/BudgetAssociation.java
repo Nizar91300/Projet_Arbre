@@ -1,14 +1,15 @@
 package common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
 import common.virement.Virement;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class BudgetAssociation implements Emetteur, Recepteur {
     private double solde;
@@ -22,7 +23,6 @@ public class BudgetAssociation implements Emetteur, Recepteur {
     private String dernierRapport;
     // liste des virements refusés à effectuer (solde insuffisant par exemple)
     private List<Virement> virementsRefusesAEffectuer;
-
     // liste des recepteur auquel on peut demander une subvention/don
     private List<Emetteur> emetteursSubventionDon;
 
@@ -243,5 +243,52 @@ public class BudgetAssociation implements Emetteur, Recepteur {
                 traiterResultat(res);       // traiter le resultat du virement
             }
         }
+    }
+
+
+
+    public void saveToJson(){
+        String fileName = "budget.json";
+        String folderPath = "./database/budget";
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode visiteJson = mapper.createObjectNode();
+        visiteJson.put("solde", solde);
+        visiteJson.put("dernierRapport", dernierRapport);
+        File fichier = new File(folderPath, fileName);
+        try {
+            mapper.writeValue(fichier, visiteJson);
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+    }
+
+    public static BudgetAssociation readBudgetFromJsonOf(){
+
+        String fileName = "./database/budget/budget.json";
+        File file = new File(fileName);
+
+        if (file.exists() && file.isFile()) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                ObjectNode visiteJson = (ObjectNode) mapper.readTree(file);
+                double solde = visiteJson.get("solde").asDouble();
+                String dernierRapport = visiteJson.get("dernierRapport").toString();
+                BudgetAssociation budgetAssociation = new BudgetAssociation(solde);
+                budgetAssociation.dernierRapport = dernierRapport;
+                budgetAssociation.factures = Facture.readFacturesEveFromJson();
+                budgetAssociation.cotisationsRecues = Cotisation.readCotisationsFromJsonOf();
+                return budgetAssociation;
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else {
+            System.out.println("Le chemin spécifié n'est pas un dossier ou n'existe pas.");
+        }
+        return null;
+    }
+
+
+    public List<Facture> getFactures() {
+        return factures;
     }
 }

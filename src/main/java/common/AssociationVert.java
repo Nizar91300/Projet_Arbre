@@ -35,14 +35,7 @@ public final class AssociationVert extends Association {
         arbresProposes = new HashMap<>();
         visitesEffectuees = new ArrayList<>();
         visitesPlanifiees = new ArrayList<>();
-        budgetAssociation = new BudgetAssociation(10000);      // budget initial de 10000 euros
-        // load data if not loaded
-        //EntityManager.get();
-        //loadMembers();
-        //loadVotes();
-        //loadVisites();
-        //loadDonateurs();
-        //loadFactures();
+        budgetAssociation = new BudgetAssociation(10000);
     }
 
     public static AssociationVert get() {
@@ -53,37 +46,6 @@ public final class AssociationVert extends Association {
     public static Recepteur getRecepteur() {
         return budgetAssociation;
     }
-
-
-    private void loadDonateurs(){
-        Donateur d1 = new Donateur("Jean", "Dupont", new Date(2000, 1, 1), 500);
-        Donateur d2 = new Donateur("Marie", "Durand", new Date(1990, 7, 10), 1000);
-        Donateur d3 = new Donateur("Pierre", "Martin", new Date(1980, 5, 15), 2000);
-        Donateur d4 = new Donateur("Sophie", "Bernard", new Date(1970, 3, 20), 3000);
-        Donateur d5 = new Donateur("Luc", "Lefevre", new Date(1960, 11, 25), 4000);
-
-        budgetAssociation.ajouterEmetteurSubventionDon(d1);
-        budgetAssociation.ajouterEmetteurSubventionDon(d2);
-        budgetAssociation.ajouterEmetteurSubventionDon(d3);
-        budgetAssociation.ajouterEmetteurSubventionDon(d4);
-        budgetAssociation.ajouterEmetteurSubventionDon(d5);
-    }
-
-    private void loadFactures(){
-        var d = budgetAssociation.getEmetteursSubventionDon();
-        Facture f1 = new Facture((Recepteur) d.getFirst(),100, new Date(2021, 1, 1), "Facture 1");
-        Facture f2 = new Facture((Recepteur) d.get(1), 200, new Date(2021, 2, 1), "Facture 2");
-        Facture f3 = new Facture((Recepteur) d.get(2),300, new Date(2021, 3, 1), "Facture 3");
-        Facture f4 = new Facture((Recepteur) d.getFirst(), 400, new Date(2021, 4, 1), "Facture 4");
-        Facture f5 = new Facture((Recepteur) d.get(3),500, new Date(2021, 5, 1), "Facture 5");
-
-        budgetAssociation.ajouterFacture(f1);
-        budgetAssociation.ajouterFacture(f2);
-        budgetAssociation.ajouterFacture(f3);
-        budgetAssociation.ajouterFacture(f4);
-        budgetAssociation.ajouterFacture(f5);
-    }
-
 
     @Override
     public void notify(NotifEvenement notification) {
@@ -276,7 +238,6 @@ public final class AssociationVert extends Association {
 
 
     //todo to remove
-
     // Charger les membres de test stockés dans le fichier
     private void loadMembers() {
         var res = AssociationVert.class.getResource("test_membres.json");
@@ -322,7 +283,6 @@ public final class AssociationVert extends Association {
             System.out.println("Vote : " + vote.membre().getNom() + " " + vote.membre().getPrenom() + " " + vote.arbre().getNomCommun());
         }
     }
-
     // charger des visites planifiées de test
     private void loadVisites() {
         Random random = new Random();
@@ -412,5 +372,22 @@ public final class AssociationVert extends Association {
         visitesEffectuees.clear();
         visitesPlanifiees.clear();
     }
+
+    public void updateBudget(){
+        if(budgetAssociation!=null) budgetAssociation.saveToJson();
+    }
+
+    public void crediter(double montant){
+        if(budgetAssociation!=null) budgetAssociation.crediter(montant);
+    }
+
+    public void debiter(double montant){
+        if(budgetAssociation!=null) budgetAssociation.debiter(montant);
+    }
+
+    public void loadBudget(){
+        budgetAssociation = BudgetAssociation.readBudgetFromJsonOf();
+    }
+
 }
 

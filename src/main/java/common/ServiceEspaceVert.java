@@ -4,7 +4,7 @@ import common.notification.NotifEvenement;
 
 import java.util.HashSet;
 
-public class ServiceEspaceVert implements DonateurVert {
+public class ServiceEspaceVert {
 
     private static ServiceEspaceVert instance;
     HashSet<ServiceVertObserver> observers;
