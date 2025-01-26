@@ -9,6 +9,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class PlantationView {
 
     @FXML
@@ -37,7 +40,7 @@ public class PlantationView {
 
     private void ajouterArbre() {
         try {
-            int id = Arbre.arbres.size() + 1;
+            int id = Collections.max(Arbre.arbres.keySet()) + 1;
             String adresse = txtAdresse.getText();
             String nomCommun = txtNomCommun.getText();
             String genre = txtGenre.getText();
@@ -58,6 +61,9 @@ public class PlantationView {
 
             // Créer un nouvel arbre avec les valeurs saisies
             Arbre arbre = new Arbre(id, adresse, nomCommun, genre, espece, circonference, hauteur, stade, remarquable, coordonnees);
+            arbre.saveToJson();
+            System.out.println(arbre.getId());
+
             envoimsg(NotifEvenement.Evenement.PLANTATION,arbre);
             // Fermer la fenêtre
             fermerFenetre();

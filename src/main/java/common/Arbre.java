@@ -153,7 +153,7 @@ public class Arbre implements Comparable<Arbre> {
 
 
     public boolean deleteJson(){
-        return new File(id+".json").delete();
+        return new File("./database/arbres/"+ id+".json").delete();
     }
 
 

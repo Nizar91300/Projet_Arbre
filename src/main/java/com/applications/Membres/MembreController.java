@@ -94,11 +94,14 @@ public class MembreController {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
             association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
-            showAlert(Alert.AlertType.INFORMATION, "Visite planifiée",
-                    "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
-        } else {
-            showAlert(Alert.AlertType.WARNING, "Erreur de planification",
-                    "Veuillez sélectionner un arbre remarquable et être connecté pour planifier une visite.");
+            if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
+                // Logique pour planifier une visite
+                association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
+                showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Erreur de planification",
+                        "Veuillez sélectionner un arbre remarquable et être connecté pour planifier une visite.");
+            }
         }
     }
 
