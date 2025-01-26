@@ -259,9 +259,11 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
                     var membre = readFromJson(file.getName());
                     AssociationVert.get().ajouterMembre(membre);
                     for (var visite : membre.visites){
-                        if (visite.compteRendu() == null || visite.compteRendu().isBlank()){
+                        if (visite.compteRendu() == null || visite.compteRendu().equals("null") || visite.compteRendu().isBlank()){
+                            System.out.println("Visite planifiée : "+visite.compteRendu());
                             AssociationVert.get().getVisitesPlanifiees().add(visite);
                         }else{
+                            System.out.println("Visite effectuée : "+visite.compteRendu());
                             AssociationVert.get().getVisitesEffectuees().add(visite);
                         }
                     }
