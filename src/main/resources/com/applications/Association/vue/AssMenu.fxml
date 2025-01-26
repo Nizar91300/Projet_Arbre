@@ -14,7 +14,7 @@
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gestionnaire Association">
                     <font><Font name="System Bold" size="50.0" /></font>
                 </Text>
-                <Button fx:id="btnBienvenue" mnemonicParsing="false" text="Bienvenue" textAlignment="CENTER">
+                <Button fx:id="btnBienvenue" mnemonicParsing="false" text="Bienvenue" textAlignment="CENTER" style="-fx-font-size: 16px; -fx-background-color: #5A5DBD; -fx-text-fill: white; -fx-padding: 10px;">
                     <VBox.margin><Insets/></VBox.margin>
                 </Button>
             </children>

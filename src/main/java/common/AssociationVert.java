@@ -41,11 +41,11 @@ public final class AssociationVert extends Association {
 
         // load data if not loaded
         EntityManager.get();
-        loadMembers();
-        loadVotes();
-        loadVisites();
-        loadDonateurs();
-        loadFactures();
+        //loadMembers();
+        //loadVotes();
+        //loadVisites();
+        //loadDonateurs();
+        //loadFactures();
     }
 
     public static AssociationVert get() {
@@ -57,103 +57,6 @@ public final class AssociationVert extends Association {
         return budgetAssociation;
     }
 
-    // Charger les membres de test stockés dans le fichier
-    private void loadMembers() {
-        var res = AssociationVert.class.getResource("test_membres.json");
-
-        if (res == null) {
-            return;
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            // Lire le fichier JSON et convertir en liste de membres
-            File jsonFile = new File(res.getFile());
-            Set<Membre> loadedMembers = objectMapper.readValue(jsonFile, new TypeReference<Set<Membre>>() {});
-
-            // Ajouter les membres au Set
-            for (var m : loadedMembers) membres.put(m.getPseudo(),m);
-
-            System.out.println("Membres chargés avec succès : " + membres.size());
-        } catch (IOException e) {
-            System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
-        }
-
-        // cotiser pour un certain nombre de membres
-        int i = 0;
-        for(Membre m : membres.values()) {
-            if(i < 6) {
-                m.cotiser();
-                i++;
-            }
-        }
-    }
-
-    // ajouter des votes de test
-    private void loadVotes() {
-        Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            Membre membre = membres.values().stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
-            Arbre arbre = Arbre.arbres.values().stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
-            ajouterVote(new Vote(membre, arbre, new Date()));
-        }
-
-        // print votes
-        for (Vote vote : votes) {
-            System.out.println("Vote : " + vote.membre().getNom() + " " + vote.membre().getPrenom() + " " + vote.arbre().getNomCommun());
-        }
-    }
-
-    // charger des visites planifiées de test
-    private void loadVisites() {
-        Random random = new Random();
-
-        List<Arbre> arbresRemarquables = Arbre.arbres.values().stream()
-                .filter(Arbre::isClassificationRemarquable)  // Filtrer uniquement les arbres remarquables
-                .toList();
-
-        if (arbresRemarquables.isEmpty())  return;
-
-        // Liste de comptes rendus possibles
-        List<String> comptesRendus = List.of(
-                "Visite effectuée, l'arbre est en très bon état.",
-                "Visite effectuée, l'arbre présente quelques signes de vieillissement.",
-                "Visite effectuée, l'arbre semble avoir des problèmes de croissance.",
-                "Visite effectuée, arbre visité et bien entretenu.",
-                "Visite effectuée, l'arbre est malade et nécessite des soins urgents."
-        );
-
-        // Calcul des dates pour planification et compte rendu
-        long sixMonthsAgoMillis = System.currentTimeMillis() - (long) 6 * 30 * 24 * 60 * 60 * 1000;  // 6 mois en millisecondes
-        long oneMonthAgoMillis = System.currentTimeMillis() - (long) 30 * 24 * 60 * 60 * 1000;  // 1 mois en millisecondes
-
-        for (int i = 0; i < 40; i++) {
-            Membre membre = membres.values().stream()
-                    .skip(random.nextInt(membres.size()))  // Choisir un membre aléatoire
-                    .findFirst()
-                    .orElse(null);
-
-            Arbre arbre = arbresRemarquables.stream()
-                    .skip(random.nextInt(arbresRemarquables.size()))  // Choisir un arbre remarquable aléatoire
-                    .findFirst()
-                    .orElse(null);
-
-            if (membre != null && arbre != null) {
-                // Créer une date de visite planifiée entre 6 mois et 1 mois
-                long randomTimeMillis = sixMonthsAgoMillis + (long)(random.nextDouble() * (oneMonthAgoMillis - sixMonthsAgoMillis));
-                Date datePlanification = new Date(randomTimeMillis);
-
-                // Planifier la visite
-                planifierVisite(membre, arbre, datePlanification);
-
-                // Sélectionner un compte rendu aléatoire
-                String compteRendu = comptesRendus.get(random.nextInt(comptesRendus.size()));
-
-                // Ajouter le compte rendu à la visite effectuée
-                rendreCompteVisite(membre, arbre, compteRendu);
-            }
-        }
-    }
 
     private void loadDonateurs(){
         Donateur d1 = new Donateur("Jean", "Dupont", new Date(2000, 1, 1), 500);
@@ -367,5 +270,110 @@ public final class AssociationVert extends Association {
     public List<Visite> getVisitesEffectuees() {
         return visitesEffectuees;
     }
+
+
+
+
+
+
+
+
+
+    /*// Charger les membres de test stockés dans le fichier
+    private void loadMembers() {
+        var res = AssociationVert.class.getResource("test_membres.json");
+
+        if (res == null) {
+            return;
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // Lire le fichier JSON et convertir en liste de membres
+            File jsonFile = new File(res.getFile());
+            Set<Membre> loadedMembers = objectMapper.readValue(jsonFile, new TypeReference<Set<Membre>>() {});
+
+            // Ajouter les membres au Set
+            for (var m : loadedMembers) membres.put(m.getPseudo(),m);
+
+            System.out.println("Membres chargés avec succès : " + membres.size());
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
+        }
+
+        // cotiser pour un certain nombre de membres
+        int i = 0;
+        for(Membre m : membres.values()) {
+            if(i < 6) {
+                m.cotiser();
+                i++;
+            }
+        }
+    }
+    // ajouter des votes de test
+    private void loadVotes() {
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            Membre membre = membres.values().stream().toList().get(random.nextInt(0,membres.size()));  // Choisir un membre aléatoire
+            Arbre arbre = Arbre.arbres.values().stream().toList().get(random.nextInt(0,Arbre.arbres.size()));  // Choisir un arbre aléatoire
+            ajouterVote(new Vote(membre, arbre, new Date()));
+        }
+
+        // print votes
+        for (Vote vote : votes) {
+            System.out.println("Vote : " + vote.membre().getNom() + " " + vote.membre().getPrenom() + " " + vote.arbre().getNomCommun());
+        }
+    }
+
+    // charger des visites planifiées de test
+    private void loadVisites() {
+        Random random = new Random();
+
+        List<Arbre> arbresRemarquables = Arbre.arbres.values().stream()
+                .filter(Arbre::isClassificationRemarquable)  // Filtrer uniquement les arbres remarquables
+                .toList();
+
+        if (arbresRemarquables.isEmpty())  return;
+
+        // Liste de comptes rendus possibles
+        List<String> comptesRendus = List.of(
+                "Visite effectuée, l'arbre est en très bon état.",
+                "Visite effectuée, l'arbre présente quelques signes de vieillissement.",
+                "Visite effectuée, l'arbre semble avoir des problèmes de croissance.",
+                "Visite effectuée, arbre visité et bien entretenu.",
+                "Visite effectuée, l'arbre est malade et nécessite des soins urgents."
+        );
+
+        // Calcul des dates pour planification et compte rendu
+        long sixMonthsAgoMillis = System.currentTimeMillis() - (long) 6 * 30 * 24 * 60 * 60 * 1000;  // 6 mois en millisecondes
+        long oneMonthAgoMillis = System.currentTimeMillis() - (long) 30 * 24 * 60 * 60 * 1000;  // 1 mois en millisecondes
+
+        for (int i = 0; i < 40; i++) {
+            Membre membre = membres.values().stream()
+                    .skip(random.nextInt(membres.size()))  // Choisir un membre aléatoire
+                    .findFirst()
+                    .orElse(null);
+
+            Arbre arbre = arbresRemarquables.stream()
+                    .skip(random.nextInt(arbresRemarquables.size()))  // Choisir un arbre remarquable aléatoire
+                    .findFirst()
+                    .orElse(null);
+
+            if (membre != null && arbre != null) {
+                // Créer une date de visite planifiée entre 6 mois et 1 mois
+                long randomTimeMillis = sixMonthsAgoMillis + (long)(random.nextDouble() * (oneMonthAgoMillis - sixMonthsAgoMillis));
+                Date datePlanification = new Date(randomTimeMillis);
+
+                // Planifier la visite
+                planifierVisite(membre, arbre, datePlanification);
+
+                // Sélectionner un compte rendu aléatoire
+                String compteRendu = comptesRendus.get(random.nextInt(comptesRendus.size()));
+
+                // Ajouter le compte rendu à la visite effectuée
+                rendreCompteVisite(membre, arbre, compteRendu);
+            }
+        }
+    }*/
 }
 

@@ -3,6 +3,7 @@ package common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.notification.NotifEvenement;
 import common.notification.NotifNominationArbre;
 import common.notification.NotifReponseNomination;
@@ -248,6 +249,32 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         //for (var demandesRecus : demandesRecus); //todo
         return membre;
     }
+
+    public static void readMembresFromJson() {
+        File folder = new File("./database/membres");
+        if (folder.exists() && folder.isDirectory()) {
+            for (File file : Objects.requireNonNull(folder.listFiles())) {
+                if (file.isDirectory()) {
+                    var membre = readFromJson(file.getName());
+                    AssociationVert.get().ajouterMembre(membre);
+                    for (var visite : membre.visites){
+                        if (visite.compteRendu() == null || visite.compteRendu().isBlank()){
+                            AssociationVert.get().getVisitesPlanifiees().add(visite);
+                        }else{
+                            AssociationVert.get().getVisitesEffectuees().add(visite);
+                        }
+                    }
+                    for (var vote : membre.votes){
+                        AssociationVert.get().ajouterVote(vote);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Le chemin spécifié n'est pas un dossier ou n'existe pas.");
+        }
+    }
+
+
 
 
     @Override
