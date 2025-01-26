@@ -2,6 +2,7 @@ package com.applications.Association.controleur;
 
 import com.applications.Association.vue.AssMembresView;
 import common.AssociationVert;
+import common.EntityManager;
 import common.Membre;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -77,6 +78,7 @@ public class AssAjoutMembreControler {
         Stage stage = (Stage) btnAjouter.getScene().getWindow();
         stage.close();
 
+        EntityManager.get().loadMembres();
         AssMembresView.load();
     }
 

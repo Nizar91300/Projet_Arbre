@@ -45,6 +45,7 @@ public class AssMainControler {
         btnFinExercice.setOnAction((actionEvent) ->{
             finExercice();
         });
+
         AssociationVert.get();
         EntityManager.get();
         EntityManager.get().loadArbres();

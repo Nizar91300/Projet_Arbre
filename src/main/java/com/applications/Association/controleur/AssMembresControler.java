@@ -82,6 +82,7 @@ public class AssMembresControler {
         btnRetirer.setOnAction((actionEvent) -> {
             Membre selectedMembre = table.getSelectionModel().getSelectedItem();
             AssociationVert.get().supprimerMembre(selectedMembre);
+            EntityManager.get().loadMembres();
             AssMembresView.load();
         });
 
@@ -98,10 +99,6 @@ public class AssMembresControler {
         ArrayList<Membre> membres = new ArrayList<>(AssociationVert.get().getMembres().values());
         ObservableList<Membre> membressList = FXCollections.observableArrayList(membres);
         table.setItems(membressList);
-
-        //test todo remove
-        //for (var membre : membres) membre.saveToJson();
-        //System.out.println(Membre.readFromJson("brigitte.lemoine"));
     }
 
 

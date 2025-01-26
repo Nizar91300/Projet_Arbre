@@ -27,8 +27,6 @@ public final class AssociationVert extends Association {
     private List<Visite> visitesPlanifiees;
     private static BudgetAssociation budgetAssociation;
 
-    //private List<Donateur> donateurs;
-    //private List<Facture> factures;
 
     private AssociationVert() {
         super("Association Vert");
@@ -404,6 +402,15 @@ public final class AssociationVert extends Association {
             return false;
         });
 
+    }
+
+
+    public void clear(){
+        membres.clear();
+        votes.clear();
+        arbresProposes.clear();
+        visitesEffectuees.clear();
+        visitesPlanifiees.clear();
     }
 }
 

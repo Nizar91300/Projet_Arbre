@@ -139,10 +139,12 @@ public class EntityManager {
 
 
     public void loadArbres(){
+        Arbre.arbres.clear();
         Arbre.readArbresFromJson();
     }
 
     public void loadMembres(){
+        AssociationVert.get().clear();
         Membre.readMembresFromJson();
     }
 
