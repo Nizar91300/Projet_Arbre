@@ -27,7 +27,7 @@ public class EntityManager {
     public static EntityManager get() {
         if(entityManager == null){
             entityManager = new EntityManager();
-            entityManager.loadData();
+            entityManager.readArbre();
         }
         return entityManager;
     }
@@ -138,9 +138,16 @@ public class EntityManager {
     }
 
 
-    public void loadData(){
+    public void loadArbres(){
         Arbre.readArbresFromJson();
+    }
+
+    public void loadMembres(){
         Membre.readMembresFromJson();
+    }
+
+    public Membre loadMembre(String pseudo){
+        return Membre.readFromJson(pseudo);
     }
 
 

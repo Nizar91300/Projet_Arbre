@@ -229,7 +229,7 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         }
 
         for (var notif : notifications) notif.saveToJsonToMembre(this);
-        for (var vote : votes) vote.saveToJson();
+        for (var vote : votes) {vote.saveToJson();}
         for (var visite : visites)visite.saveToJson();
         //for (var demandesRecus : demandesRecus); //todo
     }

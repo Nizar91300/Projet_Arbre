@@ -38,9 +38,8 @@ public final class AssociationVert extends Association {
         visitesEffectuees = new ArrayList<>();
         visitesPlanifiees = new ArrayList<>();
         budgetAssociation = new BudgetAssociation(10000);      // budget initial de 10000 euros
-
         // load data if not loaded
-        EntityManager.get();
+        //EntityManager.get();
         //loadMembers();
         //loadVotes();
         //loadVisites();
@@ -277,9 +276,9 @@ public final class AssociationVert extends Association {
 
 
 
+    //todo to remove
 
-
-    /*// Charger les membres de test stockés dans le fichier
+    // Charger les membres de test stockés dans le fichier
     private void loadMembers() {
         var res = AssociationVert.class.getResource("test_membres.json");
 
@@ -374,6 +373,6 @@ public final class AssociationVert extends Association {
                 rendreCompteVisite(membre, arbre, compteRendu);
             }
         }
-    }*/
+    }
 }
 

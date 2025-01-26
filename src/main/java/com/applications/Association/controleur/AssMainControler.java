@@ -1,7 +1,9 @@
 package com.applications.Association.controleur;
 
 import com.applications.Association.vue.*;
+import common.Arbre;
 import common.AssociationVert;
+import common.EntityManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -43,11 +45,14 @@ public class AssMainControler {
         btnFinExercice.setOnAction((actionEvent) ->{
             finExercice();
         });
+        AssociationVert.get();
+        EntityManager.get();
+        EntityManager.get().loadArbres();
+        EntityManager.get().loadMembres();
     }
 
     private void finExercice(){
         AssociationVert.get().finExercice();
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Fin d'exercice budgetaire");
         alert.setHeaderText(null);
