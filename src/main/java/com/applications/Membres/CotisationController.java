@@ -25,7 +25,7 @@ public class CotisationController {
     private Label soldeLabel;  // Label pour afficher le solde
 
     // Utilisation de SessionManager pour récupérer le membre actuel
-    private Membre membreActuel = SessionManager.getMembreConnecte();
+    private Membre membreActuel = SessionManager.get().getMembreConnecte();
 
     @FXML
     private void initialize() {

@@ -4,6 +4,8 @@ import common.EntityManager;
 import common.Membre;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -13,10 +15,10 @@ import javafx.scene.Node;
 
 import javafx.stage.Stage;
 
+import java.io.IOException;
 
 
-
-public class Controller0 {
+public class MembreMenuView {
     @FXML
     private ImageView image0;
 
@@ -38,11 +40,24 @@ public class Controller0 {
     private Label labelMessageErreur;
 
 
+
+    public static void load() {
+        try {
+            MembreMenuView view = new MembreMenuView();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreMenuView.class.getResource("/com/applications/Membres/Vue0.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @FXML
     private void handleSinscrire(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue2.fxml", "Inscription");
-
+        MembreAjoutView.load();
     }
 
     @FXML
@@ -54,12 +69,10 @@ public class Controller0 {
         Membre membre = AssociationVert.get().connecterMembre(pseudo, motDePasse);
 
         if (membre != null) {
-            // Si la connexion est réussie, stocker le membre connecté dans le gestionnaire de session
-            SessionManager.setMembreConnecte(membre);
 
-            // Ouvrir la vue membre (Vue1.fxml)
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Espace Membre");
+            // Si la connexion est réussie, stocker le membre connecté dans le gestionnaire de session
+            SessionManager.get().setMembreConnecte(membre);
+            MembreMenu2View.load();
         } else {
             // Si la connexion échoue, afficher un message d'erreur dans le label
             labelMessageErreur.setText("Pseudo ou mot de passe incorrect. Veuillez réessayer.");
@@ -72,8 +85,7 @@ public class Controller0 {
 
     @FXML
     private void handleExit(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow(); // Corrected
-        stage.close(); // Ferme la fenêtre
+        MembreView.getStage().close();
     }
 
     @FXML
@@ -82,6 +94,8 @@ public class Controller0 {
     private void handleMDP(ActionEvent event) {}
 
 
+
+    //todo
     @FXML
     public void initialize() {
         // Configuration initiale

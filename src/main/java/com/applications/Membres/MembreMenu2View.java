@@ -1,16 +1,18 @@
 package com.applications.Membres;
-import common.AssociationVert;
 import common.Membre;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
+import java.io.IOException;
 
-public class Controller1 {
-    private Membre membreActuel;
+
+public class MembreMenu2View {
 
     @FXML
     private ImageView image1;
@@ -23,15 +25,32 @@ public class Controller1 {
     @FXML
     private Button Visite;
 
+
+
+    public static void load() {
+        try {
+            MembreMenu2View view = new MembreMenu2View();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreMenu2View.class.getResource("/com/applications/Membres/Vue1.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     @FXML
     private void handleBack(ActionEvent event){
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue0.fxml", "Connexion");
+        MembreMenuView.load();
     }
+
     @FXML
     private void handleConsulterEtVoter(ActionEvent event){
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue3.fxml", "Vote et planification de visites");
+        MembreVoteView.load();
     }
 
     @FXML
@@ -45,7 +64,5 @@ public class Controller1 {
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue5.fxml", "Comptes Rendu visites");
     }
-    public void setMembreActuel(Membre membre) {
-        this.membreActuel = membre;
-    }
+
 }

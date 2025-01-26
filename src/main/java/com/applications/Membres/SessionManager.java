@@ -5,17 +5,27 @@ import common.Membre;
 
 
 public class SessionManager {
-    private static Membre membreConnecte;
 
-    public static void setMembreConnecte(Membre membre) {
+    public static SessionManager instance;
+    private Membre membreConnecte;
+
+    public static SessionManager get() {
+        if (instance==null) instance = new SessionManager();
+        return instance;
+    }
+
+    private SessionManager(){}
+
+
+    public void setMembreConnecte(Membre membre) {
         membreConnecte = membre;
     }
 
-    public static Membre getMembreConnecte() {
+    public Membre getMembreConnecte() {
         return membreConnecte;
     }
 
-    public static void clear() {
+    public void clear() {
         membreConnecte = null;
     }
 }

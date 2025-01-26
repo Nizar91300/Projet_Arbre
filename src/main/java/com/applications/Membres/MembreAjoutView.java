@@ -1,9 +1,10 @@
 package com.applications.Membres;
 
 import common.AssociationVert;
-import common.Membre;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.IOException;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +21,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import javafx.stage.Stage;
 
-public class Controller2 {
+public class MembreAjoutView {
 
     @FXML
     private TextField TFN;
@@ -40,18 +42,25 @@ public class Controller2 {
     @FXML
     private Label LabelVue2;
 
-    private AssociationVert association;
 
-    public Controller2() {
-        // Utiliser l'instance singleton d'AssociationVert
-        this.association = AssociationVert.get();
+    public static void load() {
+        try {
+            MembreAjoutView view = new MembreAjoutView();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreMenuView.class.getResource("/com/applications/Membres/Vue2.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleButtonMenu(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue0.fxml", "Menu");
+        MembreMenuView.load();
     }
+
 
     @FXML
     private void handleInscription() {
@@ -62,15 +71,18 @@ public class Controller2 {
             String motDePasse = TFMDP.getText();
             String adresse = TFA.getText();
 
-            // Parser la date de naissance avec gestion des erreurs
+            if (nom == null || nom.isBlank() || prenom==null || prenom.isBlank() || pseudo==null || pseudo.isBlank() || motDePasse==null || motDePasse.isBlank() || adresse==null || adresse.isBlank()){
+                LabelVue2.setText("Erreur: il faut remplir toutes les cases.");
+                return;
+            }
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate localDateNaissance = LocalDate.parse(TFD.getText(), formatter);
             Date dateNaissance = Date.from(localDateNaissance.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             // Création de l'objet Membre
-            boolean inscriptionResultat = association.inscrireMembre(nom, prenom, dateNaissance, pseudo, motDePasse, adresse);
+            boolean inscriptionResultat = AssociationVert.get().inscrireMembre(nom, prenom, dateNaissance, pseudo, motDePasse, adresse);
 
-            // Mise à jour du label selon le résultat de l'inscription
             if (inscriptionResultat) {
                 LabelVue2.setText("Inscription réussie. Appuyez sur Revenir pour vous connecter.");
             } else {

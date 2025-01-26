@@ -2,11 +2,14 @@ package com.applications.Membres;
 
 import common.Arbre;
 import common.AssociationVert;
+import common.Vote;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -15,7 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import common.Membre;
 
-public class MembreController {
+import java.io.IOException;
+
+public class MembreVoteView {
 
     @FXML
     private Button ButtonBack;
@@ -50,9 +55,24 @@ public class MembreController {
     @FXML
     private Button btnPlanifierVisite;
 
-    private AssociationVert association = AssociationVert.get();
 
-    private Membre membreCourant = SessionManager.getMembreConnecte();
+
+    public static void load() {
+        try {
+            MembreVoteView view = new MembreVoteView();
+            FXMLLoader fxmlLoader = new FXMLLoader(MembreVoteView.class.getResource("/com/applications/Membres/Vue3.fxml"));
+            fxmlLoader.setController(view);
+            Scene scene = new Scene(fxmlLoader.load(), MembreView.WIDTH, MembreView.HEIGHT);
+            MembreView.getStage().setScene(scene);
+            MembreView.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     @FXML
     private void initialize() {
@@ -64,11 +84,7 @@ public class MembreController {
         colCircon.setCellValueFactory(new PropertyValueFactory<>("circonference"));
         colHauteur.setCellValueFactory(new PropertyValueFactory<>("hauteur"));
         colRem.setCellValueFactory(new PropertyValueFactory<>("classificationRemarquable"));
-
-        // Charger les données dans la table
         loadTableData();
-
-        // Configurer les actions des boutons
         btnVoter.setOnAction(event -> handleVoter());
         btnPlanifierVisite.setOnAction(event -> handlePlanifierVisite());
     }
@@ -80,30 +96,19 @@ public class MembreController {
 
     private void handleVoter() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-        if (selectedArbre != null && membreCourant != null) {
-            association.ajouterVote(new common.Vote(membreCourant, selectedArbre, new java.util.Date()));
-            showAlert(Alert.AlertType.INFORMATION, "Vote réussi",
-                    "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
+        if (selectedArbre != null && SessionManager.get().getMembreConnecte() != null) {
+            Vote vote = new Vote(SessionManager.get().getMembreConnecte() , selectedArbre, new java.util.Date());
+            SessionManager.get().getMembreConnecte().ajouterVote(vote);
+            showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Erreur de vote",
-                    "Veuillez sélectionner un arbre et être connecté pour voter.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de vote", "Veuillez sélectionner un arbre et être connecté pour voter.");
         }
     }
 
     private void handlePlanifierVisite() {
-        Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-        if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
-            association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
-            if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
-                // Logique pour planifier une visite
-                association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
-                showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
-            } else {
-                showAlert(Alert.AlertType.WARNING, "Erreur de planification",
-                        "Veuillez sélectionner un arbre remarquable et être connecté pour planifier une visite.");
-            }
-        }
+        VoteView.load();
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -112,9 +117,9 @@ public class MembreController {
         alert.showAndWait();
     }
 
+
     @FXML
     private void handleBack(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Vote et planification de visites");
+        MembreMenu2View.load();
     }
 }

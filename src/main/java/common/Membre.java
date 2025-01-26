@@ -74,10 +74,12 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
 
     public void ajouterVote(Vote vote) {
         if (votes.size() >= 5) {
-            votes.removeFirst();
-            AssociationVert.get().supprimerVote(vote);
+            Vote tmpVote = votes.removeFirst();
+            tmpVote.deleteJson();
+            AssociationVert.get().supprimerVote(tmpVote);
         }
         AssociationVert.get().ajouterVote(vote);
+        vote.saveToJson();
         votes.add(vote);
     }
 
@@ -306,5 +308,9 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
     @Override
     public int hashCode() {
         return Objects.hashCode(pseudo);
+    }
+
+    public List<Vote> getAllVotes(){
+        return votes;
     }
 }

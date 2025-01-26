@@ -17,6 +17,14 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         return new Visite(membre, arbre, date, newCompteRendu);
     }
 
+    public boolean deleteJson(){
+        String fileName = "visite_"+ arbre.getId() +"_"+ date.getTime() + ".json";
+        String folderPath = "./database/membres/" + membre.getPseudo();
+        File file = new File(folderPath, fileName);
+        return file.delete();
+    }
+
+
     public void saveToJson(){
 
         String fileName = "visite_"+ arbre.getId() +"_"+ date.getTime() + ".json";

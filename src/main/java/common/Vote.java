@@ -11,7 +11,12 @@ import java.util.Objects;
 
 public record Vote(Membre membre, Arbre arbre, Date dateVote) {
 
-
+    public boolean deleteJson(){
+        String fileName = "vote_"+ arbre.getId() +"_"+ dateVote.getTime() + ".json";
+        String folderPath = "./database/membres/" + membre.getPseudo();
+        File file = new File(folderPath, fileName);
+        return file.delete();
+    }
 
     public void saveToJson(){
 
