@@ -15,9 +15,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import common.Membre;
 
-/*public class MembreController {
+public class MembreController {
 
-    @FXML
+    /*@FXML
     private Button ButtonBack;
 
     @FXML
@@ -94,14 +94,11 @@ import common.Membre;
 
     private void handlePlanifierVisite() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-<<<<<<< HEAD
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
             association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
-=======
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
             // Logique pour planifier une visite
             association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
->>>>>>> 21d043a66d420ab7553f557f19231b179549c7f6
             showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite et être connecté.");
@@ -119,5 +116,5 @@ import common.Membre;
     private void handleBack(ActionEvent event){
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Vote et planification de visites");
-    }
-}*/
+    }*/
+}
