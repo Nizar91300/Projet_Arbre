@@ -1,5 +1,6 @@
 package com.applications.Membres;
 import common.AssociationVert;
+import common.EntityManager;
 import common.Membre;
 
 import javafx.fxml.FXML;
@@ -83,6 +84,11 @@ public class Controller0 {
 
     @FXML
     public void initialize() {
-        // Configuration initiale, si nécessaire
+        // Configuration initiale
+        AssociationVert.get();
+        EntityManager.get();
+        EntityManager.get().loadArbres();
+        EntityManager.get().loadMembres();
+
     }
 }

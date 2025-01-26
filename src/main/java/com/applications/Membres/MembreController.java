@@ -15,7 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import common.Membre;
 
-/*public class MembreController {
+public class MembreController {
 
     @FXML
     private Button ButtonBack;
@@ -52,7 +52,7 @@ import common.Membre;
 
     private AssociationVert association = AssociationVert.get();
 
-    private  Membre membreCourant = SessionManager.getMembreConnecte();
+    private Membre membreCourant = SessionManager.getMembreConnecte();
 
     @FXML
     private void initialize() {
@@ -74,7 +74,7 @@ import common.Membre;
     }
 
     private void loadTableData() {
-        ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres);
+        ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres.values());
         tableArbres.setItems(arbresList);
     }
 
@@ -82,32 +82,25 @@ import common.Membre;
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
         if (selectedArbre != null && membreCourant != null) {
             association.ajouterVote(new common.Vote(membreCourant, selectedArbre, new java.util.Date()));
-        if (selectedArbre != null) {
-            // Logique pour voter
-            association.ajouterVote(new common.Vote(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date())); // Remplacer `null` par le membre courant
-            showAlert(Alert.AlertType.INFORMATION, "Vote réussi", "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
+            showAlert(Alert.AlertType.INFORMATION, "Vote réussi",
+                    "Votre vote pour l'arbre " + selectedArbre.getNomCommun() + " a été enregistré.");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre pour voter et être connecté.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de vote",
+                    "Veuillez sélectionner un arbre et être connecté pour voter.");
         }
     }
-
 
     private void handlePlanifierVisite() {
         Arbre selectedArbre = tableArbres.getSelectionModel().getSelectedItem();
-<<<<<<< HEAD
         if (selectedArbre != null && selectedArbre.isClassificationRemarquable() && membreCourant != null) {
             association.planifierVisite(membreCourant, selectedArbre, new java.util.Date());
-=======
-        if (selectedArbre != null && selectedArbre.isClassificationRemarquable()) {
-            // Logique pour planifier une visite
-            association.planifierVisite(SessionManager.getMembreConnecte(), selectedArbre, new java.util.Date()); // Remplacer `null` par le membre courant
->>>>>>> 21d043a66d420ab7553f557f19231b179549c7f6
-            showAlert(Alert.AlertType.INFORMATION, "Visite planifiée", "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
+            showAlert(Alert.AlertType.INFORMATION, "Visite planifiée",
+                    "Une visite pour l'arbre " + selectedArbre.getNomCommun() + " a été planifiée.");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Aucun arbre ou membre sélectionné", "Veuillez sélectionner un arbre remarquable pour planifier une visite et être connecté.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de planification",
+                    "Veuillez sélectionner un arbre remarquable et être connecté pour planifier une visite.");
         }
     }
-
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -115,9 +108,10 @@ import common.Membre;
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     @FXML
-    private void handleBack(ActionEvent event){
+    private void handleBack(ActionEvent event) {
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ViewLoader.ouvrirVue(currentStage, "/com/applications/Membres/Vue1.fxml", "Vote et planification de visites");
     }
-}*/
+}
