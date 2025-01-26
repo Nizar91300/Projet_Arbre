@@ -68,7 +68,7 @@ public class NotifEvenement extends Notification {
 
 
     public void saveToJsonToMembre(Membre membre){
-        String fileName = "notif_"+ dateNotification +"_"+ arbre.getId() + ".json";
+        String fileName = "notif_"+ dateNotification.getTime() +"_"+ arbre.getId() + ".json";
         String folderPath = "./database/membres/" + membre.getPseudo();
         ObjectMapper mapper = new ObjectMapper();
         try {
