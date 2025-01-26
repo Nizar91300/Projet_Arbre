@@ -56,9 +56,9 @@ public class NotificationView {
             NotificationView view = new NotificationView();
             FXMLLoader fxmlLoader = new FXMLLoader(ConsultationView.class.getResource("NotificationView.fxml"));
             fxmlLoader.setController(view);
-            Scene scene = new Scene(fxmlLoader.load(), Main1.WIDTH, Main1.HEIGHT);
-            Main1.getStage().setScene(scene);
-            Main1.getStage().show();
+            Scene scene = new Scene(fxmlLoader.load(), VertView.WIDTH, VertView.HEIGHT);
+            VertView.getStage().setScene(scene);
+            VertView.getStage().show();
         } catch (IOException e) {
             e.printStackTrace();
         }

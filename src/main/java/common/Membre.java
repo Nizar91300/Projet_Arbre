@@ -242,8 +242,10 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         ObjectMapper mapper = new ObjectMapper();
         Membre membre = null;
         try {
-            membre = mapper.readValue(new File("./database/membres/"+pseudo+"/"+pseudo+".json"), Membre.class);
-        } catch (IOException e) {
+            File file = new File("./database/membres/"+pseudo+"/"+pseudo+".json");
+            if (!file.exists()) return null;
+            membre = mapper.readValue(file, Membre.class);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         membre.notifications = NotifEvenement.readNotifsEveFromJsonOf(membre);
@@ -317,5 +319,15 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
 
     public List<Visite> getAllVisites(){
         return visites;
+    }
+
+
+
+    public void updateVotes(){
+        votes = Vote.readVotesFromJsonOf(this);
+    }
+
+    public void updateVisites(){
+        visites = Visite.readVisitesFromJsonOf(this);
     }
 }

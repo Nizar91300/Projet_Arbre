@@ -67,6 +67,7 @@ public class MembreVisiteView {
 
     @FXML
     public void initialize() {
+        SessionManager.get().getMembre().updateVisites();
         colDateAvenir.setCellValueFactory(cellData -> {
             Date date = cellData.getValue().date();
             if(date!=null) return new javafx.beans.property.SimpleStringProperty(date.toString());
@@ -115,7 +116,7 @@ public class MembreVisiteView {
                 Visite visite = selectedVisite.withCompteRendu(text);
                 selectedVisite.deleteJson();
                 visite.saveToJson();
-                loadVisites();
+                MembreVisiteView.load();
             }
         });
 
@@ -135,30 +136,6 @@ public class MembreVisiteView {
 
         tableVisitesAvenir.setItems(FXCollections.observableArrayList(visites1));
         tableVisitesEffectuees.setItems(FXCollections.observableArrayList(visites2));
-    }
-
-
-    @FXML
-    private void handleAjouterCompteRendu() {
-        Visite selectedVisite = tableVisitesAvenir.getSelectionModel().getSelectedItem();
-        if (selectedVisite != null) {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Ajouter un Compte Rendu");
-            dialog.setHeaderText("Ajouter un compte rendu pour l'arbre : " + selectedVisite.arbre().getId());
-            dialog.setContentText("Compte Rendu :");
-
-            dialog.showAndWait().ifPresent(compteRendu -> {
-                // Crée une nouvelle instance de Visite avec le compte rendu
-                Visite updatedVisite = selectedVisite.withCompteRendu(compteRendu);
-
-                // Mise à jour de la liste des visites dans AssociationVert
-                AssociationVert.get().getVisitesEffectuees().remove(selectedVisite);
-                AssociationVert.get().getVisitesEffectuees().add(updatedVisite);
-
-                // Rafraîchit la table pour afficher la mise à jour
-                loadVisites();
-            });
-        }
     }
 
 

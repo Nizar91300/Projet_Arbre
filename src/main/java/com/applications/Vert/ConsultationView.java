@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -101,9 +100,9 @@ public class ConsultationView {
             ConsultationView view = new ConsultationView();
             FXMLLoader fxmlLoader = new FXMLLoader(ConsultationView.class.getResource("ConsultationMenu.fxml"));
             fxmlLoader.setController(view);
-            Scene scene = new Scene(fxmlLoader.load(), Main1.WIDTH, Main1.HEIGHT);
-            Main1.getStage().setScene(scene);
-            Main1.getStage().show();
+            Scene scene = new Scene(fxmlLoader.load(), VertView.WIDTH, VertView.HEIGHT);
+            VertView.getStage().setScene(scene);
+            VertView.getStage().show();
         } catch (IOException e) {
             e.printStackTrace();
         }

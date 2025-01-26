@@ -62,6 +62,9 @@ public class MembreMenuView {
         String pseudo = TextFieldPseudo.getText().trim();
         String motDePasse = TextFieldMDP.getText();
 
+        EntityManager.get().loadMembre(pseudo);
+
+
         // Utilise la méthode connecterMembre de AssociationVert pour la connexion
         Membre membre = AssociationVert.get().connecterMembre(pseudo, motDePasse);
 
@@ -92,14 +95,9 @@ public class MembreMenuView {
 
 
 
-    //todo
     @FXML
     public void initialize() {
-        // Configuration initiale
         AssociationVert.get();
-        EntityManager.get();
         EntityManager.get().loadArbres();
-        EntityManager.get().loadMembres();
-
     }
 }

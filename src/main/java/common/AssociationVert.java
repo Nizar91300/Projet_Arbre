@@ -118,6 +118,7 @@ public final class AssociationVert extends Association {
 
     // Ajouter un membre
     public boolean ajouterMembre(Membre membre) {
+        if (membre==null) return false;
         return membres.putIfAbsent(membre.getPseudo(),membre)==null;
     }
 

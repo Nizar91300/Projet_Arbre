@@ -72,6 +72,7 @@ public class MembreVoteView {
 
     @FXML
     private void initialize() {
+        SessionManager.get().getMembre().updateVotes();
         // Configuration des colonnes de la table
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nomCommun"));

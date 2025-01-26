@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 //Classe principale de l'application Espace vert
-public class Main1 extends Application {
+public class VertView extends Application {
 
     private static Stage stage;
 
@@ -15,7 +15,7 @@ public class Main1 extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Main1.stage = stage;
+        VertView.stage = stage;
         MenuView.load();
         stage.setTitle("Service des espaces verts");
         stage.setResizable(false);

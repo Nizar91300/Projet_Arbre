@@ -146,8 +146,9 @@ public class EntityManager {
         Membre.readMembresFromJson();
     }
 
-    public Membre loadMembre(String pseudo){
-        return Membre.readFromJson(pseudo);
+    public void loadMembre(String pseudo){
+        var membre =  Membre.readFromJson(pseudo);
+        AssociationVert.get().ajouterMembre(membre);
     }
 
 

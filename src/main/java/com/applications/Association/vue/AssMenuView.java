@@ -1,14 +1,8 @@
 package com.applications.Association.vue;
 
 import com.applications.Association.controleur.AssMenuControler;
-import com.applications.Vert.Main1;
-import com.applications.Vert.MenuView;
-import common.AssociationVert;
-import common.EntityManager;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 

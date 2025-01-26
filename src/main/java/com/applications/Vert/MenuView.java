@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -40,9 +39,9 @@ public class MenuView  {
             MenuView view = new MenuView();
             FXMLLoader fxmlLoader = new FXMLLoader(MenuView.class.getResource("Menu.fxml"));
             fxmlLoader.setController(view);
-            Scene scene = new Scene(fxmlLoader.load(), Main1.WIDTH, Main1.HEIGHT);
-            Main1.getStage().setScene(scene);
-            Main1.getStage().show();
+            Scene scene = new Scene(fxmlLoader.load(), VertView.WIDTH, VertView.HEIGHT);
+            VertView.getStage().setScene(scene);
+            VertView.getStage().show();
 
         }catch (IOException e) {
             e.printStackTrace();

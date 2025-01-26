@@ -1,6 +1,7 @@
 package com.applications.Membres;
 
 import com.applications.Association.vue.AssAjoutMembreView;
+import common.Membre;
 import common.Vote;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +44,7 @@ public class VoteView {
 
     @FXML
     public void initialize() {
-
+        SessionManager.get().getMembre().updateVotes();
         colVotes.setCellValueFactory(cellData -> {
             int tmp = cellData.getValue().arbre().getId();
             return new javafx.beans.property.SimpleStringProperty(String.valueOf(tmp));

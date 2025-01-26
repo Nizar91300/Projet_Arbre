@@ -1,4 +1,6 @@
 package com.applications.Membres;
+import common.AssociationVert;
+import common.EntityManager;
 import common.Membre;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,8 +43,6 @@ public class MembreMenu2View {
     }
 
 
-
-
     @FXML
     private void handleBack(ActionEvent event){
         MembreMenuView.load();
@@ -61,6 +61,11 @@ public class MembreMenu2View {
     @FXML
     private void handleVisite(ActionEvent event){
         MembreVisiteView.load();
+    }
+
+    @FXML
+    public void initialize() {
+        EntityManager.get().loadMembre(SessionManager.get().getMembre().getPseudo());
     }
 
 }
