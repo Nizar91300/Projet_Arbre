@@ -53,8 +53,9 @@ public record Cotisation(Membre membre, double montant, Date datePaiement) {
                         int montant = visiteJson.get("montant").asInt();
                         Date datePaiement = new Date(visiteJson.get("datePaiement").asLong());
                         String membrePseudo = visiteJson.get("membrePseudo").toString();
-                        cotisations.add(new Cotisation(AssociationVert.get().getMembres().getOrDefault(membrePseudo,null), montant, datePaiement));
-                    }catch (IOException e){
+                        Membre m = AssociationVert.get().getMembres().getOrDefault(membrePseudo,null);
+                        if(m!=null)  cotisations.add(new Cotisation(m, montant, datePaiement));
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
