@@ -170,6 +170,7 @@ public class ConsultationView {
     //Méthode pour charger la liste d'arbres
     private void loadTableData() {
         EntityManager.get();
+        if (Arbre.arbres.isEmpty()) EntityManager.get().loadArbres();
         ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres.values());
         tabCons.setItems(arbresList);
     }
@@ -233,7 +234,6 @@ public class ConsultationView {
                     break;
             }
         }
-
         // Mettre à jour les éléments affichés dans le tableau
         tabCons.setItems(filteredList);
     }
@@ -244,8 +244,11 @@ public class ConsultationView {
         Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
         if (selectedArbre != null) {
             // Supprimer l'arbre via la méthode retirerArbre
-            boolean removed = Arbre.arbres.remove(selectedArbre.getId())==null;
+            var arb = Arbre.arbres.remove(selectedArbre.getId());
+            boolean removed = arb!=null;
             if (removed) {
+                arb.deleteJson();
+
                 // Supprimer également de l'affichage
                 tabCons.getItems().remove(selectedArbre);
 
@@ -282,7 +285,7 @@ public class ConsultationView {
             String message = selectedArbre.isClassificationRemarquable()
                     ? "L'arbre ID " + selectedArbre.getId() + " est maintenant remarquable."
                     : "L'arbre ID " + selectedArbre.getId() + " n'est plus classifié comme remarquable.";
-
+            selectedArbre.saveToJson();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Classification Remarquable");
             alert.setHeaderText("Classification mise à jour");

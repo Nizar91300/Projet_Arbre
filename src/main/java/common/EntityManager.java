@@ -27,7 +27,7 @@ public class EntityManager {
     public static EntityManager get() {
         if(entityManager == null){
             entityManager = new EntityManager();
-            entityManager.readArbre();
+            //entityManager.loadArbres();
         }
         return entityManager;
     }

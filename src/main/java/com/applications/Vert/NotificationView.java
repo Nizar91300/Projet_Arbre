@@ -7,7 +7,6 @@ import common.Arbre;
 import common.Paire;
 import common.notification.NotifNominationArbre;
 import common.notification.NotifReponseNomination;
-import common.notification.Notification;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,15 +16,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationView {
 
@@ -87,8 +85,6 @@ public class NotificationView {
         //Methode pour load tous nos fichiers lié aux notifications
         loadtouslesfichiers();
 
-
-
         // Action du bouton "Retour"
         btnBackCons.setOnAction(event -> ConsultationView.load());
         // Action du bouton "Search"
@@ -117,14 +113,20 @@ public class NotificationView {
                 String typeMessage = rootNode.get("typeNotification").asText();
                 // Récupérer la liste des arbres
                 JsonNode arbresNode = rootNode.get("arbres");
-
                 // Mapper chaque arbre et créer une notification
+                if (arbresNode==null){
+                    System.err.println("couldn t read arbres in json");
+                    return;
+                }
+
                 for (JsonNode arbreNode : arbresNode) {
                     Arbre arbre = mapJsonToArbre(arbreNode);
                     List<Arbre> arbres = new ArrayList<>();
                     arbres.add(arbre);
                     // Créer une notification pour chaque arbre
                     NotifNominationArbre notification = new NotifNominationArbre( arbres);
+
+                    System.out.println(notification);
                     // Ajouter la notification à la liste
                     messages.add(notification);
                 }
@@ -192,7 +194,7 @@ public class NotificationView {
         // Charger les fichiers dans la liste
         File folder = new File(folderPath);
         if (folder.exists() && folder.isDirectory()) {
-            for (File file : folder.listFiles()) {
+            for (File file : Objects.requireNonNull(folder.listFiles())) {
                 if (file.isFile()) {
                     fileNames.add(file.getName());
                 }
@@ -215,29 +217,22 @@ public class NotificationView {
         ObservableList<NotifNominationArbre> filteredList = FXCollections.observableArrayList();
 
         for (NotifNominationArbre message : messages) {
-            boolean matchesFilter = false;
-
-            switch (selectedFilter) {
-                case "Tous":
-                    matchesFilter = true;
-                    break;
-                case "Emetteur":
-                    matchesFilter = message.getEmetteur().contains(TextSearch.getText());
-                    break;
-                case "Type":
-                    matchesFilter = message.getTypeNotification().contains(TextSearch.getText());
-                    break;
-                case "Arbre concerné":
+            boolean matchesFilter = switch (selectedFilter) {
+                case "Tous" -> true;
+                case "Emetteur" -> message.getEmetteur().contains(TextSearch.getText());
+                case "Type" -> message.getTypeNotification().contains(TextSearch.getText());
+                case "Arbre concerné" -> {
                     // Comparer l'ID de l'arbre en tant que chaîne avec l'entrée utilisateur
                     String arbreIdString = String.valueOf(message.getArbres().get(0).getId()).trim();
-                    matchesFilter = arbreIdString.contains(TextSearch.getText().trim());
-                    break;
-                case "Date":
+                    yield arbreIdString.contains(TextSearch.getText().trim());
+                }
+                case "Date" -> {
                     // Filtrage basé sur la date
                     String dateString = String.valueOf(message.getDateNotification()).trim();
-                    matchesFilter = dateString.contains(TextSearch.getText());
-                    break;
-            }
+                    yield dateString.contains(TextSearch.getText());
+                }
+                default -> false;
+            };
 
             if (matchesFilter) {
                 filteredList.add(message);
@@ -251,9 +246,7 @@ public class NotificationView {
 
     public void supprimerNotification(boolean x) {
         NotifNominationArbre selectedMsg = tabNoti.getSelectionModel().getSelectedItem();
-        if (x){
-            ReponseMessage(x,selectedMsg);
-        }else{ReponseMessage(x,selectedMsg);}
+        ReponseMessage(x,selectedMsg);
         // Supprimer la notification de la liste
         messages.remove(selectedMsg);
 
@@ -262,7 +255,7 @@ public class NotificationView {
         File folder = new File("inbox/espaces_verts");
 
         try {
-            for (File file : folder.listFiles()) {
+            for (File file : Objects.requireNonNull(folder.listFiles())) {
                 if (file.isFile()) {
                     // Lire le fichier existant
                     JsonNode rootNode = objectMapper.readTree(file);
@@ -313,11 +306,16 @@ public class NotificationView {
         String emetteur = notification.getEmetteur();
         String typeNotification = notification.getTypeNotification();
         Date dateNotification = notification.getDateNotification();
-        Arbre arbre = notification.getArbres().get(0);
+        Arbre arbre = notification.getArbres().getFirst();
 
         NotifReponseNomination message = new NotifReponseNomination("espaces_verts", typeNotification, dateNotification, x, arbre);
 
         String nomFichier = "Reponse_Nomination_" + arbre.getId() + ".json";
+
+        if (!arbre.isClassificationRemarquable()) {
+            arbre.inverserClassificationRemarquable();
+            arbre.saveToJson();
+        }
 
         // Créer le chemin du dossier basé sur le nom de l'émetteur
         String cheminDossier = "inbox/" + emetteur;

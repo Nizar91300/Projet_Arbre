@@ -69,7 +69,7 @@ public class AssAjoutMembreControler {
             return;
         }
 
-        if (!AssociationVert.get().inscrireMembre(fieldNom.getText(), fieldPrenom.getText(), date, fieldNom.getText()+"."+fieldPrenom, fieldMotDePasse.getText(),fieldAdresse.getText())){
+        if (!AssociationVert.get().inscrireMembre(fieldNom.getText(), fieldPrenom.getText(), date, fieldNom.getText()+"."+fieldPrenom.getText(), fieldMotDePasse.getText(),fieldAdresse.getText())){
             labelError.setText("On a pas pu inscrire le membre, un autre porte le mem pseudo"+fieldNom.getText()+"."+fieldPrenom);
             return;
         }
