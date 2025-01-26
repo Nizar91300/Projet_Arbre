@@ -340,6 +340,11 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         return visites;
     }
 
+    @JsonIgnore
+    public List<NotifEvenement> getAllNotifs(){
+        return notifications;
+    }
+
 
 
     public void updateVotes(){
@@ -349,4 +354,6 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
     public void updateVisites(){
         visites = Visite.readVisitesFromJsonOf(this);
     }
+
+
 }

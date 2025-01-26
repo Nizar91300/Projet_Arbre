@@ -27,6 +27,9 @@ public class MembreMenu2View {
     @FXML
     private Button Visite;
 
+    @FXML
+    private Button notifs;
+
 
 
     public static void load() {
@@ -41,6 +44,8 @@ public class MembreMenu2View {
             e.printStackTrace();
         }
     }
+
+
 
 
     @FXML
@@ -65,6 +70,7 @@ public class MembreMenu2View {
 
     @FXML
     public void initialize() {
+        notifs.setOnAction(actionEvent -> MembreNotificationView.load());
         EntityManager.get().loadMembre(SessionManager.get().getMembre().getPseudo());
     }
 
