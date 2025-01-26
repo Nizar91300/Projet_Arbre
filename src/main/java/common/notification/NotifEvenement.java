@@ -73,7 +73,7 @@ public class NotifEvenement extends Notification {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File(folderPath,fileName), this);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
 
@@ -106,7 +106,7 @@ public class NotifEvenement extends Notification {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(new File(filePath),NotifEvenement.class);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
             return null;
         }

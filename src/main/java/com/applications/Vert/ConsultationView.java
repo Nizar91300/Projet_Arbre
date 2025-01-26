@@ -159,17 +159,16 @@ public class ConsultationView {
         btnClassifier.setOnAction(event -> handleClassificationRemarquable());
         btnPlante.setOnAction(event -> handlePlantation());
         btnNotif.setOnAction(event -> NotificationView.load());
-
-
-        //Ajout de AssociationVert à notre ensemble
-        ServiceEspaceVert.get().addObserver(AssociationVert.get());
-        //ajout des autres membres todo
     }
 
     //Méthode pour charger la liste d'arbres
     private void loadTableData() {
         EntityManager.get();
         if (Arbre.arbres.isEmpty()) EntityManager.get().loadArbres();
+        ServiceEspaceVert.get().clearObservers();
+        ServiceEspaceVert.get().addObserver(AssociationVert.get());
+        EntityManager.get().loadMembres();
+        for (var m : AssociationVert.get().getMembres().values()) ServiceEspaceVert.get().addObserver(m);
         ObservableList<Arbre> arbresList = FXCollections.observableArrayList(Arbre.arbres.values());
         tabCons.setItems(arbresList);
     }
@@ -243,10 +242,7 @@ public class ConsultationView {
         Arbre selectedArbre = tabCons.getSelectionModel().getSelectedItem();
         if (selectedArbre != null) {
             // Supprimer l'arbre via la méthode retirerArbre
-            var arb = Arbre.arbres.remove(selectedArbre.getId());
-            boolean removed = arb!=null;
-            if (removed) {
-                arb.deleteJson();
+            if (Arbre.remove(selectedArbre.getId())) {
 
                 // Supprimer également de l'affichage
                 tabCons.getItems().remove(selectedArbre);

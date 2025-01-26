@@ -202,4 +202,13 @@ public class Arbre implements Comparable<Arbre> {
     }
 
 
+    public static boolean remove(int id){
+        var arbre =  arbres.remove(id);
+        if (arbre==null) return false;
+        arbre.deleteJson();
+        AssociationVert.get().removeArbre(arbre);
+        return true;
+    }
+
+
 }

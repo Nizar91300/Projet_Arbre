@@ -32,4 +32,8 @@ public class ServiceEspaceVert implements DonateurVert {
         }
     }
 
+    public void clearObservers(){
+        observers.clear();
+    }
+
 }

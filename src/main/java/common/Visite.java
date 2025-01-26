@@ -38,7 +38,7 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
         File fichier = new File(folderPath, fileName);
         try {
             mapper.writeValue(fichier, visiteJson);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
 
@@ -86,7 +86,7 @@ public record Visite(Membre membre,Arbre arbre, Date date,String compteRendu) {
             Arbre arbre = Arbre.getArbreById(arbreId);
             String compteRendu = visiteJson.get("compteRendu").toString();
             return new Visite(membre, arbre, dateVisite, compteRendu);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
             return null;
         }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Arbre;
 import common.Paire;
+import common.ServiceEspaceVert;
+import common.notification.NotifEvenement;
 import common.notification.NotifNominationArbre;
 import common.notification.NotifReponseNomination;
 import javafx.beans.property.SimpleObjectProperty;
@@ -315,6 +317,7 @@ public class NotificationView {
         if (!arbre.isClassificationRemarquable()) {
             arbre.inverserClassificationRemarquable();
             arbre.saveToJson();
+            ServiceEspaceVert.get().notifyObservers(new NotifEvenement("ServiceDesEspacesVerts", NotifEvenement.Evenement.CLASSIFICATION, arbre));
         }
 
         // Créer le chemin du dossier basé sur le nom de l'émetteur

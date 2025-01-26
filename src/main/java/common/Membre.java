@@ -3,11 +3,7 @@ package common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.notification.NotifEvenement;
-import common.notification.NotifNominationArbre;
-import common.notification.NotifReponseNomination;
-import common.notification.Notification;
 import common.virement.Emetteur;
 import common.virement.Recepteur;
 import common.virement.ResultatVirement;
@@ -67,7 +63,7 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
 
     public void notify(NotifEvenement notification) {
         notifications.add(notification);
-        //todo cadepend de l implementation de  l interface graphgique
+        notification.saveToJsonToMembre(this);
     }
 
 
@@ -227,7 +223,7 @@ public class Membre extends Personne implements Emetteur, Recepteur,Comparable<M
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writeValue(fichier, this);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
 

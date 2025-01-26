@@ -375,5 +375,35 @@ public final class AssociationVert extends Association {
             }
         }
     }
+
+
+
+    public void removeArbre(Arbre arbre){
+        arbresProposes.remove(arbre);
+        votes.removeIf(vote -> {
+            if (vote.arbre().equals(arbre)){
+                vote.deleteJson();
+                return true;
+            }
+            return false;
+
+        });
+        visitesEffectuees.removeIf(visite -> {
+            if (visite.arbre().equals(arbre)){
+                visite.deleteJson();
+                return true;
+            }
+            return false;
+        });
+
+        visitesPlanifiees.removeIf(visite -> {
+            if (visite.arbre().equals(arbre)){
+                visite.deleteJson();
+                return true;
+            }
+            return false;
+        });
+
+    }
 }
 

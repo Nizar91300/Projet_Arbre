@@ -30,7 +30,7 @@ public record Vote(Membre membre, Arbre arbre, Date dateVote) {
         File fichier = new File(folderPath, fileName);
         try {
             mapper.writeValue(fichier, voteJson);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
 
@@ -73,7 +73,7 @@ public record Vote(Membre membre, Arbre arbre, Date dateVote) {
             Membre membre = AssociationVert.get().getMembres().get(membrePseudo);
             Arbre arbre = Arbre.getArbreById(arbreId);
             return new Vote(membre, arbre, dateVote);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
             return null;
         }
