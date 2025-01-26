@@ -26,6 +26,11 @@ public class BudgetAssociation implements Emetteur, Recepteur {
     // liste des recepteur auquel on peut demander une subvention/don
     private List<Emetteur> emetteursSubventionDon;
 
+
+    public double calculateSolde(){
+        return solde;
+    }
+
     public BudgetAssociation(double budgetInitial) {
         this.solde = budgetInitial;
         this.revenus = new ArrayList<>();
@@ -291,4 +296,10 @@ public class BudgetAssociation implements Emetteur, Recepteur {
     public List<Facture> getFactures() {
         return factures;
     }
+
+    public void clearFactures(){
+        if (factures!=null) factures.clear();
+    }
+
+
 }

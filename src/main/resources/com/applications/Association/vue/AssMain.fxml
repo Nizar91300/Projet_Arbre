@@ -9,4 +9,5 @@
     <Button fx:id="btnNominationArbres" layoutX="614.0" layoutY="172.0" prefHeight="107.0" prefWidth="170" style="-fx-font-size: 16px; -fx-background-color: #4B0082; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Consultation Arbres" />
     <Button fx:id="btnNotifications" layoutX="677.0" layoutY="465.0" prefHeight="107.0" prefWidth="177.0" style="-fx-font-size: 16px; -fx-background-color: #008080; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Notifications" />
     <Button fx:id="btnFinExercice" layoutX="246.0" layoutY="295.0" prefHeight="252.0" prefWidth="377.0" style="-fx-font-size: 16px; -fx-background-color: #205D5D; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Effectuer les actions de fin d'exercice budgétaire" />
+   <Button fx:id="btnFacture" layoutX="181.0" layoutY="197.0" prefHeight="102.0" prefWidth="139.0" style="-fx-font-size: 16px; -fx-background-color: #D47484; -fx-text-fill: white; -fx-padding: 10px;-fx-background-radius: 50%;" text="Factures" />
 </AnchorPane>

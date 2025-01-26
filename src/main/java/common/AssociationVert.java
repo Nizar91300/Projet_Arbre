@@ -25,7 +25,7 @@ public final class AssociationVert extends Association {
     private HashMap<Arbre,Integer> arbresProposes;
     private List<Visite> visitesEffectuees;
     private List<Visite> visitesPlanifiees;
-    private static BudgetAssociation budgetAssociation;
+    public static BudgetAssociation budgetAssociation;
 
 
     private AssociationVert() {

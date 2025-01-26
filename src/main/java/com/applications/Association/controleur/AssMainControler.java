@@ -22,6 +22,9 @@ public class AssMainControler {
     @FXML
     public Button btnFinExercice;
 
+    @FXML
+    public Button btnFacture;
+
 
 
     @FXML
@@ -40,6 +43,10 @@ public class AssMainControler {
 
         btnNotifications.setOnAction((actionEvent) -> {
             AssNotificationView.load();
+        });
+
+        btnFacture.setOnAction((actionEvent) -> {
+            AssFactureView.load();
         });
 
         btnFinExercice.setOnAction((actionEvent) ->{
